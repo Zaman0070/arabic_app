@@ -18,7 +18,7 @@ class _LoginPageState extends State<Login> {
   var countryCodeController = TextEditingController(text: '+966');
   var phoneNumberController = TextEditingController();
   PhoneService _service = PhoneService();
-  String countryCode = '+966';
+  String countryCode = '+92';
   // List<String> country(BuildContext context) => [
   //       '+967',
   //       '+92',
