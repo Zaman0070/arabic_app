@@ -6,7 +6,7 @@ import 'package:get/route_manager.dart';
 import 'package:waist_app/services/firebase_services.dart';
 import 'package:waist_app/widgets/bottomNavi.dart';
 
-import '../screens/confirmPhone.dart';
+import '../screens/auth/confirmPhone.dart';
 
 class PhoneService {
   FirebaseServices service = FirebaseServices();
@@ -49,13 +49,11 @@ class PhoneService {
 
     Future<void> codeSent(String verId, int? resendToken) async {
       SmartDialog.dismiss();
-      await Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (_) => OTP(
-                    number: number,
-                    verId: verId,
-                  )));
+      await Get.to(() => OTP(
+            number: number,
+            verId: verId,
+          ));
+    
     }
 
     try {

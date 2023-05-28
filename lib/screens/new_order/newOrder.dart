@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:waist_app/screens/mishtari/mistari_page_form.dart';
 
 import '../../widgets/arrowButton.dart';
@@ -17,7 +18,7 @@ class _NewOrderState extends State<NewOrder> {
       padding: EdgeInsets.symmetric(horizontal: 10),
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      decoration:const BoxDecoration(
+      decoration: const BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.fill,
           image: AssetImage(
@@ -27,16 +28,16 @@ class _NewOrderState extends State<NewOrder> {
       ),
       child: Column(
         children: [
-        const  SizedBox(
+          const SizedBox(
             height: 40,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-            const  SizedBox(
+              const SizedBox(
                 width: 30,
               ),
-           const   Text(
+              const Text(
                 'طلب جديد',
                 style: TextStyle(
                   fontSize: 20,
@@ -46,7 +47,7 @@ class _NewOrderState extends State<NewOrder> {
               ArrowButton()
             ],
           ),
-        const  SizedBox(
+          const SizedBox(
             height: 80,
           ),
           Row(
@@ -54,11 +55,7 @@ class _NewOrderState extends State<NewOrder> {
               Expanded(
                   child: InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MistariPage(),
-                      ));
+                  Get.to(() => MistariPage());
                 },
                 child: Container(
                   child: Image(image: AssetImage('assets/Group 85.png')),

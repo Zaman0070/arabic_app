@@ -7,10 +7,12 @@ class InputField extends StatelessWidget {
   String title;
   String hinttext;
   Color color;
+  TextInputType type;
   InputField(
       {super.key,
       required this.controller,
       required this.title,
+      required this.type,
       required this.color,
       required this.hinttext});
 
@@ -27,7 +29,7 @@ class InputField extends StatelessWidget {
           ),
           child: TextFormField(
             controller: controller,
-            keyboardType: TextInputType.phone,
+            keyboardType: type,
             textAlign: TextAlign.right,
             validator: (val) {
               if (val!.isEmpty) {

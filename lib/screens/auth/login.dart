@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:legacy_progress_dialog/legacy_progress_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:waist_app/services/phone_services.dart';
 import 'package:waist_app/widgets/logo.dart';
 
-import '../constants/colors.dart';
-import '../widgets/button.dart';
+import '../../constants/colors.dart';
+import '../../widgets/button.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -15,10 +15,10 @@ class Login extends StatefulWidget {
 class _LoginPageState extends State<Login> {
   bool validate = false;
   int? length;
-  var countryCodeController = TextEditingController(text: '+92');
+  var countryCodeController = TextEditingController(text: '+966');
   var phoneNumberController = TextEditingController();
   PhoneService _service = PhoneService();
-  String countryCode = '+92';
+  String countryCode = '+966';
   // List<String> country(BuildContext context) => [
   //       '+967',
   //       '+92',
@@ -154,7 +154,10 @@ class _LoginPageState extends State<Login> {
               onPressed: () async {
                 String number =
                     '${countryCodeController.text}${phoneNumberController.text}';
-                _service.verificationPhoneNumber(context, number);
+                phoneNumberController.text.trim().isNotEmpty
+                    ? _service.verificationPhoneNumber(context, number)
+                    : Fluttertoast.showToast(
+                        msg: 'Please Enter your Phone Number');
               },
             ),
             const SizedBox(

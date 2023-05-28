@@ -8,10 +8,10 @@ import 'package:get/get.dart';
 import 'package:waist_app/services/phone_services.dart';
 import 'package:waist_app/widgets/arrowButton.dart';
 
-import '../constants/colors.dart';
-import '../widgets/bottomNavi.dart';
-import '../widgets/button.dart';
-import '../widgets/otpInput.dart';
+import '../../constants/colors.dart';
+import '../../widgets/bottomNavi.dart';
+import '../../widgets/button.dart';
+import '../../widgets/otpInput.dart';
 
 class OTP extends StatefulWidget {
   final String? number;
@@ -49,8 +49,8 @@ class _LoginPageState extends State<OTP> {
           'uid': user.uid,
           'mobile': user.phoneNumber,
         }).then((value) {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => BottomNavigationExample()));
+          Get.offAll(() => BottomNavigationExample());
+
           // ignore: invalid_return_type_for_catch_error
         }).catchError((error) =>
             // ignore: invalid_return_type_for_catch_error

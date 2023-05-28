@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:waist_app/screens/SplashOne.dart';
 import 'package:waist_app/widgets/logo.dart';
 
@@ -13,12 +14,7 @@ class _OnBaordingState extends State<OnBaording> {
   @override
   void initState() {
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SplashOne(),
-        ),
-      );
+      Get.offAll(() => SplashOne());
     });
 
     super.initState();
@@ -30,7 +26,7 @@ class _OnBaordingState extends State<OnBaording> {
         body: Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.fill,
           image: AssetImage(
@@ -42,7 +38,7 @@ class _OnBaordingState extends State<OnBaording> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           LogoConatiner(),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Text(

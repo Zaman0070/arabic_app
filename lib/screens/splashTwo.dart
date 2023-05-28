@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:waist_app/screens/login.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/route_manager.dart';
+import 'package:waist_app/screens/auth/login.dart';
 import 'package:waist_app/widgets/button.dart';
 
 import '../constants/colors.dart';
@@ -15,10 +17,10 @@ class _SplashOneState extends State<SplashTwo> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      padding: EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.fill,
           image: AssetImage(
@@ -29,16 +31,16 @@ class _SplashOneState extends State<SplashTwo> {
       child: Column(
         children: [
           SizedBox(
-            height: 50,
+            height: 50.h,
           ),
           LogoConatiner(),
           SizedBox(
-            height: 30,
+            height: 25.h,
           ),
-          Image(
+          const Image(
             image: AssetImage('assets/Finance insurance.png'),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Container(
@@ -49,7 +51,7 @@ class _SplashOneState extends State<SplashTwo> {
             ),
             child: Column(
               children: [
-                Text(
+                const Text(
                   'هو وسيط مالي يحمي المشتري والبائع عن طريق تحصيل الأموال وحفظها  الي ان يتم تسليم وفحص المنتج',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
@@ -57,11 +59,7 @@ class _SplashOneState extends State<SplashTwo> {
                 MyButton(
                   name: 'التالي',
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Login(),
-                        ));
+                    Get.offAll(() => Login());
                   },
                 ),
               ],
@@ -70,6 +68,5 @@ class _SplashOneState extends State<SplashTwo> {
         ],
       ),
     ));
-    
   }
 }
