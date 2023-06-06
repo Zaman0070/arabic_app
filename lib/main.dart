@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/screens/onBoarding.dart';
-import 'package:waist_app/widgets/bottomNavi.dart';
+import 'package:waist_app/screens/bottom_nav/bottomNavi.dart';
 
 import 'constants/colors.dart';
 

@@ -9,7 +9,7 @@ import 'package:waist_app/services/phone_services.dart';
 import 'package:waist_app/widgets/arrowButton.dart';
 
 import '../../constants/colors.dart';
-import '../../widgets/bottomNavi.dart';
+import '../bottom_nav/bottomNavi.dart';
 import '../../widgets/button.dart';
 import '../../widgets/otpInput.dart';
 

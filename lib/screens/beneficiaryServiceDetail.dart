@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:waist_app/screens/historyEmpty.dart';
+import 'package:waist_app/screens/histroy_page/historyEmpty.dart';
 import 'package:waist_app/widgets/button.dart';
 
 import '../constants/colors.dart';

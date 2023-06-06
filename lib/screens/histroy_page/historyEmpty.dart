@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:waist_app/widgets/button.dart';
 
-import '../constants/colors.dart';
+import '../../constants/colors.dart';
 
-import '../widgets/arrowButton.dart';
-import 'help.dart';
+import '../../widgets/arrowButton.dart';
+import '../help.dart';
 
 class HistoryEmpty extends StatefulWidget {
   @override
@@ -16,10 +16,10 @@ class _HistoryEmptyState extends State<HistoryEmpty> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.fill,
             image: AssetImage(
@@ -30,16 +30,16 @@ class _HistoryEmptyState extends State<HistoryEmpty> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 30,
                   ),
-                  Text(
+                  const Text(
                     'طلباتي',
                     style: TextStyle(
                       fontSize: 20,

@@ -3,16 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
+import 'package:waist_app/screens/order/order.dart';
 import 'package:waist_app/widgets/myDrawer.dart';
-
 
 import '../constants/colors.dart';
 
-
 import '../widgets/button.dart';
-import 'historyEmpty.dart';
+import 'histroy_page/historyEmpty.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -63,10 +64,10 @@ class _HomePageState extends State<HomePage> {
       key: _scaffold,
       endDrawer: MyDrawer(),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.fill,
             image: AssetImage(
@@ -78,7 +79,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               SizedBox(
-                height: 40,
+                height: 40.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,40 +88,38 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {},
                       icon: Icon(
                         Icons.notifications,
-                        size: 40,
+                        size: 30.h,
                         color: BC.appColor,
                       )),
                   Container(
-                    width: 60,
-                    height: 60,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                        color: BC.logo_clr,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Color(0xff707070))),
-                    child: Center(
-                        child: Text(
-                      'LOGO',
-                      style: TextStyle(
-                        fontSize: 13,
-                      ),
-                    )),
-                  ),
+                      width: 50.h,
+                      height: 50.h,
+                      decoration: BoxDecoration(
+                          color: BC.logo_clr,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: const Color(0xff707070))),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.asset(
+                          'assets/logo.jpeg',
+                          fit: BoxFit.cover,
+                        ),
+                      )),
                   IconButton(
                       onPressed: () {
                         _scaffold.currentState!.openEndDrawer();
                       },
                       icon: Icon(
                         Icons.menu_rounded,
-                        size: 40,
+                        size: 30.h,
                         color: BC.appColor,
                       ))
                 ],
               ),
               SizedBox(
-                height: 20,
+                height: 20.h,
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.18,
                 child: ClipRRect(
@@ -151,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                           return Container(
                             width: _current == value ? 5.0 : 5,
                             height: _current == value ? 20.0 : 20,
-                            margin: EdgeInsets.symmetric(horizontal: 1),
+                            margin: const EdgeInsets.symmetric(horizontal: 1),
                             decoration: BoxDecoration(
                               borderRadius: _current == value
                                   ? BorderRadius.circular(20)
@@ -168,14 +167,14 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 20.h,
               ),
-              Container(
-                height: 180, // card height
+              SizedBox(
+                height: 130.h, // card height
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: PageView.builder(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     itemCount: 6,
                     controller: _pageController,
                     onPageChanged: (int index) =>
@@ -220,8 +219,8 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                      width: 40.h,
-                      height: 40.h,
+                      width: 35.h,
+                      height: 35.h,
                       decoration: BoxDecoration(
                           color: BC.appColor,
                           borderRadius: BorderRadius.circular(30)),
@@ -233,7 +232,7 @@ class _HomePageState extends State<HomePage> {
                           icon: Center(
                             child: Padding(
                               padding: EdgeInsets.only(left: 5.w),
-                              child: Icon(
+                              child: const Icon(
                                 Icons.arrow_back_ios,
                                 color: Colors.white,
                                 size: 20,
@@ -243,8 +242,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                       )),
                   Container(
-                      width: 40.h,
-                      height: 40.h,
+                      width: 35.h,
+                      height: 35.h,
                       decoration: BoxDecoration(
                           color: BC.appColor,
                           borderRadius: BorderRadius.circular(30)),
@@ -253,7 +252,7 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () {
                             nextPage();
                           },
-                          icon: Center(
+                          icon: const Center(
                             child: Icon(
                               Icons.arrow_forward_ios,
                               color: Colors.white,
@@ -265,9 +264,9 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(
-                height: 20,
+                height: 20.h,
               ),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
@@ -281,7 +280,8 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 decoration: BoxDecoration(
                   color: BC.appColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(20),
@@ -297,7 +297,7 @@ class _HomePageState extends State<HomePage> {
                         Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 30, vertical: 4),
                               decoration: BoxDecoration(
                                   border: Border.all(
@@ -305,7 +305,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   borderRadius: BorderRadius.circular(10)),
                             ),
-                            Text(
+                            const Text(
                               'تحويل المبلغ',
                               textAlign: TextAlign.right,
                               style: TextStyle(
@@ -317,7 +317,7 @@ class _HomePageState extends State<HomePage> {
                         Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 30, vertical: 4),
                               decoration: BoxDecoration(
                                   border: Border.all(
@@ -325,7 +325,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   borderRadius: BorderRadius.circular(10)),
                             ),
-                            Text(
+                            const Text(
                               'قيد التنفيذ',
                               textAlign: TextAlign.right,
                               style: TextStyle(
@@ -337,13 +337,13 @@ class _HomePageState extends State<HomePage> {
                         Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 30, vertical: 4),
                               decoration: BoxDecoration(
                                   color: BC.appColor,
                                   borderRadius: BorderRadius.circular(10)),
                             ),
-                            Text(
+                            const Text(
                               'استلام المبلغ',
                               textAlign: TextAlign.right,
                               style: TextStyle(
@@ -355,13 +355,13 @@ class _HomePageState extends State<HomePage> {
                         Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 30, vertical: 4),
                               decoration: BoxDecoration(
                                   color: BC.appColor,
                                   borderRadius: BorderRadius.circular(10)),
                             ),
-                            Text(
+                            const Text(
                               'تقديم الطلب',
                               textAlign: TextAlign.right,
                               style: TextStyle(
@@ -373,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 10.h,
                     ),
                     MyButton(
                       name: 'تفاصيل الطلب',
@@ -381,7 +381,7 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => NewOrder(),
+                              builder: (context) => const Orders(),
                             ));
                       },
                     ),

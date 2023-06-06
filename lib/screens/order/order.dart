@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:waist_app/widgets/button.dart';
 
-import '../constants/colors.dart';
-import '../widgets/arrowButton.dart';
-import 'orderDetails.dart';
+import '../../constants/colors.dart';
+import '../../widgets/arrowButton.dart';
+import '../orderDetails.dart';
 
 class Orders extends StatefulWidget {
+  const Orders({super.key});
+
   @override
   State<Orders> createState() => _OrdersState();
 }
@@ -15,10 +19,10 @@ class _OrdersState extends State<Orders> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.fill,
             image: AssetImage(
@@ -29,29 +33,33 @@ class _OrdersState extends State<Orders> {
         child: Column(
           children: [
             SizedBox(
-              height: 40,
+              height: 40.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 30,
                 ),
-                Text(
+                const Text(
                   'الطلبات النشطة',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                ArrowButton()
+                ArrowButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                )
               ],
             ),
             SizedBox(
-              height: 50,
+              height: 50.h,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               decoration: BoxDecoration(
                   color: BC.appColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(20),

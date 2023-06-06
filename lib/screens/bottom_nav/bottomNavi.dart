@@ -5,10 +5,13 @@ import 'package:waist_app/screens/new_order/newOrder.dart';
 import 'package:waist_app/widgets/myDrawer.dart';
 
 
-import '../constants/colors.dart';
+import '../../constants/colors.dart';
 
 class BottomNavigationExample extends StatefulWidget {
+  const BottomNavigationExample({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _BottomNavigationExampleState createState() =>
       _BottomNavigationExampleState();
 }
