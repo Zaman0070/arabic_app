@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class BuyerModel {
+class ServiceBeneficaryModel {
   String? name;
   String? phoneNumber;
   String? address;
@@ -10,12 +10,11 @@ class BuyerModel {
   String? description;
   String? days;
   String? secondPartyMobile;
-  String? images;
   bool? agree1;
   bool? agree2;
   int? orderNumber;
   String? uid;
-  BuyerModel({
+  ServiceBeneficaryModel({
     this.name,
     this.phoneNumber,
     this.address,
@@ -24,14 +23,13 @@ class BuyerModel {
     this.description,
     this.days,
     this.secondPartyMobile,
-    this.images,
     this.agree1,
     this.agree2,
     this.orderNumber,
     this.uid,
   });
 
-  BuyerModel copyWith({
+  ServiceBeneficaryModel copyWith({
     String? name,
     String? phoneNumber,
     String? address,
@@ -40,13 +38,12 @@ class BuyerModel {
     String? description,
     String? days,
     String? secondPartyMobile,
-    String? images,
     bool? agree1,
     bool? agree2,
     int? orderNumber,
     String? uid,
   }) {
-    return BuyerModel(
+    return ServiceBeneficaryModel(
       name: name ?? this.name,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       address: address ?? this.address,
@@ -55,7 +52,6 @@ class BuyerModel {
       description: description ?? this.description,
       days: days ?? this.days,
       secondPartyMobile: secondPartyMobile ?? this.secondPartyMobile,
-      images: images ?? this.images,
       agree1: agree1 ?? this.agree1,
       agree2: agree2 ?? this.agree2,
       orderNumber: orderNumber ?? this.orderNumber,
@@ -73,7 +69,6 @@ class BuyerModel {
       'description': description,
       'days': days,
       'secondPartyMobile': secondPartyMobile,
-      'images': images,
       'agree1': agree1,
       'agree2': agree2,
       'orderNumber': orderNumber,
@@ -81,8 +76,8 @@ class BuyerModel {
     };
   }
 
-  factory BuyerModel.fromMap(Map<String, dynamic> map) {
-    return BuyerModel(
+  factory ServiceBeneficaryModel.fromMap(Map<String, dynamic> map) {
+    return ServiceBeneficaryModel(
       name: map['name'] != null ? map['name'] as String : null,
       phoneNumber: map['phoneNumber'] != null ? map['phoneNumber'] as String : null,
       address: map['address'] != null ? map['address'] as String : null,
@@ -91,7 +86,6 @@ class BuyerModel {
       description: map['description'] != null ? map['description'] as String : null,
       days: map['days'] != null ? map['days'] as String : null,
       secondPartyMobile: map['secondPartyMobile'] != null ? map['secondPartyMobile'] as String : null,
-      images: map['images'] != null ? map['images'] as String : null,
       agree1: map['agree1'] != null ? map['agree1'] as bool : null,
       agree2: map['agree2'] != null ? map['agree2'] as bool : null,
       orderNumber: map['orderNumber'] != null ? map['orderNumber'] as int : null,
@@ -101,15 +95,15 @@ class BuyerModel {
 
   String toJson() => json.encode(toMap());
 
-  factory BuyerModel.fromJson(String source) => BuyerModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ServiceBeneficaryModel.fromJson(String source) => ServiceBeneficaryModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'BuyerModel(name: $name, phoneNumber: $phoneNumber, address: $address, purpose: $purpose, price: $price, description: $description, days: $days, secondPartyMobile: $secondPartyMobile, images: $images, agree1: $agree1, agree2: $agree2, orderNumber: $orderNumber, uid: $uid)';
+    return 'ServiceBeneficaryModel(name: $name, phoneNumber: $phoneNumber, address: $address, purpose: $purpose, price: $price, description: $description, days: $days, secondPartyMobile: $secondPartyMobile, agree1: $agree1, agree2: $agree2, orderNumber: $orderNumber, uid: $uid)';
   }
 
   @override
-  bool operator ==(covariant BuyerModel other) {
+  bool operator ==(covariant ServiceBeneficaryModel other) {
     if (identical(this, other)) return true;
   
     return 
@@ -121,7 +115,6 @@ class BuyerModel {
       other.description == description &&
       other.days == days &&
       other.secondPartyMobile == secondPartyMobile &&
-      other.images == images &&
       other.agree1 == agree1 &&
       other.agree2 == agree2 &&
       other.orderNumber == orderNumber &&
@@ -138,7 +131,6 @@ class BuyerModel {
       description.hashCode ^
       days.hashCode ^
       secondPartyMobile.hashCode ^
-      images.hashCode ^
       agree1.hashCode ^
       agree2.hashCode ^
       orderNumber.hashCode ^

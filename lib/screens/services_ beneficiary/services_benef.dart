@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:waist_app/constants/colors.dart';
-import 'package:waist_app/controller/image_controller.dart';
 import 'package:waist_app/screens/mishtari/widget/input_field.dart';
-import 'package:waist_app/screens/mishtari/widget/upload_image.dart';
 import 'package:waist_app/screens/widget/button.dart';
 import 'package:waist_app/services/firebase_services.dart';
 
 // ignore: must_be_immutable
-class MistariPage extends StatefulWidget {
-  MistariPage({super.key});
+class ServicesBeneficary extends StatefulWidget {
+  ServicesBeneficary({super.key});
 
   @override
-  State<MistariPage> createState() => _MistariPageState();
+  State<ServicesBeneficary> createState() => _ServicesBeneficaryState();
 }
 
-class _MistariPageState extends State<MistariPage> {
+class _ServicesBeneficaryState extends State<ServicesBeneficary> {
   bool value = false;
   var nameController = TextEditingController();
 
@@ -38,10 +34,6 @@ class _MistariPageState extends State<MistariPage> {
   bool isSwitched = false;
   bool isSwitched2 = false;
   int result = 0;
-  ImagePickerController imagePickerController =
-      Get.put(ImagePickerController());
-
-  List<String> images = [];
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +43,7 @@ class _MistariPageState extends State<MistariPage> {
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: const Text(
-          'المشتري',
+          'مستفيد من الخدمة',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -127,64 +119,8 @@ class _MistariPageState extends State<MistariPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 15.h),
-              child: UploadImage(
-                onTap: () {
-                  Get.bottomSheet(
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(25),
-                              topRight: Radius.circular(25))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(22.0),
-                        child: Column(
-                          textDirection: TextDirection.rtl,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            InkWell(
-                              onTap: () async {
-                                images = await imagePickerController
-                                    .pickImage(ImageSource.camera)
-                                    .whenComplete(() {
-                                  Get.back();
-                                });
-                              },
-                              child: Text(
-                                'اختر صورة من الكاميرا',
-                                style: TextStyle(fontSize: 16.sp),
-                              ),
-                            ),
-                            Divider(
-                              color: BC.appColor,
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                images = await imagePickerController
-                                    .pickImage(ImageSource.gallery)
-                                    .whenComplete(() {
-                                  Get.back();
-                                });
-                              },
-                              child: Text('اختر صورة من المعرض',
-                                  style: TextStyle(fontSize: 16.sp)),
-                            ),
-                            SizedBox(
-                              height: 8.h,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
             SizedBox(
-              height: 5.h,
+              height: 30.h,
             ),
             InputField(
               calender: false,
@@ -357,20 +293,18 @@ class _MistariPageState extends State<MistariPage> {
                           desController.text.trim() == '' ||
                           addressController.text.trim() == ''
                       ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
-                      : imagePickerController.selectedImages.isNotEmpty
-                          ? await FirebaseServices().addMishtriDetails(
-                              name: nameController.text,
-                              phoneNumber: phoneController.text,
-                              purpose: purposeController.text,
-                              days: timeController.text,
-                              secondPartyMobile: secondphoneController.text,
-                              description: desController.text,
-                              address: addressController.text,
-                              price: result.toString(),
-                              agree1: isSwitched,
-                              agree2: isSwitched2,
-                              images: images[0])
-                          : Fluttertoast.showToast(msg: 'الرجاء اختيار صورة');
+                      : await FirebaseServices().addServiceBeneficary(
+                          name: nameController.text,
+                          phoneNumber: phoneController.text,
+                          purpose: purposeController.text,
+                          days: timeController.text,
+                          secondPartyMobile: secondphoneController.text,
+                          description: desController.text,
+                          address: addressController.text,
+                          price: result.toString(),
+                          agree1: isSwitched,
+                          agree2: isSwitched2,
+                        );
                 }),
             SizedBox(
               height: 20.h,

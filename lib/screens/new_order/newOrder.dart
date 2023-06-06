@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/screens/mishtari/mistari_page_form.dart';
+import 'package:waist_app/screens/services_%20beneficiary/services_benef.dart';
+import 'package:waist_app/widgets/bottomNavi.dart';
 import '../../widgets/arrowButton.dart';
 
 class NewOrder extends StatefulWidget {
@@ -14,7 +16,7 @@ class _NewOrderState extends State<NewOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
@@ -43,7 +45,11 @@ class _NewOrderState extends State<NewOrder> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              ArrowButton()
+              ArrowButton(
+                onPressed: () {
+                  Get.offAll(() => BottomNavigationExample());
+                },
+              )
             ],
           ),
           const SizedBox(
@@ -56,9 +62,7 @@ class _NewOrderState extends State<NewOrder> {
                 onTap: () {
                   Get.to(() => MistariPage());
                 },
-                child: Container(
-                  child: Image(image: AssetImage('assets/Group 85.png')),
-                ),
+                child: const Image(image: AssetImage('assets/Group 85.png')),
               )),
               Expanded(
                   child: InkWell(
@@ -86,9 +90,7 @@ class _NewOrderState extends State<NewOrder> {
                         );
                       });
                 },
-                child: Container(
-                  child: Image(image: AssetImage('assets/Group 84.png')),
-                ),
+                child: const Image(image: AssetImage('assets/Group 84.png')),
               ))
             ],
           ),
@@ -97,32 +99,9 @@ class _NewOrderState extends State<NewOrder> {
               Expanded(
                   child: InkWell(
                 onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Alert Dialog"),
-                          content: Text("تحت تطوير البيانات الخلفية"),
-                          actions: [
-                            TextButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            BC.appColor)),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: const Text(
-                                  'نعم',
-                                  style: TextStyle(color: Colors.white),
-                                ))
-                          ],
-                        );
-                      });
+                  Get.to(() => ServicesBeneficary());
                 },
-                child: Container(
-                  child: Image(image: AssetImage('assets/Group 89.png')),
-                ),
+                child: const Image(image: AssetImage('assets/Group 89.png')),
               )),
               Expanded(
                   child: InkWell(
@@ -150,9 +129,7 @@ class _NewOrderState extends State<NewOrder> {
                         );
                       });
                 },
-                child: Container(
-                  child: Image(image: AssetImage('assets/Group 88.png')),
-                ),
+                child: const Image(image: AssetImage('assets/Group 88.png')),
               ))
             ],
           )

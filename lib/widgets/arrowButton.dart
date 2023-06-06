@@ -14,10 +14,8 @@ class ArrowButton extends StatelessWidget {
             color: BC.appColor, borderRadius: BorderRadius.circular(30)),
         child: Center(
           child: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
+            onPressed: onPressed,
+            icon: const Icon(
               Icons.arrow_forward_ios,
               color: Colors.white,
               size: 20,
