@@ -59,7 +59,7 @@ class _MistariPageState extends State<MistariPage> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: InkWell(
               onTap: () {
-                Navigator.pop(context);
+              Get.back();
               },
               child: CircleAvatar(
                 backgroundColor: BC.appColor,

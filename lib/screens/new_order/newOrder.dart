@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/screens/mishtari/mistari_page_form.dart';
 import 'package:waist_app/screens/services_%20beneficiary/services_benef.dart';
-import 'package:waist_app/screens/bottom_nav/bottomNavi.dart';
 import '../../widgets/arrowButton.dart';
 
 class NewOrder extends StatefulWidget {
@@ -47,7 +46,7 @@ class _NewOrderState extends State<NewOrder> {
               ),
               ArrowButton(
                 onPressed: () {
-                  Get.offAll(() => BottomNavigationExample());
+                  Get.back();
                 },
               )
             ],

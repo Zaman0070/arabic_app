@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                 height: 20.h,
               ),
               SizedBox(
-                height: 130.h, // card height
+                height: 140.h, // card height
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: PageView.builder(
@@ -397,11 +397,11 @@ class _HomePageState extends State<HomePage> {
 
   void nextPage() {
     _pageController.animateToPage(_pageController.page!.toInt() + 1,
-        duration: Duration(milliseconds: 400), curve: Curves.easeIn);
+        duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
   }
 
   void previousPage() {
     _pageController.animateToPage(_pageController.page!.toInt() - 1,
-        duration: Duration(milliseconds: 400), curve: Curves.easeIn);
+        duration: const Duration(milliseconds: 400), curve: Curves.easeIn);
   }
 }

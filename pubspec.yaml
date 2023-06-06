@@ -45,7 +45,6 @@ dependencies:
   get: ^4.6.5
   legacy_progress_dialog: ^0.1.2
   flutter_screenutil: ^5.8.2
-  flutter_loading: ^0.2.0
   flutter_smart_dialog: ^4.9.0+6
   fluttertoast: ^8.2.2
   image_picker: ^0.8.7+5
