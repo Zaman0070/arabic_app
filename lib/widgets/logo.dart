@@ -10,16 +10,12 @@ class LogoConatiner extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.2,
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/logo.jpeg'),
+          ),
           color: BC.logo_clr,
           borderRadius: BorderRadius.circular(30),
           border: Border.all(color: Color(0xff707070))),
-      child: Center(
-          child: Text(
-        'LOGO',
-        style: TextStyle(
-          fontSize: 25,
-        ),
-      )),
     );
   }
 }

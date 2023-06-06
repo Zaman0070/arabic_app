@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/screens/mishtari/mistari_page_form.dart';
-
 import '../../widgets/arrowButton.dart';
-import '../contactUs.dart';
 
 class NewOrder extends StatefulWidget {
   @override
@@ -62,20 +61,98 @@ class _NewOrderState extends State<NewOrder> {
                 ),
               )),
               Expanded(
-                  child: Container(
-                child: Image(image: AssetImage('assets/Group 84.png')),
+                  child: InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Alert Dialog"),
+                          content: Text("تحت تطوير البيانات الخلفية"),
+                          actions: [
+                            TextButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            BC.appColor)),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                child: const Text(
+                                  'نعم',
+                                  style: TextStyle(color: Colors.white),
+                                ))
+                          ],
+                        );
+                      });
+                },
+                child: Container(
+                  child: Image(image: AssetImage('assets/Group 84.png')),
+                ),
               ))
             ],
           ),
           Row(
             children: [
               Expanded(
-                  child: Container(
-                child: Image(image: AssetImage('assets/Group 89.png')),
+                  child: InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Alert Dialog"),
+                          content: Text("تحت تطوير البيانات الخلفية"),
+                          actions: [
+                            TextButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            BC.appColor)),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                child: const Text(
+                                  'نعم',
+                                  style: TextStyle(color: Colors.white),
+                                ))
+                          ],
+                        );
+                      });
+                },
+                child: Container(
+                  child: Image(image: AssetImage('assets/Group 89.png')),
+                ),
               )),
               Expanded(
-                  child: Container(
-                child: Image(image: AssetImage('assets/Group 88.png')),
+                  child: InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Alert Dialog"),
+                          content: Text("تحت تطوير البيانات الخلفية"),
+                          actions: [
+                            TextButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            BC.appColor)),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                child: const Text(
+                                  'نعم',
+                                  style: TextStyle(color: Colors.white),
+                                ))
+                          ],
+                        );
+                      });
+                },
+                child: Container(
+                  child: Image(image: AssetImage('assets/Group 88.png')),
+                ),
               ))
             ],
           )

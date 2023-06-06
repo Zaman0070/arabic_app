@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waist_app/constants/colors.dart';
 
 // ignore: must_be_immutable
@@ -8,13 +9,17 @@ class InputField extends StatelessWidget {
   String hinttext;
   Color color;
   TextInputType type;
+  bool calender;
+  Function()? calenderFunction;
   InputField(
       {super.key,
       required this.controller,
       required this.title,
       required this.type,
       required this.color,
-      required this.hinttext});
+      required this.hinttext,
+      required this.calender,
+      this.calenderFunction});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +44,24 @@ class InputField extends StatelessWidget {
               }
             },
             decoration: InputDecoration(
+              contentPadding: calender ? EdgeInsets.only(top: 15) : null,
+              prefixIcon: calender
+                  ? IconButton(
+                      icon: CircleAvatar(
+                        radius: 12.h,
+                        backgroundColor: BC.appColor,
+                        child: RotatedBox(
+                          quarterTurns: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: Icon(Icons.arrow_back_ios,
+                                size: 12.h, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      onPressed: calenderFunction)
+                  : null,
               hintText: hinttext,
-              contentPadding: const EdgeInsets.only(top: 0),
               border: InputBorder.none,
             ),
           ),

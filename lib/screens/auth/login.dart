@@ -17,12 +17,9 @@ class _LoginPageState extends State<Login> {
   int? length;
   var countryCodeController = TextEditingController(text: '+966');
   var phoneNumberController = TextEditingController();
-  PhoneService _service = PhoneService();
-  String countryCode = '+92';
-  // List<String> country(BuildContext context) => [
-  //       '+967',
-  //       '+92',
-  //     ];
+  PhoneService service = PhoneService();
+  String countryCode = '+966';
+
   validation() {
     if (phoneNumberController.text.isEmpty) {
     } else if (phoneNumberController.text.isEmpty) {
@@ -39,7 +36,7 @@ class _LoginPageState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
@@ -155,7 +152,7 @@ class _LoginPageState extends State<Login> {
                 String number =
                     '${countryCodeController.text}${phoneNumberController.text}';
                 phoneNumberController.text.trim().isNotEmpty
-                    ? _service.verificationPhoneNumber(context, number)
+                    ? service.verificationPhoneNumber(context, number)
                     : Fluttertoast.showToast(
                         msg: 'Please Enter your Phone Number');
               },

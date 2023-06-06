@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:waist_app/constants/colors.dart';
+import 'package:waist_app/screens/controller/image_controller.dart';
 import 'package:waist_app/screens/mishtari/widget/input_field.dart';
 import 'package:waist_app/screens/mishtari/widget/upload_image.dart';
 import 'package:waist_app/screens/widget/button.dart';
+import 'package:waist_app/services/firebase_services.dart';
 
 // ignore: must_be_immutable
 class MistariPage extends StatefulWidget {
@@ -38,20 +38,10 @@ class _MistariPageState extends State<MistariPage> {
   bool isSwitched = false;
   bool isSwitched2 = false;
   int result = 0;
-  PickedFile? pickedFile;
+  ImagePickerController imagePickerController =
+      Get.put(ImagePickerController());
 
-  pickImage(ImageSource source) async {
-    // Map<Permission, PermissionStatus> statuses = await [
-    //   Permission.storage,
-    // ].request();
-    // if (statuses[Permission.storage]!.isDenied) {}
-    // ignore: deprecated_member_use
-    final pickedImage = await ImagePicker().getImage(source: source);
-    if (pickedImage != null) {
-    } else {
-      Fluttertoast.showToast(msg: 'No image selected');
-    }
-  }
+  List<String> images = [];
 
   @override
   Widget build(BuildContext context) {
@@ -104,31 +94,34 @@ class _MistariPageState extends State<MistariPage> {
                 child: Column(
                   children: [
                     InputField(
+                      calender: false,
                       type: TextInputType.name,
                       color: Colors.transparent,
                       controller: nameController,
                       title: 'اسم الطرف',
-                      hinttext: '',
+                      hinttext: 'اسم الطرف',
                     ),
                     SizedBox(
                       height: 10.h,
                     ),
                     InputField(
+                      calender: false,
                       type: TextInputType.phone,
                       color: Colors.transparent,
                       controller: phoneController,
                       title: 'الجوال',
-                      hinttext: '',
+                      hinttext: '+966 xx-xxx-xxxx',
                     ),
                     SizedBox(
                       height: 10.h,
                     ),
                     InputField(
+                      calender: false,
                       type: TextInputType.name,
                       color: Colors.transparent,
                       controller: addressController,
                       title: 'المدينة',
-                      hinttext: '',
+                      hinttext: 'المدينة',
                     ),
                   ],
                 ),
@@ -154,8 +147,11 @@ class _MistariPageState extends State<MistariPage> {
                           children: [
                             InkWell(
                               onTap: () async {
-                                await pickImage(ImageSource.camera);
-                                Get.back();
+                                images = await imagePickerController
+                                    .pickImage(ImageSource.camera)
+                                    .whenComplete(() {
+                                  Get.back();
+                                });
                               },
                               child: Text(
                                 'اختر صورة من الكاميرا',
@@ -167,8 +163,11 @@ class _MistariPageState extends State<MistariPage> {
                             ),
                             InkWell(
                               onTap: () async {
-                                await pickImage(ImageSource.gallery);
-                                Get.back();
+                                images = await imagePickerController
+                                    .pickImage(ImageSource.gallery)
+                                    .whenComplete(() {
+                                  Get.back();
+                                });
                               },
                               child: Text('اختر صورة من المعرض',
                                   style: TextStyle(fontSize: 16.sp)),
@@ -188,46 +187,52 @@ class _MistariPageState extends State<MistariPage> {
               height: 5.h,
             ),
             InputField(
+              calender: false,
               type: TextInputType.name,
               color: Theme.of(context).scaffoldBackgroundColor,
               controller: purposeController,
               title: 'الغرض من الحوالة',
-              hinttext: '',
+              hinttext: 'الغرض من الحوالة',
             ),
             SizedBox(
               height: 10.h,
             ),
             InputField(
+              calender: false,
               type: TextInputType.number,
               color: Theme.of(context).scaffoldBackgroundColor,
               controller: commodityController,
               title: 'قيمة السلعة',
-              hinttext: '',
+              hinttext: 'قيمة السلعة',
             ),
             SizedBox(
               height: 10.h,
             ),
             InputField(
+              calender: false,
               type: TextInputType.name,
               color: Theme.of(context).scaffoldBackgroundColor,
               controller: desController,
               title: 'وصف السلعة(اختياري)',
-              hinttext: '',
+              hinttext: 'وصف السلعة(اختياري)',
             ),
             SizedBox(
               height: 10.h,
             ),
             InputField(
+              calenderFunction: () {},
+              calender: true,
               type: TextInputType.name,
               color: Theme.of(context).scaffoldBackgroundColor,
               controller: timeController,
               title: 'الوقت المتوقع لأنهاء الصفقة',
-              hinttext: '',
+              hinttext: '7 ايام',
             ),
             SizedBox(
               height: 10.h,
             ),
             InputField(
+              calender: false,
               type: TextInputType.phone,
               color: Theme.of(context).scaffoldBackgroundColor,
               controller: secondphoneController,
@@ -340,30 +345,32 @@ class _MistariPageState extends State<MistariPage> {
             ),
             AppButton(
                 text: 'تأكيد الطلب و الدفع',
-                onPressed: () {
+                onPressed: () async {
                   nameController.text.trim() == '' ||
                           phoneController.text.trim() == '' ||
                           purposeController.text.trim() == '' ||
                           commodityController.text.trim() == '' ||
                           timeController.text.trim() == '' ||
-                          secondphoneController.text.trim() == ''
-                      ? Get.snackbar(
-                          '                    خطأ',
-                          'جميع الحقول مطلوبة',
-                          backgroundColor: Theme.of(context).errorColor,
-                          colorText: Colors.white,
-                          snackPosition: SnackPosition.BOTTOM,
-                          padding: EdgeInsets.only(
-                            left: 200.w,
-                          ),
-                        )
-                      : SmartDialog.showLoading(
-                          msg: 'جاري ارسال الطلب',
-                          animationTime: Duration(seconds: 2),
-                        );
-                  Future.delayed(Duration(seconds: 3), () {
-                    Get.back();
-                  });
+                          secondphoneController.text.trim() == '' ||
+                          isSwitched == false ||
+                          isSwitched2 == false ||
+                          desController.text.trim() == '' ||
+                          addressController.text.trim() == ''
+                      ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
+                      : imagePickerController.selectedImages.isNotEmpty
+                          ? await FirebaseServices().addMishtriDetails(
+                              name: nameController.text,
+                              phoneNumber: phoneController.text,
+                              purpose: purposeController.text,
+                              days: timeController.text,
+                              secondPartyMobile: secondphoneController.text,
+                              description: desController.text,
+                              address: addressController.text,
+                              price: result.toString(),
+                              agree1: isSwitched,
+                              agree2: isSwitched2,
+                              images: images[0])
+                          : Fluttertoast.showToast(msg: 'الرجاء اختيار صورة');
                 }),
             SizedBox(
               height: 20.h,
