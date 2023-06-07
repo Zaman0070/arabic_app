@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:waist_app/screens/theSeller.dart';
+import 'package:waist_app/screens/seller&baya/theSeller.dart';
 import 'package:waist_app/widgets/button.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 

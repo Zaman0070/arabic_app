@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/screens/bottom_nav/bottomNavi.dart';
 import 'package:waist_app/screens/mishtari/mistari_page_form.dart';
+import 'package:waist_app/screens/seller&baya/theSeller.dart';
 import 'package:waist_app/screens/services_%20beneficiary/services_benef.dart';
+import 'package:waist_app/screens/services_provider/serviceProvider.dart';
 import '../../widgets/arrowButton.dart';
 
 class NewOrder extends StatefulWidget {
@@ -72,28 +73,7 @@ class _NewOrderState extends State<NewOrder> {
                 Expanded(
                     child: InkWell(
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Alert Dialog"),
-                            content: Text("تحت تطوير البيانات الخلفية"),
-                            actions: [
-                              TextButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              BC.appColor)),
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  child: const Text(
-                                    'نعم',
-                                    style: TextStyle(color: Colors.white),
-                                  ))
-                            ],
-                          );
-                        });
+                    Get.to(() => const TheSeller());
                   },
                   child: const Image(image: AssetImage('assets/Group 84.png')),
                 ))
@@ -111,28 +91,7 @@ class _NewOrderState extends State<NewOrder> {
                 Expanded(
                     child: InkWell(
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Alert Dialog"),
-                            content: Text("تحت تطوير البيانات الخلفية"),
-                            actions: [
-                              TextButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              BC.appColor)),
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  child: const Text(
-                                    'نعم',
-                                    style: TextStyle(color: Colors.white),
-                                  ))
-                            ],
-                          );
-                        });
+                    Get.to(() => ServiceProvider());
                   },
                   child: const Image(image: AssetImage('assets/Group 88.png')),
                 ))

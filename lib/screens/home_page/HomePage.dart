@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
 import 'package:waist_app/screens/order/order.dart';
 import 'package:waist_app/widgets/myDrawer.dart';
 
-import '../constants/colors.dart';
+import '../../constants/colors.dart';
 
-import '../widgets/button.dart';
-import 'histroy_page/historyEmpty.dart';
+import '../../widgets/button.dart';
+import '../histroy_page/historyEmpty.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,6 +21,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Color> colors = [Colors.white, Colors.yellow, Colors.red, Colors.white];
+
   List images = [
     'assets/slider/Message.png',
     'assets/slider/How to use.png',
@@ -53,7 +55,7 @@ class _HomePageState extends State<HomePage> {
     ['NewOrder', NewOrder()],
     ['HistoryEmpty', HistoryEmpty()],
   ];
-  PageController _pageController =
+  final PageController _pageController =
       PageController(viewportFraction: 0.25, keepPage: true, initialPage: 0);
   final GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
   int _index = 0;
@@ -127,23 +129,33 @@ class _HomePageState extends State<HomePage> {
                   child: Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
-                      // Swiper(
-                      //   // control: new SwiperControl(
-                      //   //   color: Color(0xff38547C),
-                      //   // ),
-                      //   onIndexChanged: (value) {
-                      //     setState(() {
-                      //       _current = value;
-                      //     });
-                      //   },
-                      //   itemCount: colors.length,
-                      //   itemBuilder: (BuildContext context, int index) {
-                      //     return Container(
-                      //       color: colors[index],
-                      //     );
-                      //   },
-                      //   layout: SwiperLayout.DEFAULT,
-                      // ),
+                      Swiper(
+                        outer: false,
+                        indicatorLayout: PageIndicatorLayout.NONE,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            color: colors[index],
+                          );
+                        },
+                        onIndexChanged: (value) {
+                          setState(() {
+                            _current = value;
+                          });
+                        },
+                        layout: SwiperLayout.DEFAULT,
+                        itemCount: colors.length,
+                        pagination: const SwiperPagination(
+                            builder: SwiperPagination(
+                          builder: DotSwiperPaginationBuilder(
+                              color: Colors.transparent,
+                              activeColor: Colors.transparent,
+                              size: 10,
+                              activeSize: 10),
+                        )),
+                        control: SwiperControl(
+                          color: Colors.black.withOpacity(0.0),
+                        ),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: map<Widget>(colors, (value, url) {

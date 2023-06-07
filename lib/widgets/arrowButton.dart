@@ -5,23 +5,23 @@ import '../constants/colors.dart';
 
 class ArrowButton extends StatelessWidget {
   final Function()? onPressed;
-  ArrowButton({this.onPressed});
+  const ArrowButton({super.key, this.onPressed});
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: 30.h,
-        height: 30.h,
-        decoration: BoxDecoration(
-            color: BC.appColor, borderRadius: BorderRadius.circular(30)),
-        child: Center(
-          child: IconButton(
-            onPressed: onPressed,
-            icon: const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.white,
-              size: 20,
-            ),
+    return InkWell(
+      onTap: onPressed,
+      child: CircleAvatar(
+        backgroundColor: BC.appColor,
+        radius: 13.h,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 2.5),
+          child: Icon(
+            Icons.arrow_forward_ios,
+            size: 16.h,
+            color: Colors.white,
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

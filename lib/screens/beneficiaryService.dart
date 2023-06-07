@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 
 import '../constants/colors.dart';
-import '../widgets/UploadImageButton.dart';
 import '../widgets/arrowButton.dart';
 import '../widgets/button.dart';
 
@@ -98,12 +97,13 @@ class _BeneficiaryServiceState extends State<BeneficiaryService> {
             SizedBox(
               height: 30,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: UploadButton(
-                press: () {},
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 15),
+            //   child: UploadButton(
+            //     image: ,
+            //     press: () {},
+            //   ),
+            // ),
             SizedBox(
               height: 10,
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:waist_app/screens/AboutUs.dart';
-import 'package:waist_app/screens/HomePage.dart';
+import 'package:waist_app/screens/home_page/HomePage.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
 import 'package:waist_app/widgets/myDrawer.dart';
 
