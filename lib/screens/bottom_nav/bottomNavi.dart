@@ -22,7 +22,7 @@ class _BottomNavigationExampleState extends State {
   final List _pages = [
     AboutUs(),
     NewOrder(),
-    HomePage(),
+    const HomePage(),
   ];
 
   _changeTab(int index) {

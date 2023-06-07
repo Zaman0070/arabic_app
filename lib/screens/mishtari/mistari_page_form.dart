@@ -35,6 +35,7 @@ class _MistariPageState extends State<MistariPage> {
   var desController = TextEditingController();
 
   var timeController = TextEditingController();
+  String ayamDate = '';
   bool isSwitched = false;
   bool isSwitched2 = false;
   int result = 0;
@@ -59,7 +60,7 @@ class _MistariPageState extends State<MistariPage> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: InkWell(
               onTap: () {
-              Get.back();
+                Get.back();
               },
               child: CircleAvatar(
                 backgroundColor: BC.appColor,
@@ -220,7 +221,22 @@ class _MistariPageState extends State<MistariPage> {
               height: 10.h,
             ),
             InputField(
-              calenderFunction: () {},
+              calenderFunction: () async {
+                final DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2015, 8),
+                  lastDate: DateTime(2101),
+                );
+                if (picked != null) {
+                  ayamDate = picked.toString();
+                  DateTime date = DateTime.parse(ayamDate);
+                  int days = date.difference(DateTime.now()).inDays;
+                  timeController.text = '${days.toString()} ايام';
+                  // timeController.text =
+                  //     DateFormat('dd MMM yyyy').format(picked);
+                }
+              },
               calender: true,
               type: TextInputType.name,
               color: Theme.of(context).scaffoldBackgroundColor,
@@ -362,7 +378,7 @@ class _MistariPageState extends State<MistariPage> {
                               name: nameController.text,
                               phoneNumber: phoneController.text,
                               purpose: purposeController.text,
-                              days: timeController.text,
+                              days: ayamDate,
                               secondPartyMobile: secondphoneController.text,
                               description: desController.text,
                               address: addressController.text,
