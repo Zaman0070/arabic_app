@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/constants/colors.dart';
-import 'package:waist_app/screens/mishtari/widget/input_field.dart';
+import 'package:waist_app/screens/buy&mishtari/widget/input_field.dart';
 import 'package:waist_app/screens/widget/button.dart';
 import 'package:waist_app/services/firebase_services.dart';
 import 'package:waist_app/widgets/arrowButton.dart';

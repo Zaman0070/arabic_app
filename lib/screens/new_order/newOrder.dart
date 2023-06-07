@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/screens/bottom_nav/bottomNavi.dart';
-import 'package:waist_app/screens/mishtari/mistari_page_form.dart';
+import 'package:waist_app/screens/buy&mishtari/mistari_page_form.dart';
 import 'package:waist_app/screens/seller&baya/theSeller.dart';
 import 'package:waist_app/screens/services_%20beneficiary/services_benef.dart';
 import 'package:waist_app/screens/services_provider/serviceProvider.dart';

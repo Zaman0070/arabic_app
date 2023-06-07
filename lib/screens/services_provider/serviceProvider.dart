@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:waist_app/screens/mishtari/widget/input_field.dart';
+import 'package:waist_app/screens/buy&mishtari/widget/input_field.dart';
 import 'package:waist_app/services/firebase_services.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 
