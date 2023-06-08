@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:waist_app/model/user.dart';
 import 'package:waist_app/services/phone_services.dart';
 import 'package:waist_app/widgets/arrowButton.dart';
+import 'package:waist_app/widgets/loading.dart';
 
 import '../../constants/colors.dart';
 import '../bottom_nav/bottomNavi.dart';
@@ -35,7 +37,13 @@ class _LoginPageState extends State<OTP> {
   Future<void> phoneCredential(BuildContext context, String otp) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     try {
-      SmartDialog.showLoading();
+      SmartDialog.showLoading(
+        animationBuilder: (controller, child, animationParam) {
+          return Loading(
+            text: 'تم تأكيد الدخول مرحباً بك في تطبيق وسيط',
+          );
+        },
+      );
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: widget.verId!, smsCode: otp);
       // need to oto validate or no
@@ -45,11 +53,16 @@ class _LoginPageState extends State<OTP> {
 
       // ignore: unnecessary_null_comparison
       if (user != null) {
-        _phoneService.users.doc(user.uid).set({
-          'uid': user.uid,
-          'mobile': user.phoneNumber,
-        }).then((value) {
-          Get.offAll(() => BottomNavigationExample());
+        UserModel userModel = UserModel(
+          uid: user.uid,
+          phoneNumber: user.phoneNumber,
+          email: '',
+          profileImage: '',
+          location: '',
+          name: '',
+        );
+        _phoneService.users.doc(user.uid).set(userModel.toMap()).then((value) {
+          Get.offAll(() => const BottomNavigationExample());
 
           // ignore: invalid_return_type_for_catch_error
         }).catchError((error) =>

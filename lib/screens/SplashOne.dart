@@ -33,7 +33,7 @@ class _SplashOneState extends State<SplashOne> {
           SizedBox(
             height: 50.h,
           ),
-          LogoConatiner(),
+          const LogoConatiner(),
           SizedBox(
             height: 25.h,
           ),

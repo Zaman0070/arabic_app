@@ -64,28 +64,46 @@ class _OrdersState extends State<Orders> {
               GetBuilder<MishtariController>(
                   init: MishtariController(),
                   builder: (controller) {
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const ScrollPhysics(),
-                        itemCount: controller.allMishtari.length,
-                        itemBuilder: (context, index) {
-                          BuyerModel buyerData = controller.allMishtari[index];
-                          DateTime date = DateTime.parse(buyerData.days!);
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 14),
-                            child: OrderBox(
-                              orderNumber: '#${buyerData.orderNumber}',
-                              date:
-                                  DateFormat('dd/MM/yyyy  hh:mm ').format(date),
-                              purpose: buyerData.purpose!,
-                              orderStatus: 'توصيل طلبية',
-                              onPressed: () {
-                                Get.to(
-                                    () => OrdersDetails(buyerModel: buyerData));
-                              },
-                            ),
+                    return controller.allMishtari.isNotEmpty
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            physics: const ScrollPhysics(),
+                            itemCount: controller.allMishtari.length,
+                            itemBuilder: (context, index) {
+                              BuyerModel buyerData =
+                                  controller.allMishtari[index];
+                              DateTime date = DateTime.parse(buyerData.days!);
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 14),
+                                child: OrderBox(
+                                  orderNumber: '#${buyerData.orderNumber}',
+                                  date: DateFormat('dd/MM/yyyy  hh:mm ')
+                                      .format(date),
+                                  purpose: buyerData.purpose!,
+                                  orderStatus: 'توصيل طلبية',
+                                  onPressed: () {
+                                    Get.to(() =>
+                                        OrdersDetails(buyerModel: buyerData));
+                                  },
+                                ),
+                              );
+                            })
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 180.h,
+                              ),
+                              Text(
+                                'لا يوجد طلبات نشطة',
+                                style: TextStyle(
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           );
-                        });
                   })
             ],
           ),

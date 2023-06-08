@@ -13,7 +13,7 @@ class OnBaording extends StatefulWidget {
 class _OnBaordingState extends State<OnBaording> {
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Get.offAll(() => SplashOne());
     });
 
@@ -37,7 +37,7 @@ class _OnBaordingState extends State<OnBaording> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          LogoConatiner(),
+          const LogoConatiner(),
           const SizedBox(
             height: 20,
           ),

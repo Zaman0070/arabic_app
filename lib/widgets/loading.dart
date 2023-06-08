@@ -6,13 +6,13 @@ import 'package:waist_app/constants/colors.dart';
 // ignore: must_be_immutable
 class Loading extends StatelessWidget {
   String text;
-   Loading({super.key,required this.text});
+  Loading({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 150.h,
-        width: 200.w,
+        height: 160.h,
+        width: 220.w,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
@@ -29,7 +29,10 @@ class Loading extends StatelessWidget {
               SizedBox(
                 height: 25.h,
               ),
-               Text(text),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ));

@@ -8,6 +8,8 @@ import '../constants/colors.dart';
 import '../widgets/logo.dart';
 
 class SplashTwo extends StatefulWidget {
+  const SplashTwo({super.key});
+
   @override
   State<SplashTwo> createState() => _SplashOneState();
 }
@@ -33,7 +35,7 @@ class _SplashOneState extends State<SplashTwo> {
           SizedBox(
             height: 50.h,
           ),
-          LogoConatiner(),
+          const LogoConatiner(),
           SizedBox(
             height: 25.h,
           ),
@@ -44,7 +46,7 @@ class _SplashOneState extends State<SplashTwo> {
             height: 20,
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             decoration: BoxDecoration(
               color: BC.appColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(20),
@@ -59,7 +61,7 @@ class _SplashOneState extends State<SplashTwo> {
                 MyButton(
                   name: 'التالي',
                   onPressed: () {
-                    Get.offAll(() => Login());
+                    Get.offAll(() => const Login());
                   },
                 ),
               ],

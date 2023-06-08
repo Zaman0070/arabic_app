@@ -7,30 +7,22 @@ import 'package:waist_app/widgets/logo.dart';
 import '../../constants/colors.dart';
 import '../../widgets/button.dart';
 
+// ignore: must_be_immutable
 class Login extends StatefulWidget {
+  const Login({
+    super.key,
+  });
+
   @override
   State<Login> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<Login> {
-  bool validate = false;
   int? length;
-  var countryCodeController = TextEditingController(text: '+966');
+  var countryCodeController = TextEditingController(text: '+92');
   var phoneNumberController = TextEditingController();
   PhoneService service = PhoneService();
-  String countryCode = '+966';
-
-  validation() {
-    if (phoneNumberController.text.isEmpty) {
-    } else if (phoneNumberController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("please enter your correct phoneNumber"),
-          duration: Duration(milliseconds: 300),
-        ),
-      );
-    }
-  }
+  String countryCode = '+92';
 
   @override
   Widget build(BuildContext context) {
@@ -52,78 +44,53 @@ class _LoginPageState extends State<Login> {
             const SizedBox(
               height: 50,
             ),
-            LogoConatiner(),
+            const LogoConatiner(),
 
             const SizedBox(
               height: 100,
             ),
-
-            Stack(
-              // overflow: Overflow.visible,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: BC.appColor),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: BC.appColor.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              countryCode,
-                              style: const TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
+            Directionality(
+              textDirection: TextDirection.rtl,
+              child: TextFormField(
+                maxLength: 10,
+                keyboardType: TextInputType.phone,
+                controller: phoneNumberController,
+                textAlign: TextAlign.right,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(width: 0.1)),
+                  labelText: 'رقم الهاتف',
+                  hintText: 'XX-XXX-XXXX',
+                  contentPadding: const EdgeInsets.only(top: 0, right: 15),
+                  suffixIcon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: BC.appColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      const SizedBox(width: 5),
-                      Expanded(
-                        child: TextFormField(
-                          controller: phoneNumberController,
-                          keyboardType: TextInputType.phone,
-                          textAlign: TextAlign.right,
-                          validator: (val) {
-                            if (val!.isEmpty) {
-                              return "Required";
-                            } else {
-                              return null;
-                            }
-                          },
-                          decoration: const InputDecoration(
-                            hintText: 'XX-XXX-XXXX',
-                            contentPadding: EdgeInsets.only(top: 0),
-                            border: InputBorder.none,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 6.6),
+                        child: Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: Text(
+                            countryCode,
+                            style: const TextStyle(
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-                Positioned(
-                  right: 15,
-                  top: -10,
-                  child: Container(
-                      color: Colors.white,
-                      child: Text(
-                        'رقم الهاتف',
-                        style: TextStyle(color: BC.appColor),
-                      )),
-                )
-              ],
+              ),
             ),
-            const SizedBox(
-              height: 15,
+
+            SizedBox(
+              height: 15.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

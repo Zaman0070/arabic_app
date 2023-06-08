@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class ImagePickerController extends GetxController {
+  PickedFile? pickedFile;
   List<File> selectedImages = <File>[].obs;
   List<String> images = <String>[].obs;
 
@@ -13,6 +14,7 @@ class ImagePickerController extends GetxController {
     final pickedFiles = await picker.pickImage(source: source);
 
     if (pickedFiles != null) {
+      pickedFile = PickedFile(pickedFiles.path);
       selectedImages = [File(pickedFiles.path)];
     }
     return uploadImagesToFirebase(selectedImages);
