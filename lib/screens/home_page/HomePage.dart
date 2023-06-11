@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
@@ -20,6 +23,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  MishtariController mishtariController = Get.put(MishtariController());
   List<Color> colors = [Colors.white, Colors.yellow, Colors.red, Colors.white];
 
   List images = [
@@ -390,11 +394,10 @@ class _HomePageState extends State<HomePage> {
                     MyButton(
                       name: 'تفاصيل الطلب',
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Orders(),
-                            ));
+                        mishtariController.allMishtari.isNotEmpty
+                            ? Get.to(() => const Orders())
+                            : Fluttertoast.showToast(
+                                msg: 'لم يتم العثور على البيانات');
                       },
                     ),
                   ],

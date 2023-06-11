@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:waist_app/services/phone_services.dart';
+import 'package:waist_app/Services/phone_services.dart';
 import 'package:waist_app/widgets/logo.dart';
 
 import '../../constants/colors.dart';
@@ -19,10 +19,10 @@ class Login extends StatefulWidget {
 
 class _LoginPageState extends State<Login> {
   int? length;
-  var countryCodeController = TextEditingController(text: '+92');
+  var countryCodeController = TextEditingController(text: '+966');
   var phoneNumberController = TextEditingController();
   PhoneService service = PhoneService();
-  String countryCode = '+92';
+  String countryCode = '+966';
 
   @override
   Widget build(BuildContext context) {

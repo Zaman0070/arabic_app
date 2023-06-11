@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:waist_app/screens/SplashOne.dart';
+// import 'package:waist_app/screens/SplashOne.dart';
+import 'package:waist_app/screens/auth/login.dart';
 import 'package:waist_app/widgets/logo.dart';
 
 import '../constants/colors.dart';
@@ -14,7 +15,7 @@ class _OnBaordingState extends State<OnBaording> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 3), () {
-      Get.offAll(() => SplashOne());
+      Get.offAll(() => const Login());
     });
 
     super.initState();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/screens/profile/edit_profile.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
@@ -167,6 +168,17 @@ class _ProfileState extends State<Profile> {
                           ],
                         ),
                       ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      TextButton(
+                          onPressed: () async {
+                            await FirebaseServices().logout();
+                          },
+                          child: Text(
+                            'Log out',
+                            style: TextStyle(fontSize: 16.sp),
+                          ))
                     ]),
                   ),
                 ),

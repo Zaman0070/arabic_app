@@ -11,6 +11,8 @@ import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/model/seller.dart';
 import 'package:waist_app/model/service_provider.dart';
 import 'package:waist_app/model/services_beneficary.dart';
+import 'package:waist_app/screens/auth/login.dart';
+import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/widgets/loading.dart';
 
 class FirebaseServices {
@@ -69,7 +71,7 @@ class FirebaseServices {
             msg: 'تم إرسال الطلب بنجاح',
             backgroundColor: BC.appColor);
         SmartDialog.dismiss();
-        Get.back();
+        Get.to(() => const PrivacyPolicy());
         // routes
       });
     } catch (e) {
@@ -123,7 +125,8 @@ class FirebaseServices {
             msg: 'تم إرسال الطلب بنجاح',
             backgroundColor: BC.appColor);
         SmartDialog.dismiss();
-        Get.back();
+        Get.to(() => const PrivacyPolicy());
+
         // routes
       });
     } catch (e) {
@@ -220,11 +223,24 @@ class FirebaseServices {
             msg: 'تم إرسال الطلب بنجاح',
             backgroundColor: BC.appColor);
         SmartDialog.dismiss();
-        Get.back();
+        Get.to(() => const PrivacyPolicy());
+
         // routes
       });
     } catch (e) {
       SmartDialog.dismiss();
+      Fluttertoast.showToast(
+          textColor: Colors.white,
+          msg: 'Something went wrong !',
+          backgroundColor: BC.appColor);
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Get.offAll(() => const Login());
+    } catch (e) {
       Fluttertoast.showToast(
           textColor: Colors.white,
           msg: 'Something went wrong !',

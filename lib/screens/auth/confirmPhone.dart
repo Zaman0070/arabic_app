@@ -6,7 +6,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/model/user.dart';
-import 'package:waist_app/services/phone_services.dart';
+import 'package:waist_app/Services/phone_services.dart';
 import 'package:waist_app/widgets/arrowButton.dart';
 import 'package:waist_app/widgets/loading.dart';
 

@@ -9,7 +9,7 @@ import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/image_controller.dart';
 import 'package:waist_app/screens/buy&mishtari/widget/input_field.dart';
 import 'package:waist_app/screens/widget/button.dart';
-import 'package:waist_app/services/firebase_services.dart';
+import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/widgets/UploadImageButton.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 
@@ -27,7 +27,7 @@ class MistariPage extends StatefulWidget {
 class _MistariPageState extends State<MistariPage> {
   bool value = false;
 
-  var secondphoneController = TextEditingController();
+  var secondphoneController = TextEditingController(text: "966+");
 
   var commodityController = TextEditingController(text: '0');
 

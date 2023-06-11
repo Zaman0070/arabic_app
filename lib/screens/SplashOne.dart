@@ -59,7 +59,7 @@ class _SplashOneState extends State<SplashOne> {
                 MyButton(
                   name: 'التالي',
                   onPressed: () {
-                    Get.to(() => SplashTwo());
+                    Get.to(() => const SplashTwo());
                   },
                 ),
               ],
