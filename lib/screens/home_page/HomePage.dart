@@ -9,7 +9,6 @@ import 'package:waist_app/screens/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
 import 'package:waist_app/screens/order/order.dart';
 import 'package:waist_app/widgets/myDrawer.dart';
-
 import '../../constants/colors.dart';
 
 import '../../widgets/button.dart';
@@ -27,17 +26,17 @@ class _HomePageState extends State<HomePage> {
   List<Color> colors = [Colors.white, Colors.yellow, Colors.red, Colors.white];
 
   List images = [
+    'assets/slider/Add.png',
     'assets/slider/Message.png',
     'assets/slider/How to use.png',
-    'assets/slider/Add.png',
     'assets/slider/Delivery.png',
     'assets/slider/Verified.png',
     'assets/slider/Info.png',
   ];
   List names = [
+    'طلب جديد',
     'اراء العملاء',
     'دليل الأستخدام',
-    'طلب جديد',
     'الضمانات',
     'عن التطبيق',
     'وسيط مواقع التسوق',
@@ -52,11 +51,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   List pages = [
+    ['NewOrder', NewOrder()],
+
     ['Messages', Messages()],
     ['HowtoUse', HowToUse()],
     ['NewOrder', NewOrder()],
     ['NewOrder', NewOrder()],
-    ['NewOrder', NewOrder()],
+    // ['NewOrder', NewOrder()],
     ['HistoryEmpty', HistoryEmpty()],
   ];
   final PageController _pageController =
@@ -190,6 +191,7 @@ class _HomePageState extends State<HomePage> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: PageView.builder(
+                    reverse: true,
                     physics: const BouncingScrollPhysics(),
                     itemCount: 6,
                     controller: _pageController,
@@ -204,11 +206,7 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.only(top: 20),
                               child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                pages[_index][1]));
+                                    Get.to(() => pages[_index][1]);
                                   },
                                   child: CircleAvatar(
                                     radius: 35.h,

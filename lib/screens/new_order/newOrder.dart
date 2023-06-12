@@ -53,7 +53,7 @@ class _NewOrderState extends State<NewOrder> {
                 ),
                 ArrowButton(
                   onPressed: () {
-                    Get.offAll(() => const BottomNavigationExample());
+                    Get.back();
                   },
                 )
               ],

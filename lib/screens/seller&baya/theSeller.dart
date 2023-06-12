@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:waist_app/controller/image_controller.dart';
-import 'package:waist_app/screens/buy&mishtari/widget/input_field.dart';
 import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 import '../../constants/colors.dart';
@@ -245,30 +244,51 @@ class _TheSellerState extends State<TheSeller> {
               SizedBox(
                 height: 15.h,
               ),
-              InputField(
-                calenderFunction: () async {
-                  final DateTime? picked = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2015, 8),
-                    lastDate: DateTime(2101),
-                  );
-                  if (picked != null) {
-                    ayamDate = picked.toString();
-                    DateTime date = DateTime.parse(ayamDate);
-                    int days = date.difference(DateTime.now()).inDays;
-                    daysController.text = '${days.toString()} ايام';
-                    // timeController.text =
-                    //     DateFormat('dd MMM yyyy').format(picked);
-                  }
-                },
-                calender: true,
-                type: TextInputType.name,
-                color: Theme.of(context).scaffoldBackgroundColor,
-                controller: daysController,
-                title: 'الوقت المتوقع لأنهاء الصفقة',
-                hinttext: '7 ايام',
-              ),
+              AppTextField(
+                  isDropDown: true,
+                  dropDownOnTap: () {},
+                  list: const [
+                    '1 ايام  ',
+                    '2 ايام  ',
+                    '3 ايام  ',
+                    '4 ايام  ',
+                    '5 ايام  ',
+                    '6 ايام  ',
+                    '7 ايام  ',
+                    '10 ايام  ',
+                    '15 ايام  ',
+                    '21 ايام  ',
+                    '30 ايام  ',
+                    '45 ايام  ',
+                    '60 ايام  ',
+                  ],
+                  controller: daysController,
+                  hint: 'الوقت المتوقع لأنهاء الصفقة',
+                  label: ''),
+              // InputField(
+              //   calenderFunction: () async {
+              //     final DateTime? picked = await showDatePicker(
+              //       context: context,
+              //       initialDate: DateTime.now(),
+              //       firstDate: DateTime(2015, 8),
+              //       lastDate: DateTime(2101),
+              //     );
+              //     if (picked != null) {
+              //       ayamDate = picked.toString();
+              //       DateTime date = DateTime.parse(ayamDate);
+              //       int days = date.difference(DateTime.now()).inDays;
+              //       daysController.text = '${days.toString()} ايام';
+              //       // timeController.text =
+              //       //     DateFormat('dd MMM yyyy').format(picked);
+              //     }
+              //   },
+              //   calender: true,
+              //   type: TextInputType.name,
+              //   color: Theme.of(context).scaffoldBackgroundColor,
+              //   controller: daysController,
+              //   title: 'الوقت المتوقع لأنهاء الصفقة',
+              //   hinttext: '7 ايام',
+              // ),
               SizedBox(
                 height: 15.h,
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../constants/colors.dart';
 
@@ -46,7 +47,11 @@ class _MessagesState extends State<Messages> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                ArrowButton()
+                ArrowButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                )
               ],
             ),
             SizedBox(

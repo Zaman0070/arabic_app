@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/image_controller.dart';
-import 'package:waist_app/screens/buy&mishtari/widget/input_field.dart';
 import 'package:waist_app/screens/widget/button.dart';
 import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/widgets/UploadImageButton.dart';
@@ -27,7 +26,7 @@ class MistariPage extends StatefulWidget {
 class _MistariPageState extends State<MistariPage> {
   bool value = false;
 
-  var secondphoneController = TextEditingController(text: "966+");
+  var secondphoneController = TextEditingController(text: "");
 
   var commodityController = TextEditingController(text: '0');
 
@@ -37,6 +36,8 @@ class _MistariPageState extends State<MistariPage> {
 
   var timeController = TextEditingController();
   String ayamDate = '';
+  String countryCode = '+966';
+
   bool isSwitched = false;
   bool isSwitched2 = false;
   int result = 0;
@@ -124,12 +125,23 @@ class _MistariPageState extends State<MistariPage> {
                             SizedBox(
                               height: 10.h,
                             ),
-                            MytextField(
-                              type: TextInputType.name,
-                              controller: addressController,
-                              text: 'المدينة',
-                              hint: 'المدينة',
-                            ),
+                            AppTextField(
+                                isDropDown: true,
+                                dropDownOnTap: () {},
+                                list: const [
+                                  'مكة المكرمة',
+                                  'المدينة المنورة',
+                                  'الجوف',
+                                ],
+                                controller: addressController,
+                                hint: 'المدينة',
+                                label: ''),
+                            // MytextField(
+                            //   type: TextInputType.name,
+                            //   controller: addressController,
+                            //   text: 'المدينة',
+                            //   hint: 'المدينة',
+                            // ),
                           ],
                         ),
                       ),
@@ -233,39 +245,100 @@ class _MistariPageState extends State<MistariPage> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    InputField(
-                      calenderFunction: () async {
-                        final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2015, 8),
-                          lastDate: DateTime(2101),
-                        );
-                        if (picked != null) {
-                          ayamDate = picked.toString();
-                          DateTime date = DateTime.parse(ayamDate);
-                          int days = date.difference(DateTime.now()).inDays;
-                          timeController.text = '${days.toString()} ايام';
-                          // timeController.text =
-                          //     DateFormat('dd MMM yyyy').format(picked);
-                        }
-                      },
-                      calender: true,
-                      type: TextInputType.name,
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      controller: timeController,
-                      title: 'الوقت المتوقع لأنهاء الصفقة',
-                      hinttext: '7 ايام',
-                    ),
+                    AppTextField(
+                        isDropDown: true,
+                        dropDownOnTap: () {},
+                        list: const [
+                          '1 ايام  ',
+                          '2 ايام  ',
+                          '3 ايام  ',
+                          '4 ايام  ',
+                          '5 ايام  ',
+                          '6 ايام  ',
+                          '7 ايام  ',
+                          '10 ايام  ',
+                          '15 ايام  ',
+                          '21 ايام  ',
+                          '30 ايام  ',
+                          '45 ايام  ',
+                          '60 ايام  ',
+                        ],
+                        controller: timeController,
+                        hint: 'الوقت المتوقع لأنهاء الصفقة',
+                        label: ''),
+                    // InputField(
+                    //   calenderFunction: () async {
+                    //     final DateTime? picked = await showDatePicker(
+                    //       context: context,
+                    //       initialDate: DateTime.now(),
+                    //       firstDate: DateTime(2015, 8),
+                    //       lastDate: DateTime(2101),
+                    //     );
+                    //     if (picked != null) {
+                    //       ayamDate = picked.toString();
+                    //       DateTime date = DateTime.parse(ayamDate);
+                    //       int days = date.difference(DateTime.now()).inDays;
+                    //       timeController.text = '${days.toString()} ايام';
+                    //       // timeController.text =
+                    //       //     DateFormat('dd MMM yyyy').format(picked);
+                    //     }
+                    //   },
+                    //   calender: true,
+                    //   type: TextInputType.name,
+                    //   color: Theme.of(context).scaffoldBackgroundColor,
+                    //   controller: timeController,
+                    //   title: 'الوقت المتوقع لأنهاء الصفقة',
+                    //   hinttext: '7 ايام',
+                    // ),
                     SizedBox(
                       height: 10.h,
                     ),
-                    MytextField(
-                      type: TextInputType.number,
-                      controller: secondphoneController,
-                      text: 'جوال الطرف الثاني',
-                      hint: '+966-xx-xxx-xxxx',
+                    Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: TextFormField(
+                        maxLength: 10,
+                        keyboardType: TextInputType.phone,
+                        controller: secondphoneController,
+                        textAlign: TextAlign.right,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(width: 0.1)),
+                          labelText: 'رقم الهاتف',
+                          hintText: 'XX-XXX-XXXX',
+                          contentPadding:
+                              const EdgeInsets.only(top: 0, right: 15),
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: BC.appColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6.6),
+                                child: Directionality(
+                                  textDirection: TextDirection.ltr,
+                                  child: Text(
+                                    countryCode,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+                    // MytextField(
+                    //   type: TextInputType.number,
+                    //   controller: secondphoneController,
+                    //   text: 'جوال الطرف الثاني',
+                    //   hint: '+966-xx-xxx-xxxx',
+                    // ),
                     SizedBox(
                       height: 10.h,
                     ),
@@ -381,11 +454,11 @@ class _MistariPageState extends State<MistariPage> {
                                   purposeController.text.trim() == '' ||
                                   commodityController.text.trim() == '' ||
                                   timeController.text.trim() == '' ||
-                                  secondphoneController.text.trim() == '' ||
+                                  // secondphoneController.text.trim() == '' ||
                                   isSwitched == false ||
                                   isSwitched2 == false ||
-                                  desController.text.trim() == '' ||
-                                  addressController.text.trim() == ''
+                                  desController.text.trim() == ''
+                              // addressController.text.trim() == ''
                               ? Fluttertoast.showToast(
                                   msg: 'جميع الحقول مطلوبة')
                               : imagePickerController.selectedImages.isNotEmpty
