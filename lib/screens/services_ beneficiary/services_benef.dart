@@ -1,10 +1,11 @@
+import 'package:dropdown_model_list/drop_down/model.dart';
+import 'package:dropdown_model_list/drop_down/select_drop_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/user_controller.dart';
-import 'package:waist_app/screens/buy&mishtari/widget/input_field.dart';
 import 'package:waist_app/screens/widget/button.dart';
 import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/widgets/arrowButton.dart';
@@ -34,6 +35,52 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
   bool isSwitched2 = false;
   int result = 0;
   String ayamDate = '';
+  DropListModel dropListModel = DropListModel([
+    OptionItem(id: "1", title: "     الرياض"),
+    OptionItem(id: "2", title: "     جدة"),
+    OptionItem(id: "3", title: "     مكة المدينة"),
+    OptionItem(id: "4", title: "     الدمام"),
+    OptionItem(id: "5", title: "     الهفوف"),
+    OptionItem(id: "5", title: "     الطائف"),
+    OptionItem(id: "5", title: "     بريدة"),
+    OptionItem(id: "5", title: "     الخبر"),
+    OptionItem(id: "5", title: "     تبوك"),
+    OptionItem(id: "5", title: "     أبها"),
+    OptionItem(id: "5", title: "     نجران"),
+    OptionItem(id: "5", title: "     حائل"),
+    OptionItem(id: "5", title: "     الجبيل"),
+    OptionItem(id: "5", title: "     الخرج"),
+    OptionItem(id: "5", title: "     ينبع"),
+    OptionItem(id: "5", title: "     القطيف"),
+    OptionItem(id: "5", title: "     الأحساء"),
+    OptionItem(id: "5", title: "     صبيا"),
+    OptionItem(id: "5", title: "     جيزان"),
+    OptionItem(id: "5", title: "     عرعر"),
+  ]);
+  DropListModel dropListModeldays = DropListModel([
+    OptionItem(id: "1", title: "     ايام"),
+    OptionItem(id: "2", title: "     ايام"),
+    OptionItem(id: "3", title: "     ايام"),
+    OptionItem(id: "4", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+  ]);
+  OptionItem optionItemSelected = OptionItem(title: "    المدينة");
+  OptionItem optionItemSelectedday = OptionItem(title: "    ايام");
 
   @override
   Widget build(BuildContext context) {
@@ -113,11 +160,35 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                             SizedBox(
                               height: 10.h,
                             ),
-                            MytextField(
-                              type: TextInputType.name,
-                              controller: addressController,
-                              text: 'المدينة',
-                              hint: 'المدينة',
+                            Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: SelectDropList(
+                                containerDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: BC.grey),
+                                    color: Colors.transparent),
+                                containerPadding:
+                                    const EdgeInsets.only(left: 10),
+                                containerMargin: EdgeInsets.zero,
+                                itemSelected: optionItemSelected,
+                                dropListModel: dropListModel,
+                                showIcon: false, // Show Icon in DropDown Title
+                                showArrowIcon:
+                                    true, // Show Arrow Icon in DropDown
+                                showBorder: true,
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                borderColor: BC.grey,
+                                icon: Icon(Icons.person, color: BC.appColor),
+                                onOptionSelected: (optionItem) {
+                                  optionItemSelected = optionItem;
+                                  addressController.text = optionItem.title;
+                                  print(optionItem.title);
+                                  setState(() {});
+                                },
+                              ),
                             ),
                           ],
                         ),
@@ -153,29 +224,36 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    InputField(
-                      calenderFunction: () async {
-                        final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2015, 8),
-                          lastDate: DateTime(2101),
-                        );
-                        if (picked != null) {
-                          ayamDate = picked.toString();
-                          DateTime date = DateTime.parse(ayamDate);
-                          int days = date.difference(DateTime.now()).inDays;
-                          timeController.text = '${days.toString()} ايام';
-                          // timeController.text =
-                          //     DateFormat('dd MMM yyyy').format(picked);
-                        }
-                      },
-                      calender: true,
-                      type: TextInputType.name,
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      controller: timeController,
-                      title: 'الوقت المتوقع لأنهاء الصفقة',
-                      hinttext: '7 ايام',
+                    Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: SelectDropList(
+                        containerDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: BC.grey),
+                            color: Colors.transparent),
+                        containerPadding: const EdgeInsets.only(left: 10),
+                        containerMargin: EdgeInsets.zero,
+                        itemSelected: optionItemSelectedday,
+                        dropListModel: dropListModeldays,
+                        showIcon: false, // Show Icon in DropDown Title
+                        showArrowIcon: true, // Show Arrow Icon in DropDown
+                        showBorder: true,
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                        paddingLeft: 0,
+                        paddingRight: 0,
+                        borderColor: BC.grey,
+                        icon: Icon(Icons.person, color: BC.appColor),
+                        onOptionSelected: (optionItem) {
+                          optionItemSelected = optionItem;
+                          timeController.text = optionItem.title;
+                          timeController.text = DateTime.now()
+                              .add(Duration(days: int.parse(optionItem.id!)))
+                              .toString();
+                          print(timeController.text);
+                          setState(() {});
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: 10.h,

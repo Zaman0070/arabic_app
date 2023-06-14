@@ -52,12 +52,10 @@ class _HomePageState extends State<HomePage> {
 
   List pages = [
     ['NewOrder', NewOrder()],
-
     ['Messages', Messages()],
     ['HowtoUse', HowToUse()],
     ['NewOrder', NewOrder()],
     ['NewOrder', NewOrder()],
-    // ['NewOrder', NewOrder()],
     ['HistoryEmpty', HistoryEmpty()],
   ];
   final PageController _pageController =
@@ -206,7 +204,10 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.only(top: 20),
                               child: GestureDetector(
                                   onTap: () {
-                                    Get.to(() => pages[_index][1]);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => pages[i][1]));
                                   },
                                   child: CircleAvatar(
                                     radius: 35.h,

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:dropdown_model_list/drop_down/model.dart';
+import 'package:dropdown_model_list/drop_down/select_drop_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -34,6 +36,30 @@ class _EditProfileState extends State<EditProfile> {
   late var emailController =
       TextEditingController(text: widget.userModel.email);
   List<String> imageUrl = [];
+  DropListModel dropListModel = DropListModel([
+    OptionItem(id: "1", title: "     الرياض"),
+    OptionItem(id: "2", title: "     جدة"),
+    OptionItem(id: "3", title: "     مكة المدينة"),
+    OptionItem(id: "4", title: "     الدمام"),
+    OptionItem(id: "5", title: "     الهفوف"),
+    OptionItem(id: "5", title: "     الطائف"),
+    OptionItem(id: "5", title: "     بريدة"),
+    OptionItem(id: "5", title: "     الخبر"),
+    OptionItem(id: "5", title: "     تبوك"),
+    OptionItem(id: "5", title: "     أبها"),
+    OptionItem(id: "5", title: "     نجران"),
+    OptionItem(id: "5", title: "     حائل"),
+    OptionItem(id: "5", title: "     الجبيل"),
+    OptionItem(id: "5", title: "     الخرج"),
+    OptionItem(id: "5", title: "     ينبع"),
+    OptionItem(id: "5", title: "     القطيف"),
+    OptionItem(id: "5", title: "     الأحساء"),
+    OptionItem(id: "5", title: "     صبيا"),
+    OptionItem(id: "5", title: "     جيزان"),
+    OptionItem(id: "5", title: "     عرعر"),
+  ]);
+  OptionItem optionItemSelected = OptionItem(title: "    المدينة");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,6 +220,53 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
               SizedBox(
+                height: 12.h,
+              ),
+              widget.userModel.profileImage != ''
+                  ? InkWell(
+                      onTap: () async {
+                        await userController.updateUser(
+                          UserModel(
+                            name: nameController.text,
+                            phoneNumber: phoneController.text,
+                            location: cityController.text,
+                            email: emailController.text,
+                            profileImage: '',
+                            uid: widget.userModel.uid,
+                          ),
+                        );
+                        Get.back();
+                      },
+                      child: Container(
+                        height: 35.h,
+                        width: 135.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: BC.appColor,
+                        ),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/delete.png',
+                                color: Colors.white,
+                                height: 20.h,
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                'حذف الصورة',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.sp,
+                                ),
+                              )
+                            ]),
+                      ),
+                    )
+                  : Container(),
+              SizedBox(
                 height: 20.h,
               ),
               Container(
@@ -221,10 +294,33 @@ class _EditProfileState extends State<EditProfile> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    MytextField(
-                      enable: true,
-                      controller: cityController,
-                      text: 'المدينة',
+                    Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: SelectDropList(
+                        containerDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: BC.grey),
+                            color: Colors.transparent),
+                        containerPadding: const EdgeInsets.only(left: 10),
+                        containerMargin: EdgeInsets.zero,
+                        itemSelected: optionItemSelected,
+                        dropListModel: dropListModel,
+                        showIcon: false, // Show Icon in DropDown Title
+                        showArrowIcon: true, // Show Arrow Icon in DropDown
+                        showBorder: true,
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                        paddingLeft: 0,
+                        paddingRight: 0,
+                        borderColor: BC.grey,
+                        icon: Icon(Icons.person, color: BC.appColor),
+                        onOptionSelected: (optionItem) {
+                          optionItemSelected = optionItem;
+                          cityController.text = optionItem.title;
+                          print(optionItem.title);
+                          setState(() {});
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: 10.h,

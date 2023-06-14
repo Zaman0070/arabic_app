@@ -55,6 +55,7 @@ dependencies:
   geocoding: ^2.1.0
   geolocator: ^9.0.2
   flutter_dropdown: ^1.0.1+hotfix.1
+  dropdown_model_list: ^0.0.3+1
 
 dev_dependencies:
   flutter_test:

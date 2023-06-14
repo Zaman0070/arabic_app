@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dropdown_model_list/dropdown_model_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/image_controller.dart';
+import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/screens/widget/button.dart';
 import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/widgets/UploadImageButton.dart';
@@ -45,6 +47,52 @@ class _MistariPageState extends State<MistariPage> {
       Get.put(ImagePickerController());
 
   List<String> images = [];
+  DropListModel dropListModel = DropListModel([
+    OptionItem(id: "1", title: "     الرياض"),
+    OptionItem(id: "2", title: "     جدة"),
+    OptionItem(id: "3", title: "     مكة المدينة"),
+    OptionItem(id: "4", title: "     الدمام"),
+    OptionItem(id: "5", title: "     الهفوف"),
+    OptionItem(id: "5", title: "     الطائف"),
+    OptionItem(id: "5", title: "     بريدة"),
+    OptionItem(id: "5", title: "     الخبر"),
+    OptionItem(id: "5", title: "     تبوك"),
+    OptionItem(id: "5", title: "     أبها"),
+    OptionItem(id: "5", title: "     نجران"),
+    OptionItem(id: "5", title: "     حائل"),
+    OptionItem(id: "5", title: "     الجبيل"),
+    OptionItem(id: "5", title: "     الخرج"),
+    OptionItem(id: "5", title: "     ينبع"),
+    OptionItem(id: "5", title: "     القطيف"),
+    OptionItem(id: "5", title: "     الأحساء"),
+    OptionItem(id: "5", title: "     صبيا"),
+    OptionItem(id: "5", title: "     جيزان"),
+    OptionItem(id: "5", title: "     عرعر"),
+  ]);
+  DropListModel dropListModeldays = DropListModel([
+    OptionItem(id: "1", title: "     ايام"),
+    OptionItem(id: "2", title: "     ايام"),
+    OptionItem(id: "3", title: "     ايام"),
+    OptionItem(id: "4", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "5", title: "     ايام"),
+  ]);
+  OptionItem optionItemSelected = OptionItem(title: "    المدينة");
+  OptionItem optionItemSelectedday = OptionItem(title: "    ايام");
 
   @override
   Widget build(BuildContext context) {
@@ -125,23 +173,36 @@ class _MistariPageState extends State<MistariPage> {
                             SizedBox(
                               height: 10.h,
                             ),
-                            AppTextField(
-                                isDropDown: true,
-                                dropDownOnTap: () {},
-                                list: const [
-                                  'مكة المكرمة',
-                                  'المدينة المنورة',
-                                  'الجوف',
-                                ],
-                                controller: addressController,
-                                hint: 'المدينة',
-                                label: ''),
-                            // MytextField(
-                            //   type: TextInputType.name,
-                            //   controller: addressController,
-                            //   text: 'المدينة',
-                            //   hint: 'المدينة',
-                            // ),
+                            Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: SelectDropList(
+                                containerDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: BC.grey),
+                                    color: Colors.transparent),
+                                containerPadding:
+                                    const EdgeInsets.only(left: 10),
+                                containerMargin: EdgeInsets.zero,
+                                itemSelected: optionItemSelected,
+                                dropListModel: dropListModel,
+                                showIcon: false, // Show Icon in DropDown Title
+                                showArrowIcon:
+                                    true, // Show Arrow Icon in DropDown
+                                showBorder: true,
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                borderColor: BC.grey,
+                                icon: Icon(Icons.person, color: BC.appColor),
+                                onOptionSelected: (optionItem) {
+                                  optionItemSelected = optionItem;
+                                  addressController.text = optionItem.title;
+                                  print(optionItem.title);
+                                  setState(() {});
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -245,51 +306,36 @@ class _MistariPageState extends State<MistariPage> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    AppTextField(
-                        isDropDown: true,
-                        dropDownOnTap: () {},
-                        list: const [
-                          '1 ايام  ',
-                          '2 ايام  ',
-                          '3 ايام  ',
-                          '4 ايام  ',
-                          '5 ايام  ',
-                          '6 ايام  ',
-                          '7 ايام  ',
-                          '10 ايام  ',
-                          '15 ايام  ',
-                          '21 ايام  ',
-                          '30 ايام  ',
-                          '45 ايام  ',
-                          '60 ايام  ',
-                        ],
-                        controller: timeController,
-                        hint: 'الوقت المتوقع لأنهاء الصفقة',
-                        label: ''),
-                    // InputField(
-                    //   calenderFunction: () async {
-                    //     final DateTime? picked = await showDatePicker(
-                    //       context: context,
-                    //       initialDate: DateTime.now(),
-                    //       firstDate: DateTime(2015, 8),
-                    //       lastDate: DateTime(2101),
-                    //     );
-                    //     if (picked != null) {
-                    //       ayamDate = picked.toString();
-                    //       DateTime date = DateTime.parse(ayamDate);
-                    //       int days = date.difference(DateTime.now()).inDays;
-                    //       timeController.text = '${days.toString()} ايام';
-                    //       // timeController.text =
-                    //       //     DateFormat('dd MMM yyyy').format(picked);
-                    //     }
-                    //   },
-                    //   calender: true,
-                    //   type: TextInputType.name,
-                    //   color: Theme.of(context).scaffoldBackgroundColor,
-                    //   controller: timeController,
-                    //   title: 'الوقت المتوقع لأنهاء الصفقة',
-                    //   hinttext: '7 ايام',
-                    // ),
+                    Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: SelectDropList(
+                        containerDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: BC.grey),
+                            color: Colors.transparent),
+                        containerPadding: const EdgeInsets.only(left: 10),
+                        containerMargin: EdgeInsets.zero,
+                        itemSelected: optionItemSelectedday,
+                        dropListModel: dropListModeldays,
+                        showIcon: false, // Show Icon in DropDown Title
+                        showArrowIcon: true, // Show Arrow Icon in DropDown
+                        showBorder: true,
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                        paddingLeft: 0,
+                        paddingRight: 0,
+                        borderColor: BC.grey,
+                        icon: Icon(Icons.person, color: BC.appColor),
+                        onOptionSelected: (optionItem) {
+                          optionItemSelected = optionItem;
+                          timeController.text = optionItem.title;
+                          timeController.text = DateTime.now()
+                              .add(Duration(days: int.parse(optionItem.id!)))
+                              .toString();
+                          setState(() {});
+                        },
+                      ),
+                    ),
                     SizedBox(
                       height: 10.h,
                     ),
@@ -333,12 +379,6 @@ class _MistariPageState extends State<MistariPage> {
                         ),
                       ),
                     ),
-                    // MytextField(
-                    //   type: TextInputType.number,
-                    //   controller: secondphoneController,
-                    //   text: 'جوال الطرف الثاني',
-                    //   hint: '+966-xx-xxx-xxxx',
-                    // ),
                     SizedBox(
                       height: 10.h,
                     ),
@@ -389,10 +429,38 @@ class _MistariPageState extends State<MistariPage> {
                       children: [
                         SizedBox(
                           width: 290.w,
-                          child: Text(
-                            "أوافق على شروط و أحكام تطبيق وسيط",
+                          child: Directionality(
                             textDirection: TextDirection.rtl,
-                            style: TextStyle(fontSize: 11.sp),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "أوافق على  ",
+                                  textDirection: TextDirection.rtl,
+                                  style: TextStyle(fontSize: 11.sp),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(() => const PrivacyPolicy());
+                                  },
+                                  child: Text(
+                                    'شروط و أحكام',
+                                    textDirection: TextDirection.rtl,
+                                    style: TextStyle(
+                                        fontSize: 11.sp,
+                                        color: BC.appColor,
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 3.w,
+                                ),
+                                Text(
+                                  'تطبيق وسيط ',
+                                  style: TextStyle(fontSize: 11.sp),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -454,11 +522,11 @@ class _MistariPageState extends State<MistariPage> {
                                   purposeController.text.trim() == '' ||
                                   commodityController.text.trim() == '' ||
                                   timeController.text.trim() == '' ||
-                                  // secondphoneController.text.trim() == '' ||
+                                  secondphoneController.text.trim() == '' ||
                                   isSwitched == false ||
                                   isSwitched2 == false ||
-                                  desController.text.trim() == ''
-                              // addressController.text.trim() == ''
+                                  desController.text.trim() == '' ||
+                                  addressController.text.trim() == ''
                               ? Fluttertoast.showToast(
                                   msg: 'جميع الحقول مطلوبة')
                               : imagePickerController.selectedImages.isNotEmpty
@@ -466,7 +534,7 @@ class _MistariPageState extends State<MistariPage> {
                                       name: nameController.text,
                                       phoneNumber: phoneController.text,
                                       purpose: purposeController.text,
-                                      days: ayamDate,
+                                      days: timeController.text,
                                       secondPartyMobile:
                                           secondphoneController.text,
                                       description: desController.text,

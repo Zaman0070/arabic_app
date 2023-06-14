@@ -31,7 +31,9 @@ class _ProfileState extends State<Profile> {
               late var phoneController = TextEditingController(
                   text: controller.currentUser.value.phoneNumber ?? '');
               late var locationController = TextEditingController(
-                  text: controller.currentUser.value.location ?? '');
+                  text: controller.currentUser.value.location != null
+                      ? controller.currentUser.value.location!.trim()
+                      : '');
               late var emailController = TextEditingController(
                   text: controller.currentUser.value.email ?? '');
               return SafeArea(

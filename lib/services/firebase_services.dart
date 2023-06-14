@@ -71,7 +71,7 @@ class FirebaseServices {
             msg: 'تم إرسال الطلب بنجاح',
             backgroundColor: BC.appColor);
         SmartDialog.dismiss();
-        Get.to(() => const PrivacyPolicy());
+        Get.back();
         // routes
       });
     } catch (e) {
@@ -223,8 +223,7 @@ class FirebaseServices {
             msg: 'تم إرسال الطلب بنجاح',
             backgroundColor: BC.appColor);
         SmartDialog.dismiss();
-        Get.to(() => const PrivacyPolicy());
-
+        Get.back();
         // routes
       });
     } catch (e) {
