@@ -1,9 +1,10 @@
+import 'package:dropdown_model_list/dropdown_model_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:waist_app/screens/buy&mishtari/widget/input_field.dart';
 import 'package:waist_app/Services/firebase_services.dart';
+import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 
 import '../../constants/colors.dart';
@@ -26,6 +27,27 @@ class _ServiceProviderState extends State<ServiceProvider> {
   bool second = false;
   bool isSwitched = false;
   bool isSwitched2 = false;
+  String countryCode = '+966';
+
+  DropListModel dropListModeldays = DropListModel([
+    OptionItem(id: "1", title: "     ايام"),
+    OptionItem(id: "2", title: "     ماه"),
+  ]);
+  DropListModel dropListModeldays1 = DropListModel([
+    OptionItem(id: "1", title: "     1"),
+    OptionItem(id: "2", title: "     2"),
+    OptionItem(id: "3", title: "     3"),
+    OptionItem(id: "4", title: "     4"),
+    OptionItem(id: "5", title: "     5"),
+    OptionItem(id: "6", title: "     6"),
+    OptionItem(id: "7", title: "     7"),
+    OptionItem(id: "8", title: "     10"),
+    OptionItem(id: "9", title: "     14"),
+    OptionItem(id: "10", title: "     21"),
+    OptionItem(id: "11", title: "     30"),
+  ]);
+  OptionItem optionItemSelectedday = OptionItem(title: "    ايام");
+  OptionItem optionItemSelectedday1 = OptionItem(title: "1");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,38 +194,121 @@ class _ServiceProviderState extends State<ServiceProvider> {
               SizedBox(
                 height: 15.h,
               ),
-              InputField(
-                calenderFunction: () async {
-                  final DateTime? picked = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2015, 8),
-                    lastDate: DateTime(2101),
-                  );
-                  if (picked != null) {
-                    ayamDate = picked.toString();
-                    DateTime date = DateTime.parse(ayamDate);
-                    int days = date.difference(DateTime.now()).inDays;
-                    daysController.text = '${days.toString()} ايام';
-                    // timeController.text =
-                    //     DateFormat('dd MMM yyyy').format(picked);
-                  }
-                },
-                calender: true,
-                type: TextInputType.name,
-                color: Theme.of(context).scaffoldBackgroundColor,
-                controller: daysController,
-                title: 'الوقت المتوقع لأنهاء الصفقة',
-                hinttext: '7 ايام',
+              Container(
+                decoration: BoxDecoration(
+                    color: BC.appColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: BC.grey)),
+                child: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: SelectDropList(
+                          height: 40.h,
+                          containerDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.transparent),
+                              color: Colors.transparent),
+                          containerPadding: const EdgeInsets.only(left: 10),
+                          containerMargin: EdgeInsets.zero,
+                          itemSelected: optionItemSelectedday,
+                          dropListModel: dropListModeldays,
+                          showIcon: false, // Show Icon in DropDown Title
+                          showArrowIcon: false, // Show Arrow Icon in DropDown
+                          showBorder: true,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                          paddingLeft: 0,
+                          paddingRight: 0,
+                          borderColor: BC.grey,
+                          icon: Icon(Icons.person, color: BC.appColor),
+                          onOptionSelected: (optionItem) {
+                            optionItemSelectedday = optionItem;
+
+                            setState(() {});
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: SelectDropList(
+                          height: 40.h,
+                          containerDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.transparent),
+                              color: Colors.transparent),
+                          containerPadding: const EdgeInsets.only(left: 10),
+                          containerMargin: EdgeInsets.zero,
+                          itemSelected: optionItemSelectedday1,
+                          dropListModel: dropListModeldays1,
+                          showIcon: false, // Show Icon in DropDown Title
+                          showArrowIcon: true, // Show Arrow Icon in DropDown
+                          showBorder: true,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                          paddingLeft: 0,
+                          paddingRight: 0,
+                          borderColor: BC.grey,
+                          icon: Icon(Icons.person, color: BC.appColor),
+                          onOptionSelected: (optionItem) {
+                            optionItemSelectedday1 = optionItem;
+                            daysController.text = optionItem.title;
+                            daysController.text = DateTime.now()
+                                .add(Duration(days: int.parse(optionItem.id!)))
+                                .toString();
+                            setState(() {});
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               SizedBox(
                 height: 15.h,
               ),
-              MytextField(
-                type: TextInputType.number,
-                controller: secondPartyMobileController,
-                text: 'جوال الطرف الثاني',
-                hint: '+966-xx-xxx-xxxx',
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: TextFormField(
+                  maxLength: 10,
+                  keyboardType: TextInputType.phone,
+                  controller: secondPartyMobileController,
+                  textAlign: TextAlign.right,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(width: 0.1)),
+                    labelText: 'رقم الهاتف',
+                    hintText: 'XX-XXX-XXXX',
+                    contentPadding: const EdgeInsets.only(top: 0, right: 15),
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: BC.appColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 6.6),
+                          child: Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: Text(
+                              countryCode,
+                              style: const TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 15.h,
@@ -253,10 +358,38 @@ class _ServiceProviderState extends State<ServiceProvider> {
                 children: [
                   SizedBox(
                     width: 290.w,
-                    child: Text(
-                      "أوافق على شروط و أحكام تطبيق وسيط",
+                    child: Directionality(
                       textDirection: TextDirection.rtl,
-                      style: TextStyle(fontSize: 12.sp),
+                      child: Row(
+                        children: [
+                          Text(
+                            "أوافق على  ",
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(fontSize: 11.sp),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.to(() => const PrivacyPolicy());
+                            },
+                            child: Text(
+                              'شروط و أحكام',
+                              textDirection: TextDirection.rtl,
+                              style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color: BC.appColor,
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 3.w,
+                          ),
+                          Text(
+                            'تطبيق وسيط ',
+                            style: TextStyle(fontSize: 11.sp),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(

@@ -71,28 +71,24 @@ class _MistariPageState extends State<MistariPage> {
   ]);
   DropListModel dropListModeldays = DropListModel([
     OptionItem(id: "1", title: "     ايام"),
-    OptionItem(id: "2", title: "     ايام"),
-    OptionItem(id: "3", title: "     ايام"),
-    OptionItem(id: "4", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
-    OptionItem(id: "5", title: "     ايام"),
+    OptionItem(id: "2", title: "     ماه"),
+  ]);
+  DropListModel dropListModeldays1 = DropListModel([
+    OptionItem(id: "1", title: "     1"),
+    OptionItem(id: "2", title: "     2"),
+    OptionItem(id: "3", title: "     3"),
+    OptionItem(id: "4", title: "     4"),
+    OptionItem(id: "5", title: "     5"),
+    OptionItem(id: "6", title: "     6"),
+    OptionItem(id: "7", title: "     7"),
+    OptionItem(id: "8", title: "     10"),
+    OptionItem(id: "9", title: "     14"),
+    OptionItem(id: "10", title: "     21"),
+    OptionItem(id: "11", title: "     30"),
   ]);
   OptionItem optionItemSelected = OptionItem(title: "    المدينة");
   OptionItem optionItemSelectedday = OptionItem(title: "    ايام");
+  OptionItem optionItemSelectedday1 = OptionItem(title: "1");
 
   @override
   Widget build(BuildContext context) {
@@ -306,34 +302,85 @@ class _MistariPageState extends State<MistariPage> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: SelectDropList(
-                        containerDecoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: BC.grey),
-                            color: Colors.transparent),
-                        containerPadding: const EdgeInsets.only(left: 10),
-                        containerMargin: EdgeInsets.zero,
-                        itemSelected: optionItemSelectedday,
-                        dropListModel: dropListModeldays,
-                        showIcon: false, // Show Icon in DropDown Title
-                        showArrowIcon: true, // Show Arrow Icon in DropDown
-                        showBorder: true,
-                        paddingTop: 0,
-                        paddingBottom: 0,
-                        paddingLeft: 0,
-                        paddingRight: 0,
-                        borderColor: BC.grey,
-                        icon: Icon(Icons.person, color: BC.appColor),
-                        onOptionSelected: (optionItem) {
-                          optionItemSelected = optionItem;
-                          timeController.text = optionItem.title;
-                          timeController.text = DateTime.now()
-                              .add(Duration(days: int.parse(optionItem.id!)))
-                              .toString();
-                          setState(() {});
-                        },
+                    Container(
+                      decoration: BoxDecoration(
+                          color: BC.appColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: BC.grey)),
+                      child: Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: SelectDropList(
+                                height: 40.h,
+                                containerDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border:
+                                        Border.all(color: Colors.transparent),
+                                    color: Colors.transparent),
+                                containerPadding:
+                                    const EdgeInsets.only(left: 10),
+                                containerMargin: EdgeInsets.zero,
+                                itemSelected: optionItemSelectedday,
+                                dropListModel: dropListModeldays,
+                                showIcon: false, // Show Icon in DropDown Title
+                                showArrowIcon:
+                                    false, // Show Arrow Icon in DropDown
+                                showBorder: true,
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                borderColor: BC.grey,
+                                icon: Icon(Icons.person, color: BC.appColor),
+                                onOptionSelected: (optionItem) {
+                                  optionItemSelectedday = optionItem;
+
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: SelectDropList(
+                                height: 40.h,
+                                containerDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border:
+                                        Border.all(color: Colors.transparent),
+                                    color: Colors.transparent),
+                                containerPadding:
+                                    const EdgeInsets.only(left: 10),
+                                containerMargin: EdgeInsets.zero,
+                                itemSelected: optionItemSelectedday1,
+                                dropListModel: dropListModeldays1,
+                                showIcon: false, // Show Icon in DropDown Title
+                                showArrowIcon:
+                                    true, // Show Arrow Icon in DropDown
+                                showBorder: true,
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                borderColor: BC.grey,
+                                icon: Icon(Icons.person, color: BC.appColor),
+                                onOptionSelected: (optionItem) {
+                                  optionItemSelectedday1 = optionItem;
+                                  timeController.text = optionItem.title;
+                                  timeController.text = DateTime.now()
+                                      .add(Duration(
+                                          days: int.parse(optionItem.id!)))
+                                      .toString();
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(

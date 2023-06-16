@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waist_app/screens/AboutUs.dart';
 import 'package:waist_app/screens/bankAccount.dart';
 import 'package:waist_app/screens/contactUs.dart';
@@ -7,8 +8,6 @@ import 'package:waist_app/screens/messages.dart';
 import 'package:waist_app/screens/profile/profile.dart';
 import 'package:waist_app/screens/wallet.dart';
 import 'package:waist_app/widgets/button.dart';
-
-
 import '../constants/colors.dart';
 import '../screens/notification.dart';
 
@@ -27,34 +26,26 @@ class _MyDrawerState extends State<MyDrawer> {
           SizedBox(
             height: 50,
           ),
-          GestureDetector(
-            // onTap: () {
-            //   Navigator.of(context).push(MaterialPageRoute(
-            //     builder: (context) => FavoriteItem(),
-            //   ));
-            // },
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 120),
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 110),
-              height: 70,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              height: 55.h,
               decoration: BoxDecoration(
-                  color: BC.logo_clr,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Color(0xff707070))),
-              child: Center(
-                  child: Text(
-                'LOGO',
-                style: TextStyle(
-                  fontSize: 13,
-                ),
-              )),
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              child: Image.asset(
+                'assets/logow.png',
+                height: 60.h,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 20, top: 30, left: 20),
             child: Column(
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
@@ -72,7 +63,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 GestureDetector(
