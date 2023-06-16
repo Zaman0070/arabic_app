@@ -213,8 +213,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => NotificationsPage()));
+                    Get.to(() => NotificationsPage());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
