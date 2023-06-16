@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:waist_app/widgets/button.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 
@@ -12,92 +14,113 @@ class BankAccount extends StatefulWidget {
 }
 
 class _BankAccountState extends State<BankAccount> {
+  var valueController = TextEditingController();
+  var resultController = TextEditingController();
+  double calculateFivePercent(double value) {
+    double result = value * 0.05;
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage(
-              'assets/background.png',
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage(
+                'assets/background.png',
+              ),
             ),
           ),
-        ),
-        child: SingleChildScrollView(
-          child: Column(children: [
-            SizedBox(
-              height: 40,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 30,
-                ),
-                Text(
-                  'حساب العمولة',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                ArrowButton()
-              ],
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text('5%'),
-                Text(
-                  'عمولة التطبيق',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              decoration: BoxDecoration(
-                  color: BC.appColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: BC.appColor)),
-              child: Column(
+          child: SingleChildScrollView(
+            child: Column(children: [
+              SizedBox(
+                height: 12.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    height: 10,
+                  const SizedBox(
+                    width: 30,
                   ),
-                  MytextField(
-                    text: 'قيمة السلعة او الخدمة',
+                  const Text(
+                    'حساب العمولة',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  MytextField(
-                    text: 'العمولة شامل الضريبة',
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  MyButton(
-                    onPressed: () {},
-                    name: 'احسب العمولة',
+                  ArrowButton(
+                    onPressed: () {
+                      Get.back();
+                    },
                   )
                 ],
               ),
-            ),
-          ]),
+              SizedBox(
+                height: 50.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const Text(' 5% '),
+                  Text(
+                    'عمولة التطبيق',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                decoration: BoxDecoration(
+                    color: BC.appColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: BC.appColor)),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    MytextField(
+                      type: TextInputType.number,
+                      controller: valueController,
+                      text: 'قيمة السلعة او الخدمة',
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    MytextField(
+                      controller: resultController,
+                      text: 'العمولة شامل الضريبة',
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    MyButton(
+                      onPressed: () {
+                        double value = double.parse(valueController.text);
+                        double result = calculateFivePercent(value);
+                        resultController.text = result.toString();
+                      },
+                      name: 'احسب العمولة',
+                    )
+                  ],
+                ),
+              ),
+            ]),
+          ),
         ),
       ),
     );

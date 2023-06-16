@@ -14,6 +14,8 @@ import '../constants/colors.dart';
 import '../screens/notification.dart';
 
 class MyDrawer extends StatefulWidget {
+  const MyDrawer({super.key});
+
   @override
   State<MyDrawer> createState() => _MyDrawerState();
 }
