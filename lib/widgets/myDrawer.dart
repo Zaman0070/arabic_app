@@ -346,7 +346,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.to(() => AboutUs());
+                    Get.to(() => const AboutUs());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -372,8 +372,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ContactUs()));
+                    Get.to(() => const ContactUs());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
