@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/screens/AboutUs.dart';
-import 'package:waist_app/screens/bankAccount.dart';
+import 'package:waist_app/screens/calculator.dart';
 import 'package:waist_app/screens/contactUs.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
+import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/screens/profile/profile.dart';
 import 'package:waist_app/screens/wallet.dart';
 import 'package:waist_app/widgets/button.dart';
@@ -238,8 +239,8 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => BankAccount()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const Calculator()));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -318,10 +319,9 @@ class _MyDrawerState extends State<MyDrawer> {
                   height: 10.h,
                 ),
                 InkWell(
-                  // onTap: () {
-                  //   Navigator.of(context)
-                  //       .push(MaterialPageRoute(builder: (context) => viewcart()));
-                  // },
+                  onTap: () {
+                    Get.to(() => const PrivacyPolicy());
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -346,8 +346,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => AboutUs()));
+                    Get.to(() => AboutUs());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,

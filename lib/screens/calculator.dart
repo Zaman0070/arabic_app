@@ -8,12 +8,14 @@ import '../constants/colors.dart';
 
 import '../widgets/arrowButton.dart';
 
-class BankAccount extends StatefulWidget {
+class Calculator extends StatefulWidget {
+  const Calculator({super.key});
+
   @override
-  State<BankAccount> createState() => _BankAccountState();
+  State<Calculator> createState() => _CalculatorState();
 }
 
-class _BankAccountState extends State<BankAccount> {
+class _CalculatorState extends State<Calculator> {
   var valueController = TextEditingController();
   var resultController = TextEditingController();
   double calculateFivePercent(double value) {
