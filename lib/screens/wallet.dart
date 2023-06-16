@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:waist_app/screens/completePurchaseOrder.dart';
 import 'package:waist_app/widgets/button.dart';
 
@@ -6,6 +7,8 @@ import '../constants/colors.dart';
 import '../widgets/arrowButton.dart';
 
 class Wallet extends StatelessWidget {
+  const Wallet({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +43,9 @@ class Wallet extends StatelessWidget {
                   ),
                 ),
                 ArrowButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.back();
+                  },
                 )
               ],
             ),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:waist_app/screens/AboutUs.dart';
 import 'package:waist_app/screens/bankAccount.dart';
 import 'package:waist_app/screens/contactUs.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/messages.dart';
+import 'package:waist_app/screens/new_order/newOrder.dart';
 import 'package:waist_app/screens/profile/profile.dart';
 import 'package:waist_app/screens/wallet.dart';
 import 'package:waist_app/widgets/button.dart';
@@ -24,7 +26,7 @@ class _MyDrawerState extends State<MyDrawer> {
       child: ListView(
         children: [
           SizedBox(
-            height: 50,
+            height: 25.h,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 120),
@@ -45,31 +47,35 @@ class _MyDrawerState extends State<MyDrawer> {
             padding: const EdgeInsets.only(right: 20, top: 30, left: 20),
             child: Column(
               children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'طلب جديد',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 15),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Image(
-                      image: AssetImage('assets/Add.png'),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Wallet()));
+                    Get.to(() => NewOrder());
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'طلب جديد',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15.sp),
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      const Image(
+                        image: AssetImage('assets/Add.png'),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.to(() => const Wallet());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -79,21 +85,21 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 8,
+                        width: 10.w,
                       ),
-                      Image(
+                      const Image(
                         image: AssetImage('assets/Wallet.png'),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => Messages()));
@@ -106,21 +112,21 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 8,
+                        width: 10.w,
                       ),
-                      Image(
+                      const Image(
                         image: AssetImage('assets/Chat.png'),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                GestureDetector(
+                InkWell(
                   // onTap: () {
                   //   Navigator.of(context)
                   //       .push(MaterialPageRoute(builder: (context) => viewcart()));
@@ -133,24 +139,24 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 8,
+                        width: 10.w,
                       ),
-                      Image(
+                      const Image(
                         image: AssetImage('assets/Bag.png'),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Profile()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const Profile()));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -160,21 +166,21 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 10.w,
                       ),
-                      Image(
+                      const Image(
                         image: AssetImage('assets/Person.png'),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     _ButtonPressed(context);
                     // Navigator.of(context).push(
@@ -188,21 +194,21 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 8,
+                        width: 10.w,
                       ),
-                      Image(
+                      const Image(
                         image: AssetImage('assets/Languaage.png'),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => NotificationsPage()));
@@ -215,19 +221,20 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 13,
+                        width: 10.w,
                       ),
-                      Icon(Icons.notifications, color: Colors.white, size: 25)
+                      const Icon(Icons.notifications,
+                          color: Colors.white, size: 25)
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => BankAccount()));
@@ -240,21 +247,21 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 13,
+                        width: 10.h,
                       ),
-                      Image(
+                      const Image(
                         image: AssetImage('assets/Calculator.png'),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                GestureDetector(
+                InkWell(
                   // onTap: () {
                   //   Navigator.of(context)
                   //       .push(MaterialPageRoute(builder: (context) => viewcart()));
@@ -267,21 +274,21 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 10,
+                        width: 10.w,
                       ),
-                      Image(
+                      const Image(
                         image: AssetImage('assets/Users.png'),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => HowToUse()));
@@ -294,21 +301,21 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 10,
+                        width: 10.w,
                       ),
-                      Image(
+                      const Image(
                         image: AssetImage('assets/How to use.png'),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                GestureDetector(
+                InkWell(
                   // onTap: () {
                   //   Navigator.of(context)
                   //       .push(MaterialPageRoute(builder: (context) => viewcart()));
@@ -321,21 +328,21 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 10,
+                        width: 10.w,
                       ),
-                      Image(
+                      const Image(
                         image: AssetImage('assets/policy.png'),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => AboutUs()));
@@ -348,21 +355,21 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 16,
+                        width: 10.w,
                       ),
-                      Image(
+                      const Image(
                         image: AssetImage('assets/Info.png'),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 10.h,
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => ContactUs()));
@@ -375,28 +382,28 @@ class _MyDrawerState extends State<MyDrawer> {
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                            fontSize: 15.sp),
                       ),
                       SizedBox(
-                        width: 8,
+                        width: 10.w,
                       ),
-                      Icon(Icons.phone, size: 25, color: Colors.white)
+                      const Icon(Icons.phone, size: 25, color: Colors.white)
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 40.h,
                 ),
                 InkWell(
                   onTap: () {},
                   child: Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
                       border: Border.all(width: 1, color: Colors.white),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         'تسجيل الخروج',
                         style: TextStyle(
@@ -409,7 +416,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
           ),
           SizedBox(
-            height: 20,
+            height: 20.h,
           ),
         ],
       ),
@@ -421,22 +428,28 @@ class _MyDrawerState extends State<MyDrawer> {
         context: context,
         builder: (context) {
           return Container(
-            color: Color(0xff737373),
+            color: const Color(0xff737373),
             height: MediaQuery.of(context).size.height * 0.3,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+              ),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: 40,
+                        width: 40.w,
                       ),
                       Text(
                         'تغيير اللغة',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -454,14 +467,14 @@ class _MyDrawerState extends State<MyDrawer> {
                           child: Icon(
                             Icons.close_rounded,
                             color: Colors.white,
-                            size: 20,
+                            size: 20.h,
                           ),
                         ),
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 10.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -477,7 +490,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     ],
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 10.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -492,7 +505,7 @@ class _MyDrawerState extends State<MyDrawer> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   MyButton(
@@ -500,12 +513,6 @@ class _MyDrawerState extends State<MyDrawer> {
                     name: 'تغيير اللغة',
                   )
                 ],
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20)),
               ),
             ),
           );
