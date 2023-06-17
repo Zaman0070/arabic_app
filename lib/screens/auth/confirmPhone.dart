@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:waist_app/model/user.dart';
 import 'package:waist_app/Services/phone_services.dart';
 import 'package:waist_app/widgets/arrowButton.dart';
@@ -53,9 +54,11 @@ class _LoginPageState extends State<OTP> {
 
       // ignore: unnecessary_null_comparison
       if (user != null) {
+        OSDeviceState? status = await OneSignal.shared.getDeviceState();
         UserModel userModel = UserModel(
+          token: status!.userId,
           uid: user.uid,
-          phoneNumber: user.phoneNumber,
+          phoneNumber: user.phoneNumber!.replaceAll("+", ''),
           email: '',
           profileImage: '',
           location: '',

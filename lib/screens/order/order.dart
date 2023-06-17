@@ -64,14 +64,14 @@ class _OrdersState extends State<Orders> {
               GetBuilder<MishtariController>(
                   init: MishtariController(),
                   builder: (controller) {
-                    return controller.allMishtari.isNotEmpty
+                    return controller.mishtariListbyPhone.isNotEmpty
                         ? ListView.builder(
                             shrinkWrap: true,
                             physics: const ScrollPhysics(),
-                            itemCount: controller.allMishtari.length,
+                            itemCount: controller.mishtariListbyPhone.length,
                             itemBuilder: (context, index) {
                               BuyerModel buyerData =
-                                  controller.allMishtari[index];
+                                  controller.mishtariListbyPhone[index];
                               DateTime date = DateTime.parse(buyerData.days!);
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 14),

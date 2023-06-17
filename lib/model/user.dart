@@ -8,6 +8,7 @@ class UserModel {
   String? location;
   String? profileImage;
   String? uid;
+  String? token;
   UserModel({
     this.name,
     this.email,
@@ -15,7 +16,9 @@ class UserModel {
     this.location,
     this.profileImage,
     this.uid,
+    this.token,
   });
+ 
 
   UserModel copyWith({
     String? name,
@@ -24,6 +27,7 @@ class UserModel {
     String? location,
     String? profileImage,
     String? uid,
+    String? token,
   }) {
     return UserModel(
       name: name ?? this.name,
@@ -32,6 +36,7 @@ class UserModel {
       location: location ?? this.location,
       profileImage: profileImage ?? this.profileImage,
       uid: uid ?? this.uid,
+      token: token ?? this.token,
     );
   }
 
@@ -43,6 +48,7 @@ class UserModel {
       'location': location,
       'profileImage': profileImage,
       'uid': uid,
+      'token': token,
     };
   }
 
@@ -54,6 +60,7 @@ class UserModel {
       location: map['location'] != null ? map['location'] as String : null,
       profileImage: map['profileImage'] != null ? map['profileImage'] as String : null,
       uid: map['uid'] != null ? map['uid'] as String : null,
+      token: map['token'] != null ? map['token'] as String : null,
     );
   }
 
@@ -63,7 +70,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(name: $name, email: $email, phoneNumber: $phoneNumber, location: $location, profileImage: $profileImage, uid: $uid)';
+    return 'UserModel(name: $name, email: $email, phoneNumber: $phoneNumber, location: $location, profileImage: $profileImage, uid: $uid, token: $token)';
   }
 
   @override
@@ -76,7 +83,8 @@ class UserModel {
       other.phoneNumber == phoneNumber &&
       other.location == location &&
       other.profileImage == profileImage &&
-      other.uid == uid;
+      other.uid == uid &&
+      other.token == token;
   }
 
   @override
@@ -86,6 +94,7 @@ class UserModel {
       phoneNumber.hashCode ^
       location.hashCode ^
       profileImage.hashCode ^
-      uid.hashCode;
+      uid.hashCode ^
+      token.hashCode;
   }
 }

@@ -7,6 +7,7 @@ import 'package:waist_app/widgets/loading.dart';
 
 class UserController extends GetxController {
   var currentUser = UserModel().obs;
+  var specificUser = UserModel().obs;
 
   @override
   void onInit() {
@@ -34,6 +35,19 @@ class UserController extends GetxController {
       SmartDialog.dismiss();
     } catch (e) {
       e.toString();
+    }
+  }
+
+  Future<void> getSpecificUser(String uid) async {
+    try {
+      final docSnapshot =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      if (docSnapshot.exists) {
+        specificUser.value = UserModel.fromMap(docSnapshot.data()!);
+      }
+      update();
+    } catch (e) {
+      print('Error retrieving user data: $e');
     }
   }
 

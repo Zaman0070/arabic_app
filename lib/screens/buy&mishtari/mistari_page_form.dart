@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_model_list/dropdown_model_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:waist_app/Services/onsignal.dart';
 import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/image_controller.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
@@ -26,6 +28,7 @@ class MistariPage extends StatefulWidget {
 }
 
 class _MistariPageState extends State<MistariPage> {
+  UserController userController = Get.put(UserController());
   bool value = false;
 
   var secondphoneController = TextEditingController(text: "");
@@ -38,13 +41,14 @@ class _MistariPageState extends State<MistariPage> {
 
   var timeController = TextEditingController();
   String ayamDate = '';
-  String countryCode = '+966';
+  String countryCode = '+92';
 
   bool isSwitched = false;
   bool isSwitched2 = false;
   int result = 0;
   ImagePickerController imagePickerController =
       Get.put(ImagePickerController());
+  OneSignals oneSignals = OneSignals();
 
   List<String> images = [];
   DropListModel dropListModel = DropListModel([
@@ -293,15 +297,6 @@ class _MistariPageState extends State<MistariPage> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    MytextField(
-                      type: TextInputType.name,
-                      controller: desController,
-                      text: 'وصف السلعة(اختياري)',
-                      hint: 'وصف السلعة(اختياري)',
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
                     Container(
                       decoration: BoxDecoration(
                           color: BC.appColor.withOpacity(0.1),
@@ -429,6 +424,15 @@ class _MistariPageState extends State<MistariPage> {
                     SizedBox(
                       height: 10.h,
                     ),
+                    MytextField(
+                      type: TextInputType.name,
+                      controller: desController,
+                      text: 'وصف السلعة(اختياري)',
+                      hint: 'وصف السلعة(اختياري)',
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -515,6 +519,17 @@ class _MistariPageState extends State<MistariPage> {
                         ),
                         InkWell(
                           onTap: () {
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .where('phoneNumber',
+                                    isEqualTo:
+                                        '${countryCode.replaceAll('+', "")}${secondphoneController.text}')
+                                .get()
+                                .then((value) {
+                              List<String> uid =
+                                  value.docs.map((e) => e.id).toList();
+                              userController.getSpecificUser(uid[0]);
+                            });
                             setState(() {
                               isSwitched2 = !isSwitched2;
                               result = int.parse(commodityController.text) + 20;
@@ -592,6 +607,14 @@ class _MistariPageState extends State<MistariPage> {
                                       images: images[0])
                                   : Fluttertoast.showToast(
                                       msg: 'الرجاء اختيار صورة');
+                          await oneSignals.sendNotification(
+                              userController.specificUser.value.token!,
+                              controller.currentUser.value.name!,
+                              purposeController.text,
+                              'assets/logo/jpeg',
+                              token: userController.specificUser.value.token!,
+                              senderName: controller.currentUser.value.name!,
+                              type: 'mishtri');
                         }),
                     SizedBox(
                       height: 20.h,

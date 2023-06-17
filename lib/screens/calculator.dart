@@ -19,7 +19,7 @@ class _CalculatorState extends State<Calculator> {
   var valueController = TextEditingController();
   var resultController = TextEditingController();
   double calculateFivePercent(double value) {
-    double result = value * 0.05;
+    double result = value * 0.10;
     return result;
   }
 
@@ -70,7 +70,7 @@ class _CalculatorState extends State<Calculator> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const Text(' 5% '),
+                  const Text(' 10% '),
                   Text(
                     'عمولة التطبيق',
                     style: TextStyle(

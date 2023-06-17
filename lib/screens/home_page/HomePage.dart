@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/screens/howToUse.dart';
@@ -26,17 +25,17 @@ class _HomePageState extends State<HomePage> {
   List<Color> colors = [Colors.white, Colors.yellow, Colors.red, Colors.white];
 
   List images = [
-    'assets/slider/Add.png',
     'assets/slider/Message.png',
     'assets/slider/How to use.png',
+    'assets/slider/Add.png',
     'assets/slider/Delivery.png',
     'assets/slider/Verified.png',
     'assets/slider/Info.png',
   ];
   List names = [
-    'طلب جديد',
     'اراء العملاء',
     'دليل الأستخدام',
+    'طلب جديد',
     'الضمانات',
     'عن التطبيق',
     'وسيط مواقع التسوق',
@@ -51,9 +50,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   List pages = [
-    ['NewOrder', NewOrder()],
     ['Messages', Messages()],
     ['HowtoUse', HowToUse()],
+    ['NewOrder', NewOrder()],
     ['NewOrder', NewOrder()],
     ['NewOrder', NewOrder()],
     ['HistoryEmpty', HistoryEmpty()],
@@ -67,7 +66,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffold,
-      endDrawer: MyDrawer(),
+      endDrawer: const MyDrawer(),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         height: MediaQuery.of(context).size.height,
@@ -393,10 +392,9 @@ class _HomePageState extends State<HomePage> {
                     MyButton(
                       name: 'تفاصيل الطلب',
                       onPressed: () {
-                        mishtariController.allMishtari.isNotEmpty
-                            ? Get.to(() => const Orders())
-                            : Fluttertoast.showToast(
-                                msg: 'لم يتم العثور على البيانات');
+                        Get.to(() => const Orders());
+                        // : Fluttertoast.showToast(
+                        //     msg: 'لم يتم العثور على البيانات');
                       },
                     ),
                   ],

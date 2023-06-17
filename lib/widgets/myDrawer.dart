@@ -213,7 +213,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.to(() => NotificationsPage());
+                    Get.to(() => const NotificationsPage());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -345,6 +345,30 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
+                    Get.to(() => const ContactUs());
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'اتصل بنا',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15.sp),
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      const Icon(Icons.phone, size: 25, color: Colors.white)
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                InkWell(
+                  onTap: () {
                     Get.to(() => const AboutUs());
                   },
                   child: Row(
@@ -363,30 +387,6 @@ class _MyDrawerState extends State<MyDrawer> {
                       const Image(
                         image: AssetImage('assets/Info.png'),
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                InkWell(
-                  onTap: () {
-                    Get.to(() => const ContactUs());
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'اتصل بنا',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15.sp),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      const Icon(Icons.phone, size: 25, color: Colors.white)
                     ],
                   ),
                 ),
