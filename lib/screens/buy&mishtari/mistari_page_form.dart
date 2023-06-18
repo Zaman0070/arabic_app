@@ -604,7 +604,9 @@ class _MistariPageState extends State<MistariPage> {
                                       price: result.toString(),
                                       agree1: isSwitched,
                                       agree2: isSwitched2,
-                                      images: images[0])
+                                      images: images[0],
+                                      isAccepted: '',
+                                    )
                                   : Fluttertoast.showToast(
                                       msg: 'الرجاء اختيار صورة');
                           await oneSignals.sendNotification(

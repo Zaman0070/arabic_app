@@ -73,7 +73,7 @@ class _NewOrderState extends State<NewOrder> {
                 Expanded(
                     child: InkWell(
                   onTap: () {
-                    Get.to(() => const TheSeller());
+                    Get.to(() => TheSeller());
                   },
                   child: const Image(image: AssetImage('assets/Group 84.png')),
                 ))

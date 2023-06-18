@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:waist_app/controller/image_controller.dart';
 import 'package:waist_app/Services/firebase_services.dart';
+import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 import '../../constants/colors.dart';
@@ -15,8 +16,10 @@ import '../../widgets/UploadImageButton.dart';
 import '../../widgets/arrowButton.dart';
 import '../../widgets/button.dart';
 
+// ignore: must_be_immutable
 class TheSeller extends StatefulWidget {
-  const TheSeller({super.key});
+  BuyerModel? buyerModel;
+  TheSeller({super.key, this.buyerModel});
 
   @override
   State<TheSeller> createState() => _TheSellerState();
@@ -25,7 +28,8 @@ class TheSeller extends StatefulWidget {
 class _TheSellerState extends State<TheSeller> {
   ImagePickerController imagePickerController =
       Get.put(ImagePickerController());
-  var priceController = TextEditingController();
+  late var priceController =
+      TextEditingController(text: widget.buyerModel!.price);
   var desController = TextEditingController();
   var daysController = TextEditingController();
   var secondPartyMobileController = TextEditingController();
@@ -111,10 +115,10 @@ class _TheSellerState extends State<TheSeller> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'محمد وحيد',
+                        Text(
+                          widget.buyerModel!.name!,
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -135,10 +139,10 @@ class _TheSellerState extends State<TheSeller> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          '+966 xx-xxx-xxxx',
+                        Text(
+                          '+${widget.buyerModel!.phoneNumber!}',
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -159,10 +163,10 @@ class _TheSellerState extends State<TheSeller> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'شارع  9 جبل حفيت',
+                        Text(
+                          widget.buyerModel!.address!.trim(),
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -38,6 +38,7 @@ class FirebaseServices {
     required String images,
     required bool agree1,
     required bool agree2,
+    required String isAccepted,
   }) async {
     var random = Random();
     int randomNumber = random.nextInt(100000000);
@@ -63,6 +64,7 @@ class FirebaseServices {
         agree1: agree1,
         agree2: agree2,
         orderNumber: randomNumber,
+        isAccepted: isAccepted,
         uid: FirebaseAuth.instance.currentUser!.uid,
       );
       await mishtriProduct.doc().set(buyerModel.toMap()).then((value) {
