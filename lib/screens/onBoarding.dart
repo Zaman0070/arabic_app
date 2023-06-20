@@ -15,7 +15,7 @@ class _OnBaordingState extends State<OnBaording> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 3), () {
-      Get.offAll(() => const Login());
+      Get.offAll(() => Login());
     });
 
     super.initState();

@@ -3,6 +3,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
+import 'package:waist_app/screens/bottom_nav/bottomNavi.dart';
 import 'package:waist_app/widgets/loading.dart';
 
 class MishtariController extends GetxController {
@@ -82,6 +83,25 @@ class MishtariController extends GetxController {
           .doc(id)
           .update({"isAccepted": status});
       update();
+      SmartDialog.dismiss();
+    } catch (e) {}
+  }
+
+  Future<void> updateMistryData(BuyerModel buyerModel, String id) async {
+    try {
+      SmartDialog.showLoading(
+        animationBuilder: (controller, child, animationParam) {
+          return Loading(
+            text: ' ... تحميل ',
+          );
+        },
+      );
+      await FirebaseFirestore.instance
+          .collection('MishtariProducts')
+          .doc(id)
+          .update(buyerModel.toMap());
+      update();
+      Get.offAll(() => const BottomNavigationExample());
       SmartDialog.dismiss();
     } catch (e) {}
   }

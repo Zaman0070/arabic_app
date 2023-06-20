@@ -18,16 +18,16 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   OneSignal.shared.setAppId('6afde054-dff9-45b9-a470-27d56d798ea2');
-  OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+  OneSignal.shared
+      .promptUserForPushNotificationPermission(fallbackToSettings: true)
+      .then((accepted) {
     debugPrint('Accepted permission: $accepted');
   });
-
   OneSignal.shared
       .setNotificationOpenedHandler((OSNotificationOpenedResult result) async {
     debugPrint('OneSignal: notification opened: ${result.notification.body}');
     if (result.notification.additionalData!['type'] == 'mishtri') {
       Get.to(() => const Orders());
-      // Get.to(() => const Spaces());
     } else if (result.notification.additionalData!['type'] == 'comment') {
     } else if (result.notification.additionalData!['type'] == 'chat') {
       // Get.to(() => ChatConversation(

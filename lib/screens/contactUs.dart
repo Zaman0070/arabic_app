@@ -1,16 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+import 'package:waist_app/widgets/button.dart';
 import '../constants/colors.dart';
 import '../widgets/arrowButton.dart';
+import '../widgets/loading.dart';
 
+// ignore: must_be_immutable
 class ContactUs extends StatelessWidget {
-  const ContactUs({super.key});
-
+  ContactUs({super.key});
+  var whatsapp = "+966 12 3456789"; // Replace with the desired phone number
+  var messageControllre = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -52,50 +60,60 @@ class ContactUs extends StatelessWidget {
               SizedBox(
                 height: 40.h,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    '+966 12-345-6789 ',
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                  ),
-                  Text(
-                    'الواتس اب',
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    width: 20.w,
-                  ),
-                  Image.asset('assets/whatsapp.png')
-                ],
+              InkWell(
+                onTap: () async {
+                  await launch("https://wa.me/${whatsapp}?text=Hello");
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      '+966 12-345-6789 ',
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      'الواتس اب',
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    Image.asset('assets/whatsapp.png')
+                  ],
+                ),
               ),
               SizedBox(
                 height: 20.h,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    '+966 12-345-6789 ',
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                  ),
-                  Text(
-                    'الهاتف',
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    width: 8.w,
-                  ),
-                  Icon(
-                    Icons.phone,
-                    size: 35,
-                    color: BC.appColor,
-                  )
-                ],
+              InkWell(
+                onTap: () async {
+                  await launch("tel://+966 12-345-6789");
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      '+966 12-345-6789 ',
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      'الهاتف',
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      width: 8.w,
+                    ),
+                    Icon(
+                      Icons.phone,
+                      size: 35,
+                      color: BC.appColor,
+                    )
+                  ],
+                ),
               ),
               SizedBox(
                 height: 20.h,
@@ -125,29 +143,74 @@ class ContactUs extends StatelessWidget {
               SizedBox(
                 height: 20.h,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'wasit@gmail.com',
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Text(
-                    'البريد الألكتروني',
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    width: 12.w,
-                  ),
-                  Image.asset('assets/Mail.png')
-                ],
+              InkWell(
+                onTap: () async {
+                  await launch(
+                      'mailto:wasit@gmail.com?subject=This is Subject Title&body=This is Body of Email');
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'wasit@gmail.com',
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    Text(
+                      'البريد الألكتروني',
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      width: 12.w,
+                    ),
+                    Image.asset('assets/Mail.png')
+                  ],
+                ),
               ),
-              Spacer(),
+              SizedBox(
+                height: 20.h,
+              ),
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: TextFormField(
+                  controller: messageControllre,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    hintText: 'اكتب شكوى هنا',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              MyButton(
+                  name: 'ارسال',
+                  onPressed: () async {
+                    SmartDialog.showLoading(
+                      animationBuilder: (controller, child, animationParam) {
+                        return Loading(
+                          text: ' ... تحميل ',
+                        );
+                      },
+                    );
+                    await FirebaseFirestore.instance
+                        .collection('complain')
+                        .add({
+                      'message': messageControllre.text,
+                      'date': DateTime.now(),
+                    }).whenComplete(() {
+                      SmartDialog.dismiss();
+                      Fluttertoast.showToast(msg: 'تم ارسال الشكوى بنجاح');
+                    });
+                  }),
+              const Spacer(),
               InkWell(
                 onTap: () {
                   _ButtonPressed(context);

@@ -21,8 +21,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  
   MishtariController mishtariController = Get.put(MishtariController());
-  List<Color> colors = [Colors.white, Colors.yellow, Colors.red, Colors.white];
+  List<String> imageBanner = [
+    'assets/banner2.jpg',
+    'assets/banner1.jpg',
+  ];
 
   List images = [
     'assets/slider/Message.png',
@@ -135,9 +139,8 @@ class _HomePageState extends State<HomePage> {
                         outer: false,
                         indicatorLayout: PageIndicatorLayout.NONE,
                         itemBuilder: (context, index) {
-                          return Container(
-                            color: colors[index],
-                          );
+                          return Image.asset(imageBanner[index],
+                              fit: BoxFit.fill);
                         },
                         onIndexChanged: (value) {
                           setState(() {
@@ -145,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                           });
                         },
                         layout: SwiperLayout.DEFAULT,
-                        itemCount: colors.length,
+                        itemCount: imageBanner.length,
                         pagination: const SwiperPagination(
                             builder: SwiperPagination(
                           builder: DotSwiperPaginationBuilder(
@@ -160,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: map<Widget>(colors, (value, url) {
+                        children: map<Widget>(imageBanner, (value, url) {
                           return Container(
                             width: _current == value ? 5.0 : 5,
                             height: _current == value ? 20.0 : 20,

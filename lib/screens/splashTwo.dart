@@ -61,7 +61,7 @@ class _SplashOneState extends State<SplashTwo> {
                 MyButton(
                   name: 'التالي',
                   onPressed: () {
-                    Get.offAll(() => const Login());
+                    Get.offAll(() =>  Login());
                   },
                 ),
               ],

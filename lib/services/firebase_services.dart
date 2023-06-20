@@ -39,6 +39,9 @@ class FirebaseServices {
     required bool agree1,
     required bool agree2,
     required String isAccepted,
+    required String ayam,
+    required String ayamNumber,
+    required List<dynamic> uid,
   }) async {
     var random = Random();
     int randomNumber = random.nextInt(100000000);
@@ -65,7 +68,9 @@ class FirebaseServices {
         agree2: agree2,
         orderNumber: randomNumber,
         isAccepted: isAccepted,
-        uid: FirebaseAuth.instance.currentUser!.uid,
+        ayam: ayam,
+        ayamNumber: ayamNumber,
+        uid: uid,
       );
       await mishtriProduct.doc().set(buyerModel.toMap()).then((value) {
         Fluttertoast.showToast(
@@ -240,7 +245,7 @@ class FirebaseServices {
   Future<void> logout() async {
     try {
       await FirebaseAuth.instance.signOut();
-      Get.offAll(() => const Login());
+      Get.offAll(() => Login());
     } catch (e) {
       Fluttertoast.showToast(
           textColor: Colors.white,

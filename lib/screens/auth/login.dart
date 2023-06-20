@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:waist_app/Services/phone_services.dart';
 import 'package:waist_app/widgets/logo.dart';
 
 import '../../constants/colors.dart';
 import '../../widgets/button.dart';
+import '../privacy_policy/privacy_policy.dart';
 
 // ignore: must_be_immutable
 class Login extends StatefulWidget {
-  const Login({
+  Login({
     super.key,
   });
 
@@ -23,6 +25,7 @@ class _LoginPageState extends State<Login> {
   var phoneNumberController = TextEditingController();
   PhoneService service = PhoneService();
   String countryCode = '+92';
+  bool isSwitched = false;
 
   @override
   Widget build(BuildContext context) {
@@ -93,19 +96,59 @@ class _LoginPageState extends State<Login> {
               height: 15.h,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'شروط الأستخدام',
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontWeight: FontWeight.w600,
-                      color: BC.appColor),
+                SizedBox(
+                  width: 280.w,
+                  child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Row(
+                      children: [
+                        Text(
+                          "بالضغط علي تسجيل الدخول فأنت توافق علي'",
+                          textDirection: TextDirection.rtl,
+                          style: TextStyle(fontSize: 11.sp),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Get.to(() => const PrivacyPolicy());
+                          },
+                          child: Text(
+                            'شروط و أحكام',
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                                fontSize: 11.sp,
+                                color: BC.appColor,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                Text(
-                  'بالضغط علي تسجيل الدخول فأنت توافق علي',
-                  style:
-                      TextStyle(fontWeight: FontWeight.w600, fontSize: 13.sp),
+                SizedBox(
+                  width: 10.w,
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      isSwitched = !isSwitched;
+                    });
+                  },
+                  child: Container(
+                    width: 20.h,
+                    height: 20.h,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: BC.appColor),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Icon(
+                      Icons.check,
+                      color: isSwitched ? BC.appColor : Colors.transparent,
+                      size: 15.h,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -118,10 +161,11 @@ class _LoginPageState extends State<Login> {
               onPressed: () async {
                 String number =
                     '${countryCodeController.text}${phoneNumberController.text}';
-                phoneNumberController.text.trim().isNotEmpty
+                phoneNumberController.text.trim().isNotEmpty &&
+                        isSwitched == true
                     ? service.verificationPhoneNumber(context, number)
                     : Fluttertoast.showToast(
-                        msg: 'Please Enter your Phone Number');
+                        msg: 'من فضلك ادخل رقم الهاتف و اوافق علي الشروط');
               },
             ),
             const SizedBox(

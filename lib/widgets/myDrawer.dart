@@ -345,7 +345,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.to(() => const ContactUs());
+                    Get.to(() =>  ContactUs());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,

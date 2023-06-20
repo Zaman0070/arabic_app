@@ -57,6 +57,10 @@ dependencies:
   flutter_dropdown: ^1.0.1+hotfix.1
   dropdown_model_list: ^0.0.3+1
   onesignal_flutter: ^3.5.1
+  http: ^0.13.6
+  crypto: ^3.0.3
+  convert: ^3.1.1
+  url_launcher: ^6.1.11
 
 dev_dependencies:
   flutter_test:

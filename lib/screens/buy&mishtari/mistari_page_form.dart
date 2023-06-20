@@ -40,6 +40,12 @@ class _MistariPageState extends State<MistariPage> {
   var desController = TextEditingController();
 
   var timeController = TextEditingController();
+  late var nameController =
+      TextEditingController(text: userController.currentUser.value.name ?? '');
+  late var phoneController = TextEditingController(
+      text: userController.currentUser.value.phoneNumber ?? '');
+  late var addressController = TextEditingController(
+      text: userController.currentUser.value.location ?? '');
   String ayamDate = '';
   String countryCode = '+92';
 
@@ -74,8 +80,8 @@ class _MistariPageState extends State<MistariPage> {
     OptionItem(id: "5", title: "     عرعر"),
   ]);
   DropListModel dropListModeldays = DropListModel([
-    OptionItem(id: "1", title: "     ايام"),
-    OptionItem(id: "2", title: "     ماه"),
+    OptionItem(id: "1", title: "ايام"),
+    OptionItem(id: "2", title: "ماه"),
   ]);
   DropListModel dropListModeldays1 = DropListModel([
     OptionItem(id: "1", title: "     1"),
@@ -91,8 +97,10 @@ class _MistariPageState extends State<MistariPage> {
     OptionItem(id: "11", title: "     30"),
   ]);
   OptionItem optionItemSelected = OptionItem(title: "    المدينة");
-  OptionItem optionItemSelectedday = OptionItem(title: "    ايام");
+  OptionItem optionItemSelectedday = OptionItem(title: "ايام");
   OptionItem optionItemSelectedday1 = OptionItem(title: "1");
+  String? ayam;
+  String? ayamNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -100,13 +108,6 @@ class _MistariPageState extends State<MistariPage> {
       body: GetBuilder<UserController>(
           init: UserController(),
           builder: (controller) {
-            late var nameController = TextEditingController(
-                text: controller.currentUser.value.name ?? '');
-            late var phoneController = TextEditingController(
-                text: controller.currentUser.value.phoneNumber ?? '');
-            late var addressController = TextEditingController(
-                text: controller.currentUser.value.location ?? '');
-
             return Container(
               height: 1.sh,
               width: 1.sw,
@@ -309,37 +310,6 @@ class _MistariPageState extends State<MistariPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              flex: 3,
-                              child: SelectDropList(
-                                height: 40.h,
-                                containerDecoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border:
-                                        Border.all(color: Colors.transparent),
-                                    color: Colors.transparent),
-                                containerPadding:
-                                    const EdgeInsets.only(left: 10),
-                                containerMargin: EdgeInsets.zero,
-                                itemSelected: optionItemSelectedday,
-                                dropListModel: dropListModeldays,
-                                showIcon: false, // Show Icon in DropDown Title
-                                showArrowIcon:
-                                    false, // Show Arrow Icon in DropDown
-                                showBorder: true,
-                                paddingTop: 0,
-                                paddingBottom: 0,
-                                paddingLeft: 0,
-                                paddingRight: 0,
-                                borderColor: BC.grey,
-                                icon: Icon(Icons.person, color: BC.appColor),
-                                onOptionSelected: (optionItem) {
-                                  optionItemSelectedday = optionItem;
-
-                                  setState(() {});
-                                },
-                              ),
-                            ),
-                            Expanded(
                               flex: 1,
                               child: SelectDropList(
                                 height: 40.h,
@@ -355,7 +325,7 @@ class _MistariPageState extends State<MistariPage> {
                                 dropListModel: dropListModeldays1,
                                 showIcon: false, // Show Icon in DropDown Title
                                 showArrowIcon:
-                                    true, // Show Arrow Icon in DropDown
+                                    false, // Show Arrow Icon in DropDown
                                 showBorder: true,
                                 paddingTop: 0,
                                 paddingBottom: 0,
@@ -365,11 +335,44 @@ class _MistariPageState extends State<MistariPage> {
                                 icon: Icon(Icons.person, color: BC.appColor),
                                 onOptionSelected: (optionItem) {
                                   optionItemSelectedday1 = optionItem;
+                                  ayamNumber = optionItem.title;
                                   timeController.text = optionItem.title;
                                   timeController.text = DateTime.now()
                                       .add(Duration(
                                           days: int.parse(optionItem.id!)))
                                       .toString();
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: SelectDropList(
+                                height: 40.h,
+                                containerDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border:
+                                        Border.all(color: Colors.transparent),
+                                    color: Colors.transparent),
+                                containerPadding:
+                                    const EdgeInsets.only(left: 10),
+                                containerMargin: EdgeInsets.zero,
+                                itemSelected: optionItemSelectedday,
+                                dropListModel: dropListModeldays,
+                                showIcon: false, // Show Icon in DropDown Title
+                                showArrowIcon:
+                                    true, // Show Arrow Icon in DropDown
+                                showBorder: true,
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                borderColor: BC.grey,
+                                icon: Icon(Icons.person, color: BC.appColor),
+                                onOptionSelected: (optionItem) {
+                                  optionItemSelectedday = optionItem;
+                                  ayam = optionItem.title;
+
                                   setState(() {});
                                 },
                               ),
@@ -559,9 +562,19 @@ class _MistariPageState extends State<MistariPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       textDirection: TextDirection.rtl,
                       children: [
-                        Text(
-                          'المبلغ الاجمالي + العمولة والضريبة',
-                          style: TextStyle(fontSize: 16.sp),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: BC.appColor),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 8),
+                            child: Text(
+                              'المبلغ الاجمالي + العمولة والضريبة',
+                              style: TextStyle(fontSize: 16.sp),
+                            ),
+                          ),
                         ),
                         Text(
                           '$result ريال ',
@@ -593,12 +606,16 @@ class _MistariPageState extends State<MistariPage> {
                                   msg: 'جميع الحقول مطلوبة')
                               : imagePickerController.selectedImages.isNotEmpty
                                   ? await FirebaseServices().addMishtriDetails(
+                                      uid: [
+                                        userController.currentUser.value.uid!,
+                                        userController.specificUser.value.uid!
+                                      ],
                                       name: nameController.text,
                                       phoneNumber: phoneController.text,
                                       purpose: purposeController.text,
                                       days: timeController.text,
                                       secondPartyMobile:
-                                          secondphoneController.text,
+                                          '${countryCode.replaceAll('+', '')}${secondphoneController.text}',
                                       description: desController.text,
                                       address: addressController.text,
                                       price: result.toString(),
@@ -606,6 +623,8 @@ class _MistariPageState extends State<MistariPage> {
                                       agree2: isSwitched2,
                                       images: images[0],
                                       isAccepted: '',
+                                      ayam: ayam!,
+                                      ayamNumber: ayamNumber!,
                                     )
                                   : Fluttertoast.showToast(
                                       msg: 'الرجاء اختيار صورة');

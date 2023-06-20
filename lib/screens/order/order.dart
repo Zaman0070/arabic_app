@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:waist_app/constants/colors.dart';
@@ -9,6 +11,8 @@ import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/order/widget/order_box.dart';
 import 'package:waist_app/screens/seller&baya/theSeller.dart';
+import 'package:waist_app/widgets/loading.dart';
+import 'package:waist_app/widgets/textFormfield.dart';
 
 import '../../widgets/arrowButton.dart';
 import '../orderDetails.dart';
@@ -23,6 +27,9 @@ class Orders extends StatefulWidget {
 class _OrdersState extends State<Orders> {
   UserController userController = Get.put(UserController());
   MishtariController mishtariController = Get.put(MishtariController());
+  var merchandId = TextEditingController();
+  var password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,13 +74,12 @@ class _OrdersState extends State<Orders> {
               SizedBox(
                 height: 50.h,
               ),
-              FutureBuilder(
-                  future: FirebaseFirestore.instance
+              StreamBuilder(
+                  stream: FirebaseFirestore.instance
                       .collection('MishtariProducts')
-                      .where('secondPartyMobile',
-                          isEqualTo:
-                              userController.currentUser.value.phoneNumber)
-                      .get(),
+                      .where('uid',
+                          arrayContains: userController.currentUser.value.uid)
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -103,6 +109,8 @@ class _OrdersState extends State<Orders> {
                         physics: const ScrollPhysics(),
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
+                          print(userController.currentUser.value.phoneNumber);
+
                           BuyerModel buyerData = BuyerModel.fromMap(
                               snapshot.data!.docs[index].data());
                           DateTime date = DateTime.parse(buyerData.days!);
@@ -123,11 +131,15 @@ class _OrdersState extends State<Orders> {
                                                 .acceptStatus(
                                                     snapshot
                                                         .data!.docs[index].id,
-                                                    'true')
+                                                    'requestForPayment')
                                                 .whenComplete(() {
                                               Get.to(() => TheSeller(
+                                                  id: snapshot
+                                                      .data!.docs[index].id,
                                                   buyerModel: buyerData));
+                                              // Get.back();
                                             });
+                                            // Get.back();
                                           },
                                           declined: () async {
                                             await FirebaseFirestore.instance
@@ -135,15 +147,46 @@ class _OrdersState extends State<Orders> {
                                                 .doc(snapshot
                                                     .data!.docs[index].id)
                                                 .update({
-                                              'isAccepted': 'false',
+                                              'isAccepted': 'declined',
                                             });
                                             Get.back();
                                           });
                                     }
-                                  : () {
-                                      Get.to(() =>
-                                          OrdersDetails(buyerModel: buyerData));
-                                    },
+                                  : buyerData.isAccepted ==
+                                              'requestForPayment' &&
+                                          buyerData.secondPartyMobile !=
+                                              userController
+                                                  .currentUser.value.phoneNumber
+                                      ? () {
+                                          payment(
+                                              context: context,
+                                              pay: () async {
+                                                SmartDialog.showLoading(
+                                                  animationBuilder: (controller,
+                                                      child, animationParam) {
+                                                    return Loading(
+                                                      text: ' ... تحميل ',
+                                                    );
+                                                  },
+                                                );
+                                                Future.delayed(
+                                                    const Duration(
+                                                        milliseconds: 2000),
+                                                    () {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'طريقة الدفع لا تعمل');
+                                                  SmartDialog.dismiss();
+                                                  Get.back();
+                                                });
+                                              },
+                                              merchantId: merchandId,
+                                              password: password);
+                                        }
+                                      : () {
+                                          Get.to(() => OrdersDetails(
+                                              buyerModel: buyerData));
+                                        },
                             ),
                           );
                         });
@@ -248,6 +291,96 @@ class _OrdersState extends State<Orders> {
                       ),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void payment({
+    required BuildContext context,
+    required Function() pay,
+    required TextEditingController merchantId,
+    required TextEditingController password,
+  }) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      enableDrag: true,
+      backgroundColor: const Color(0xfff9fafe),
+      elevation: 0.01,
+      useSafeArea: true,
+      context: context,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      builder: (BuildContext context) {
+        // bool onTap = false;
+        return SizedBox(
+          height: 450.h,
+          width: 1.sw,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 10.h,
+                ),
+                Center(
+                  child: Container(
+                    width: 20.h,
+                    height: 5.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.grey.withOpacity(0.3),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                MytextField(
+                  type: TextInputType.name,
+                  controller: merchandId,
+                  text: 'معرّف التاجر',
+                  hint: 'معرّف التاجر',
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                MytextField(
+                  type: TextInputType.name,
+                  controller: password,
+                  text: 'كلمة المرور',
+                  hint: 'كلمة المرور',
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                InkWell(
+                  onTap: pay,
+                  child: Container(
+                    width: 1.sw,
+                    height: 35.h,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: BC.appColor),
+                    child: Center(
+                      child: Text(
+                        'يدفع',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18.sp,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: 5.h,

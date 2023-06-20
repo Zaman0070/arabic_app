@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:waist_app/controller/image_controller.dart';
-import 'package:waist_app/Services/firebase_services.dart';
+import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
@@ -18,21 +18,26 @@ import '../../widgets/button.dart';
 
 // ignore: must_be_immutable
 class TheSeller extends StatefulWidget {
+  String? id;
   BuyerModel? buyerModel;
-  TheSeller({super.key, this.buyerModel});
+  TheSeller({super.key, this.buyerModel, this.id});
 
   @override
   State<TheSeller> createState() => _TheSellerState();
 }
 
 class _TheSellerState extends State<TheSeller> {
+  MishtariController mishtariController = Get.put(MishtariController());
   ImagePickerController imagePickerController =
       Get.put(ImagePickerController());
   late var priceController =
       TextEditingController(text: widget.buyerModel!.price);
-  var desController = TextEditingController();
-  var daysController = TextEditingController();
-  var secondPartyMobileController = TextEditingController();
+  late var desController =
+      TextEditingController(text: widget.buyerModel!.description);
+  late var daysController =
+      TextEditingController(text: widget.buyerModel!.days);
+  late var secondPartyMobileController = TextEditingController(
+      text: widget.buyerModel!.phoneNumber!.replaceAll('92', ''));
   List<String> images = [];
   String ayamDate = '';
   bool second = false;
@@ -57,8 +62,10 @@ class _TheSellerState extends State<TheSeller> {
     OptionItem(id: "10", title: "     21"),
     OptionItem(id: "11", title: "     30"),
   ]);
-  OptionItem optionItemSelectedday = OptionItem(title: "    ايام");
-  OptionItem optionItemSelectedday1 = OptionItem(title: "1");
+  late OptionItem optionItemSelectedday =
+      OptionItem(title: "    ${widget.buyerModel!.ayam!}");
+  late OptionItem optionItemSelectedday1 =
+      OptionItem(title: widget.buyerModel!.ayamNumber!);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,12 +199,20 @@ class _TheSellerState extends State<TheSeller> {
                     ? Container()
                     : ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.file(
-                          File(imagePickerController.selectedImages[0].path),
-                          height: 40.h,
-                          width: 40.h,
-                          fit: BoxFit.cover,
-                        ),
+                        child: widget.buyerModel!.images == null
+                            ? Image.file(
+                                File(imagePickerController
+                                    .selectedImages[0].path),
+                                height: 40.h,
+                                width: 40.h,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                widget.buyerModel!.images!,
+                                height: 40.h,
+                                width: 40.h,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                 press: () {
                   Get.bottomSheet(
@@ -507,17 +522,29 @@ class _TheSellerState extends State<TheSeller> {
                           isSwitched2 == false ||
                           desController.text.trim() == ''
                       ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
-                      : imagePickerController.selectedImages.isNotEmpty
-                          ? await FirebaseServices().addSellerData(
-                              days: ayamDate,
-                              secondPartyMobile:
-                                  secondPartyMobileController.text,
-                              description: desController.text,
-                              price: priceController.text,
-                              agree1: isSwitched,
-                              agree2: isSwitched2,
-                              images: images[0])
-                          : Fluttertoast.showToast(msg: 'الرجاء اختيار صورة');
+                      // : imagePickerController.selectedImages.isNotEmpty
+                      : await mishtariController.updateMistryData(
+                          BuyerModel(
+                            price: priceController.text.trim(),
+                            days: daysController.text.trim(),
+                            secondPartyMobile:
+                                widget.buyerModel!.secondPartyMobile,
+                            agree1: isSwitched,
+                            agree2: isSwitched2,
+                            description: desController.text.trim(),
+                            images: widget.buyerModel!.images,
+                            name: widget.buyerModel!.name,
+                            phoneNumber: widget.buyerModel!.phoneNumber,
+                            address: widget.buyerModel!.address,
+                            isAccepted: 'requestForPayment',
+                            ayam: widget.buyerModel!.ayam,
+                            ayamNumber: widget.buyerModel!.ayamNumber,
+                            uid: widget.buyerModel!.uid,
+                            purpose: widget.buyerModel!.purpose,
+                            orderNumber: widget.buyerModel!.orderNumber,
+                          ),
+                          widget.id!);
+                  // : Fluttertoast.showToast(msg: 'الرجاء اختيار صورة');
                 },
               ),
               SizedBox(
