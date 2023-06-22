@@ -206,34 +206,6 @@ class _ServiceProviderState extends State<ServiceProvider> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 3,
-                        child: SelectDropList(
-                          height: 40.h,
-                          containerDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.transparent),
-                              color: Colors.transparent),
-                          containerPadding: const EdgeInsets.only(left: 10),
-                          containerMargin: EdgeInsets.zero,
-                          itemSelected: optionItemSelectedday,
-                          dropListModel: dropListModeldays,
-                          showIcon: false, // Show Icon in DropDown Title
-                          showArrowIcon: false, // Show Arrow Icon in DropDown
-                          showBorder: true,
-                          paddingTop: 0,
-                          paddingBottom: 0,
-                          paddingLeft: 0,
-                          paddingRight: 0,
-                          borderColor: BC.grey,
-                          icon: Icon(Icons.person, color: BC.appColor),
-                          onOptionSelected: (optionItem) {
-                            optionItemSelectedday = optionItem;
-
-                            setState(() {});
-                          },
-                        ),
-                      ),
-                      Expanded(
                         flex: 1,
                         child: SelectDropList(
                           height: 40.h,
@@ -246,7 +218,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                           itemSelected: optionItemSelectedday1,
                           dropListModel: dropListModeldays1,
                           showIcon: false, // Show Icon in DropDown Title
-                          showArrowIcon: true, // Show Arrow Icon in DropDown
+                          showArrowIcon: false, // Show Arrow Icon in DropDown
                           showBorder: true,
                           paddingTop: 0,
                           paddingBottom: 0,
@@ -260,6 +232,34 @@ class _ServiceProviderState extends State<ServiceProvider> {
                             daysController.text = DateTime.now()
                                 .add(Duration(days: int.parse(optionItem.id!)))
                                 .toString();
+                            setState(() {});
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: SelectDropList(
+                          height: 40.h,
+                          containerDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.transparent),
+                              color: Colors.transparent),
+                          containerPadding: const EdgeInsets.only(left: 10),
+                          containerMargin: EdgeInsets.zero,
+                          itemSelected: optionItemSelectedday,
+                          dropListModel: dropListModeldays,
+                          showIcon: false, // Show Icon in DropDown Title
+                          showArrowIcon: true, // Show Arrow Icon in DropDown
+                          showBorder: true,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                          paddingLeft: 0,
+                          paddingRight: 0,
+                          borderColor: BC.grey,
+                          icon: Icon(Icons.person, color: BC.appColor),
+                          onOptionSelected: (optionItem) {
+                            optionItemSelectedday = optionItem;
+
                             setState(() {});
                           },
                         ),

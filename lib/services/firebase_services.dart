@@ -42,6 +42,7 @@ class FirebaseServices {
     required String ayam,
     required String ayamNumber,
     required List<dynamic> uid,
+    
   }) async {
     var random = Random();
     int randomNumber = random.nextInt(100000000);

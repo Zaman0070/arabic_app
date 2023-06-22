@@ -21,10 +21,10 @@ class Login extends StatefulWidget {
 
 class _LoginPageState extends State<Login> {
   int? length;
-  var countryCodeController = TextEditingController(text: '+92');
+  var countryCodeController = TextEditingController(text: '+966');
   var phoneNumberController = TextEditingController();
   PhoneService service = PhoneService();
-  String countryCode = '+92';
+  String countryCode = '+966';
   bool isSwitched = false;
 
   @override

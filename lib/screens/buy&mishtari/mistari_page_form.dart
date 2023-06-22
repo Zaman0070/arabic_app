@@ -15,7 +15,6 @@ import 'package:waist_app/screens/widget/button.dart';
 import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/widgets/UploadImageButton.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
-
 import '../../controller/user_controller.dart';
 import '../../widgets/arrowButton.dart';
 
@@ -47,7 +46,7 @@ class _MistariPageState extends State<MistariPage> {
   late var addressController = TextEditingController(
       text: userController.currentUser.value.location ?? '');
   String ayamDate = '';
-  String countryCode = '+92';
+  String countryCode = '+966';
 
   bool isSwitched = false;
   bool isSwitched2 = false;
@@ -558,33 +557,33 @@ class _MistariPageState extends State<MistariPage> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: BC.appColor),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 8),
-                            child: Text(
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: BC.appColor),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          textDirection: TextDirection.rtl,
+                          children: [
+                            Text(
                               'المبلغ الاجمالي + العمولة والضريبة',
                               style: TextStyle(fontSize: 16.sp),
                             ),
-                          ),
+                            Text(
+                              '$result ريال ',
+                              textDirection: TextDirection.rtl,
+                              style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: BC.appColor),
+                            )
+                          ],
                         ),
-                        Text(
-                          '$result ريال ',
-                          textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                              color: BC.appColor),
-                        )
-                      ],
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,
@@ -630,7 +629,7 @@ class _MistariPageState extends State<MistariPage> {
                                       msg: 'الرجاء اختيار صورة');
                           await oneSignals.sendNotification(
                               userController.specificUser.value.token!,
-                              controller.currentUser.value.name!,
+                              '${controller.currentUser.value.name!} Send the Request',
                               purposeController.text,
                               'assets/logo/jpeg',
                               token: userController.specificUser.value.token!,

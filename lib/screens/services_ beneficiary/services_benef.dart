@@ -36,7 +36,8 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
   bool isSwitched2 = false;
   int result = 0;
   String countryCode = '+966';
-
+  String? ayam;
+  String? ayamNumber;
   String ayamDate = '';
   DropListModel dropListModel = DropListModel([
     OptionItem(id: "1", title: "     الرياض"),
@@ -235,37 +236,6 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              flex: 3,
-                              child: SelectDropList(
-                                height: 40.h,
-                                containerDecoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border:
-                                        Border.all(color: Colors.transparent),
-                                    color: Colors.transparent),
-                                containerPadding:
-                                    const EdgeInsets.only(left: 10),
-                                containerMargin: EdgeInsets.zero,
-                                itemSelected: optionItemSelectedday,
-                                dropListModel: dropListModeldays,
-                                showIcon: false, // Show Icon in DropDown Title
-                                showArrowIcon:
-                                    false, // Show Arrow Icon in DropDown
-                                showBorder: true,
-                                paddingTop: 0,
-                                paddingBottom: 0,
-                                paddingLeft: 0,
-                                paddingRight: 0,
-                                borderColor: BC.grey,
-                                icon: Icon(Icons.person, color: BC.appColor),
-                                onOptionSelected: (optionItem) {
-                                  optionItemSelected = optionItem;
-
-                                  setState(() {});
-                                },
-                              ),
-                            ),
-                            Expanded(
                               flex: 1,
                               child: SelectDropList(
                                 height: 40.h,
@@ -281,6 +251,42 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                                 dropListModel: dropListModeldays1,
                                 showIcon: false, // Show Icon in DropDown Title
                                 showArrowIcon:
+                                    false, // Show Arrow Icon in DropDown
+                                showBorder: true,
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                borderColor: BC.grey,
+                                icon: Icon(Icons.person, color: BC.appColor),
+                                onOptionSelected: (optionItem) {
+                                  optionItemSelectedday1 = optionItem;
+                                  ayamNumber = optionItem.title;
+                                  timeController.text = optionItem.title;
+                                  timeController.text = DateTime.now()
+                                      .add(Duration(
+                                          days: int.parse(optionItem.id!)))
+                                      .toString();
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: SelectDropList(
+                                height: 40.h,
+                                containerDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border:
+                                        Border.all(color: Colors.transparent),
+                                    color: Colors.transparent),
+                                containerPadding:
+                                    const EdgeInsets.only(left: 10),
+                                containerMargin: EdgeInsets.zero,
+                                itemSelected: optionItemSelectedday,
+                                dropListModel: dropListModeldays,
+                                showIcon: false, // Show Icon in DropDown Title
+                                showArrowIcon:
                                     true, // Show Arrow Icon in DropDown
                                 showBorder: true,
                                 paddingTop: 0,
@@ -290,12 +296,9 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                                 borderColor: BC.grey,
                                 icon: Icon(Icons.person, color: BC.appColor),
                                 onOptionSelected: (optionItem) {
-                                  optionItemSelected = optionItem;
-                                  timeController.text = optionItem.title;
-                                  timeController.text = DateTime.now()
-                                      .add(Duration(
-                                          days: int.parse(optionItem.id!)))
-                                      .toString();
+                                  optionItemSelectedday = optionItem;
+                                  ayam = optionItem.title;
+
                                   setState(() {});
                                 },
                               ),
@@ -461,23 +464,33 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      textDirection: TextDirection.rtl,
-                      children: [
-                        Text(
-                          'المبلغ الاجمالي + العمولة والضريبة',
-                          style: TextStyle(fontSize: 16.sp),
-                        ),
-                        Text(
-                          '$result ريال ',
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: BC.appColor),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                              color: BC.appColor),
-                        )
-                      ],
+                          children: [
+                            Text(
+                              'المبلغ الاجمالي + العمولة والضريبة',
+                              style: TextStyle(fontSize: 16.sp),
+                            ),
+                            Text(
+                              '$result ريال ',
+                              textDirection: TextDirection.rtl,
+                              style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: BC.appColor),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,

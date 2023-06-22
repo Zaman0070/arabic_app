@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
@@ -21,7 +25,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
+  List<String> documentID = [];
+  getOrderNumber() async {
+    await FirebaseFirestore.instance
+        .collection('MishtariProducts')
+        .where('uid', arrayContains: FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        documentID.add(element.id);
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    getOrderNumber();
+    super.initState();
+  }
+
   MishtariController mishtariController = Get.put(MishtariController());
   List<String> imageBanner = [
     'assets/banner2.jpg',
@@ -64,10 +87,12 @@ class _HomePageState extends State<HomePage> {
   final PageController _pageController =
       PageController(viewportFraction: 0.25, keepPage: true, initialPage: 0);
   final GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
-  int _index = 3;
+  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
+    log('$documentID jjjjj');
+
     return Scaffold(
       key: _scaffold,
       endDrawer: const MyDrawer(),
@@ -193,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                   child: PageView.builder(
                     // reverse: true,
                     physics: const BouncingScrollPhysics(),
-                    itemCount: 6,
+                    itemCount: images.length,
                     controller: _pageController,
                     onPageChanged: (int index) =>
                         setState(() => _index = index),
@@ -296,113 +321,128 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                decoration: BoxDecoration(
-                  color: BC.appColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: BC.appColor,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 4),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: BC.appColor,
+              documentID.isNotEmpty
+                  ? StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('MishtariProducts')
+                          .doc(documentID[0])
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.data == null) {
+                          return Container();
+                        }
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 20),
+                          decoration: BoxDecoration(
+                            color: BC.appColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: BC.appColor,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 4),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: BC.appColor,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      const Text(
+                                        'تحويل المبلغ',
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                            const Text(
-                              'تحويل المبلغ',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 4),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: BC.appColor,
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 4),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: BC.appColor,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      const Text(
+                                        'قيد التنفيذ',
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                            const Text(
-                              'قيد التنفيذ',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: 12,
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 4),
+                                        decoration: BoxDecoration(
+                                            color: BC.appColor,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      const Text(
+                                        'استلام المبلغ',
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 4),
+                                        decoration: BoxDecoration(
+                                            color: BC.appColor,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      const Text(
+                                        'تقديم الطلب',
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: BC.appColor,
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                            const Text(
-                              'استلام المبلغ',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: 12,
+                              SizedBox(
+                                height: 10.h,
                               ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: BC.appColor,
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                            const Text(
-                              'تقديم الطلب',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: 12,
+                              MyButton(
+                                name: 'تفاصيل الطلب',
+                                onPressed: () {
+                                  Get.to(() => const Orders());
+                                },
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    MyButton(
-                      name: 'تفاصيل الطلب',
-                      onPressed: () {
-                        Get.to(() => const Orders());
-                        // : Fluttertoast.showToast(
-                        //     msg: 'لم يتم العثور على البيانات');
-                      },
-                    ),
-                  ],
-                ),
-              )
+                            ],
+                          ),
+                        );
+                      })
+                  : Container()
             ],
           ),
         ),

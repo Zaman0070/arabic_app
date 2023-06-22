@@ -37,7 +37,7 @@ class _TheSellerState extends State<TheSeller> {
   late var daysController =
       TextEditingController(text: widget.buyerModel!.days);
   late var secondPartyMobileController = TextEditingController(
-      text: widget.buyerModel!.phoneNumber!.replaceAll('92', ''));
+      text: widget.buyerModel!.phoneNumber!.replaceAll('966', ''));
   List<String> images = [];
   String ayamDate = '';
   bool second = false;
