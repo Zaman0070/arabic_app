@@ -46,7 +46,7 @@ class _MistariPageState extends State<MistariPage> {
   late var addressController = TextEditingController(
       text: userController.currentUser.value.location ?? '');
   String ayamDate = '';
-  String countryCode = '+966';
+  String countryCode = '+92';
 
   bool isSwitched = false;
   bool isSwitched2 = false;

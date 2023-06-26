@@ -12,7 +12,6 @@ import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/order/widget/order_box.dart';
 import 'package:waist_app/screens/seller&baya/theSeller.dart';
 import 'package:waist_app/widgets/loading.dart';
-import 'package:waist_app/widgets/textFormfield.dart';
 
 import '../../widgets/arrowButton.dart';
 import '../orderDetails.dart';
@@ -159,29 +158,34 @@ class _OrdersState extends State<Orders> {
                                                   .currentUser.value.phoneNumber
                                       ? () {
                                           payment(
-                                              context: context,
-                                              pay: () async {
-                                                SmartDialog.showLoading(
-                                                  animationBuilder: (controller,
-                                                      child, animationParam) {
-                                                    return Loading(
-                                                      text: ' ... تحميل ',
-                                                    );
-                                                  },
-                                                );
-                                                Future.delayed(
-                                                    const Duration(
-                                                        milliseconds: 2000),
-                                                    () {
-                                                  Fluttertoast.showToast(
-                                                      msg:
-                                                          'طريقة الدفع لا تعمل');
+                                            context: context,
+                                            pay: () async {
+                                              SmartDialog.showLoading(
+                                                animationBuilder: (controller,
+                                                    child, animationParam) {
+                                                  return Loading(
+                                                    text: ' ... تحميل ',
+                                                  );
+                                                },
+                                              );
+                                              Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 2000),
+                                                  () async {
+                                                await mishtariController
+                                                    .acceptStatus(
+                                                        snapshot.data!
+                                                            .docs[index].id,
+                                                        'payforcash')
+                                                    .whenComplete(() {
                                                   SmartDialog.dismiss();
-                                                  Get.back();
+                                                  Get.to(() => OrdersDetails(
+                                                      buyerModel: buyerData));
+                                                  // Get.back();
                                                 });
-                                              },
-                                              merchantId: merchandId,
-                                              password: password);
+                                              });
+                                            },
+                                          );
                                         }
                                       : () {
                                           Get.to(() => OrdersDetails(
@@ -306,8 +310,6 @@ class _OrdersState extends State<Orders> {
   void payment({
     required BuildContext context,
     required Function() pay,
-    required TextEditingController merchantId,
-    required TextEditingController password,
   }) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -322,7 +324,7 @@ class _OrdersState extends State<Orders> {
       builder: (BuildContext context) {
         // bool onTap = false;
         return SizedBox(
-          height: 450.h,
+          height: 160.h,
           width: 1.sw,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -343,25 +345,18 @@ class _OrdersState extends State<Orders> {
                   ),
                 ),
                 SizedBox(
-                  height: 40.h,
+                  height: 10.h,
                 ),
-                MytextField(
-                  type: TextInputType.name,
-                  controller: merchandId,
-                  text: 'معرّف التاجر',
-                  hint: 'معرّف التاجر',
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                MytextField(
-                  type: TextInputType.name,
-                  controller: password,
-                  text: 'كلمة المرور',
-                  hint: 'كلمة المرور',
+                Text(
+                  'هل أنت متأكد من إتمام الخدمة',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16.sp,
+                      color: Colors.black),
                 ),
                 SizedBox(
-                  height: 20.h,
+                  height: 10.h,
                 ),
                 InkWell(
                   onTap: pay,
@@ -373,7 +368,7 @@ class _OrdersState extends State<Orders> {
                         color: BC.appColor),
                     child: Center(
                       child: Text(
-                        'يدفع',
+                        'دفع نقدا',
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 18.sp,
