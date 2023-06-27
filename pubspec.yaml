@@ -61,6 +61,9 @@ dependencies:
   crypto: ^3.0.3
   convert: ^3.1.1
   url_launcher: ^6.1.11
+  flutter_cache_manager: ^3.3.0
+  grouped_list: ^5.1.2
+  flutter_inset_box_shadow: ^1.0.8
 
 dev_dependencies:
   flutter_test:

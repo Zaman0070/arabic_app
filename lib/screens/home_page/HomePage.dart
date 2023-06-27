@@ -8,7 +8,7 @@ import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/screens/howToUse.dart';
-import 'package:waist_app/screens/messages.dart';
+import 'package:waist_app/screens/chat/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
 import 'package:waist_app/screens/order/order.dart';
 import 'package:waist_app/widgets/myDrawer.dart';

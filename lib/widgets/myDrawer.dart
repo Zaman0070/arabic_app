@@ -5,7 +5,7 @@ import 'package:waist_app/screens/AboutUs.dart';
 import 'package:waist_app/screens/calculator.dart';
 import 'package:waist_app/screens/contactUs.dart';
 import 'package:waist_app/screens/howToUse.dart';
-import 'package:waist_app/screens/messages.dart';
+import 'package:waist_app/screens/chat/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/screens/profile/profile.dart';

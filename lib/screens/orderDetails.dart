@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/OrderDetailBuyer.dart';
+import 'package:waist_app/screens/chat/chat_conversation.dart';
 import 'package:waist_app/widgets/button.dart';
 
 import '../constants/colors.dart';
@@ -19,6 +22,8 @@ class OrdersDetails extends StatefulWidget {
 }
 
 class _OrdersDetailsState extends State<OrdersDetails> {
+  UserController userController = Get.put(UserController());
+
   late DateTime date = DateTime.parse(widget.buyerModel.days!);
   late int difference = DateTime.now().difference(date).inDays;
 
@@ -304,9 +309,31 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                 height: 20.h,
               ),
               MyButton(
-                name: 'محادثة الطرف الأخر',
-                onPressed: () {},
-              ),
+                  name: 'محادثة الطرف الأخر',
+                  onPressed: () async {
+                    await FirebaseFirestore.instance
+                        .collection('Chats')
+                        .doc(
+                            '${widget.buyerModel.uid![0]}+${widget.buyerModel.uid![1]}')
+                        .set({
+                      'show': true,
+                      'time': DateTime.now().microsecondsSinceEpoch,
+                      'chatMap': [
+                        widget.buyerModel.uid![0],
+                        widget.buyerModel.uid![1],
+                      ],
+                      'userName': userController.currentUser.value.name,
+                      'userUid': userController.currentUser.value.uid,
+                      'userToken': userController.currentUser.value.token,
+                    });
+                    Get.to(() => ChatConversation(
+                          chatId:
+                              '${widget.buyerModel.uid![0]}+${widget.buyerModel.uid![1]}',
+                          image: userController.currentUser.value.profileImage!,
+                          name: userController.currentUser.value.name!,
+                          reciverId: widget.buyerModel.uid![1],
+                        ));
+                  }),
               SizedBox(
                 height: 20.h,
               ),

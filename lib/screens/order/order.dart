@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
+import 'package:waist_app/screens/chat/chat_conversation.dart';
 import 'package:waist_app/screens/order/widget/order_box.dart';
 import 'package:waist_app/screens/seller&baya/theSeller.dart';
 import 'package:waist_app/widgets/loading.dart';
@@ -177,11 +177,44 @@ class _OrdersState extends State<Orders> {
                                                         snapshot.data!
                                                             .docs[index].id,
                                                         'payforcash')
-                                                    .whenComplete(() {
+                                                    .whenComplete(() async {
                                                   SmartDialog.dismiss();
-                                                  Get.to(() => OrdersDetails(
-                                                      buyerModel: buyerData));
-                                                  // Get.back();
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('Chats')
+                                                      .doc(
+                                                          '${buyerData.uid![0]}+${buyerData.uid![1]}')
+                                                      .update({
+                                                    'show': true,
+                                                    'time': DateTime.now()
+                                                        .microsecondsSinceEpoch,
+                                                    'chatMap': [
+                                                      buyerData.uid![0],
+                                                      buyerData.uid![1],
+                                                    ],
+                                                    'userName': userController
+                                                        .currentUser.value.name,
+                                                    'userUid': userController
+                                                        .currentUser.value.uid,
+                                                    'userToken': userController
+                                                        .currentUser
+                                                        .value
+                                                        .token,
+                                                  });
+                                                  Get.to(() => ChatConversation(
+                                                        chatId:
+                                                            '${buyerData.uid![0]}+${buyerData.uid![1]}',
+                                                        image: userController
+                                                            .currentUser
+                                                            .value
+                                                            .profileImage!,
+                                                        name: userController
+                                                            .currentUser
+                                                            .value
+                                                            .name!,
+                                                        reciverId:
+                                                            buyerData.uid![1],
+                                                      ));
                                                 });
                                               });
                                             },
