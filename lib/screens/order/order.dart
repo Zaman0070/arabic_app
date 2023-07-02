@@ -184,7 +184,7 @@ class _OrdersState extends State<Orders> {
                                                       .collection('Chats')
                                                       .doc(
                                                           '${buyerData.uid![0]}+${buyerData.uid![1]}')
-                                                      .update({
+                                                      .set({
                                                     'show': true,
                                                     'time': DateTime.now()
                                                         .microsecondsSinceEpoch,

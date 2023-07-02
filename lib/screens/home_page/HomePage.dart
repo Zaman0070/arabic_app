@@ -85,9 +85,9 @@ class _HomePageState extends State<HomePage> {
     ['HistoryEmpty', HistoryEmpty()],
   ];
   final PageController _pageController =
-      PageController(viewportFraction: 0.25, keepPage: true, initialPage: 0);
+      PageController(viewportFraction: 0.25, keepPage: true, initialPage: 2);
   final GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
-  int _index = 0;
+  int _index = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.only(top: 20),
                   child: PageView.builder(
                     // reverse: true,
-                    physics: const BouncingScrollPhysics(),
+                    physics: const ClampingScrollPhysics(),
                     itemCount: images.length,
                     controller: _pageController,
                     onPageChanged: (int index) =>
