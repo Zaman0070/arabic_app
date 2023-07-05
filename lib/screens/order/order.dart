@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:waist_app/constants/colors.dart';
@@ -12,7 +13,6 @@ import 'package:waist_app/screens/chat/chat_conversation.dart';
 import 'package:waist_app/screens/order/widget/order_box.dart';
 import 'package:waist_app/screens/seller&baya/theSeller.dart';
 import 'package:waist_app/widgets/loading.dart';
-
 import '../../widgets/arrowButton.dart';
 import '../orderDetails.dart';
 
@@ -121,7 +121,10 @@ class _OrdersState extends State<Orders> {
                                   DateFormat('dd/MM/yyyy  hh:mm ').format(date),
                               purpose: buyerData.purpose!,
                               orderStatus: 'توصيل طلبية',
-                              onPressed: buyerData.isAccepted == ''
+                              onPressed: buyerData.isAccepted == '' &&
+                                      buyerData.secondPartyMobile ==
+                                          userController
+                                              .currentUser.value.phoneNumber
                                   ? () {
                                       orderConfimation(
                                           context: context,
@@ -130,7 +133,7 @@ class _OrdersState extends State<Orders> {
                                                 .acceptStatus(
                                                     snapshot
                                                         .data!.docs[index].id,
-                                                    'requestForPayment')
+                                                    'sellerAccepted')
                                                 .whenComplete(() {
                                               Get.to(() => TheSeller(
                                                   id: snapshot
@@ -151,79 +154,127 @@ class _OrdersState extends State<Orders> {
                                             Get.back();
                                           });
                                     }
-                                  : buyerData.isAccepted ==
-                                              'requestForPayment' &&
+                                  : buyerData.isAccepted == 'sellerAccepted' &&
                                           buyerData.secondPartyMobile !=
                                               userController
                                                   .currentUser.value.phoneNumber
                                       ? () {
-                                          payment(
-                                            context: context,
-                                            pay: () async {
-                                              SmartDialog.showLoading(
-                                                animationBuilder: (controller,
-                                                    child, animationParam) {
-                                                  return Loading(
-                                                    text: ' ... تحميل ',
-                                                  );
-                                                },
-                                              );
-                                              Future.delayed(
-                                                  const Duration(
-                                                      milliseconds: 2000),
-                                                  () async {
+                                          orderConfimation(
+                                              context: context,
+                                              accpeted: () async {
                                                 await mishtariController
                                                     .acceptStatus(
                                                         snapshot.data!
                                                             .docs[index].id,
-                                                        'payforcash')
-                                                    .whenComplete(() async {
-                                                  SmartDialog.dismiss();
-                                                  await FirebaseFirestore
-                                                      .instance
-                                                      .collection('Chats')
-                                                      .doc(
-                                                          '${buyerData.uid![0]}+${buyerData.uid![1]}')
-                                                      .set({
-                                                    'show': true,
-                                                    'time': DateTime.now()
-                                                        .microsecondsSinceEpoch,
-                                                    'chatMap': [
-                                                      buyerData.uid![0],
-                                                      buyerData.uid![1],
-                                                    ],
-                                                    'userName': userController
-                                                        .currentUser.value.name,
-                                                    'userUid': userController
-                                                        .currentUser.value.uid,
-                                                    'userToken': userController
-                                                        .currentUser
-                                                        .value
-                                                        .token,
-                                                  });
-                                                  Get.to(() => ChatConversation(
-                                                        chatId:
-                                                            '${buyerData.uid![0]}+${buyerData.uid![1]}',
-                                                        image: userController
-                                                            .currentUser
-                                                            .value
-                                                            .profileImage!,
-                                                        name: userController
-                                                            .currentUser
-                                                            .value
-                                                            .name!,
-                                                        reciverId:
-                                                            buyerData.uid![1],
-                                                      ));
+                                                        'buyerAccepted')
+                                                    .whenComplete(() {
+                                                  payment(
+                                                    context: context,
+                                                    pay: () async {
+                                                      SmartDialog.showLoading(
+                                                        animationBuilder:
+                                                            (controller, child,
+                                                                animationParam) {
+                                                          return Loading(
+                                                            text: ' ... تحميل ',
+                                                          );
+                                                        },
+                                                      );
+                                                      Future.delayed(
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  2000),
+                                                          () async {
+                                                        await mishtariController
+                                                            .acceptStatus(
+                                                                snapshot
+                                                                    .data!
+                                                                    .docs[index]
+                                                                    .id,
+                                                                'payforcash')
+                                                            .whenComplete(
+                                                                () async {
+                                                          SmartDialog.dismiss();
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'Chats')
+                                                              .doc(
+                                                                  '${buyerData.uid![0]}+${buyerData.uid![1]}')
+                                                              .set({
+                                                            'show': true,
+                                                            'time': DateTime
+                                                                    .now()
+                                                                .microsecondsSinceEpoch,
+                                                            'chatMap': [
+                                                              buyerData.uid![0],
+                                                              buyerData.uid![1],
+                                                            ],
+                                                            'userName':
+                                                                userController
+                                                                    .currentUser
+                                                                    .value
+                                                                    .name,
+                                                            'userUid':
+                                                                userController
+                                                                    .currentUser
+                                                                    .value
+                                                                    .uid,
+                                                            'userToken':
+                                                                userController
+                                                                    .currentUser
+                                                                    .value
+                                                                    .token,
+                                                          });
+                                                          Get.to(() =>
+                                                              ChatConversation(
+                                                                chatId:
+                                                                    '${buyerData.uid![0]}+${buyerData.uid![1]}',
+                                                                image: userController
+                                                                    .currentUser
+                                                                    .value
+                                                                    .profileImage!,
+                                                                name: userController
+                                                                    .currentUser
+                                                                    .value
+                                                                    .name!,
+                                                                reciverId:
+                                                                    buyerData
+                                                                        .uid![1],
+                                                              ));
+                                                        });
+                                                      });
+                                                    },
+                                                  );
+                                                  // Get.back();
                                                 });
+                                                // Get.back();
+                                              },
+                                              declined: () async {
+                                                await FirebaseFirestore.instance
+                                                    .collection(
+                                                        'MishtariProducts')
+                                                    .doc(snapshot
+                                                        .data!.docs[index].id)
+                                                    .update({
+                                                  'isAccepted': 'declined',
+                                                });
+                                                Get.back();
                                               });
-                                            },
-                                          );
                                         }
-                                      : () {
-                                          Get.to(() => OrdersDetails(
-                                              buyerModel: buyerData));
-                                        },
+                                      : buyerData.isAccepted == '' &&
+                                              buyerData.phoneNumber ==
+                                                  userController.currentUser
+                                                      .value.phoneNumber
+                                          ? () {
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      'يرجى انتظار البائع لقبول العرض');
+                                            }
+                                          : () {
+                                              Get.to(() => OrdersDetails(
+                                                  buyerModel: buyerData));
+                                            },
                             ),
                           );
                         });

@@ -536,7 +536,7 @@ class _TheSellerState extends State<TheSeller> {
                             name: widget.buyerModel!.name,
                             phoneNumber: widget.buyerModel!.phoneNumber,
                             address: widget.buyerModel!.address,
-                            isAccepted: 'requestForPayment',
+                            isAccepted: 'sellerAccepted',
                             ayam: widget.buyerModel!.ayam,
                             ayamNumber: widget.buyerModel!.ayamNumber,
                             uid: widget.buyerModel!.uid,
