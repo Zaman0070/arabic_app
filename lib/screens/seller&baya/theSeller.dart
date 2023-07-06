@@ -367,7 +367,7 @@ class _TheSellerState extends State<TheSeller> {
               Directionality(
                 textDirection: TextDirection.rtl,
                 child: TextFormField(
-                  maxLength: 10,
+                  // maxLength: 12,
                   keyboardType: TextInputType.phone,
                   controller: secondPartyMobileController,
                   textAlign: TextAlign.right,
@@ -375,31 +375,32 @@ class _TheSellerState extends State<TheSeller> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(width: 0.1)),
-                    labelText: 'رقم الهاتف',
+                    labelText: 'رقم هاتف المشتري / البائع',
+
                     hintText: 'XX-XXX-XXXX',
                     contentPadding: const EdgeInsets.only(top: 0, right: 15),
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: BC.appColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 6.6),
-                          child: Directionality(
-                            textDirection: TextDirection.ltr,
-                            child: Text(
-                              countryCode,
-                              style: const TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // suffixIcon: Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Container(
+                    //     decoration: BoxDecoration(
+                    //       color: BC.appColor.withOpacity(0.1),
+                    //       borderRadius: BorderRadius.circular(10),
+                    //     ),
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.symmetric(
+                    //           horizontal: 10, vertical: 6.6),
+                    //       child: Directionality(
+                    //         textDirection: TextDirection.ltr,
+                    //         child: Text(
+                    //           countryCode,
+                    //           style: const TextStyle(
+                    //             color: Colors.black,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ),
                 ),
               ),
@@ -519,10 +520,8 @@ class _TheSellerState extends State<TheSeller> {
                           daysController.text.trim() == '' ||
                           secondPartyMobileController.text.trim() == '' ||
                           isSwitched == false ||
-                          isSwitched2 == false ||
-                          desController.text.trim() == ''
+                          isSwitched2 == false
                       ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
-                      // : imagePickerController.selectedImages.isNotEmpty
                       : await mishtariController.updateMistryData(
                           BuyerModel(
                             price: priceController.text.trim(),
@@ -544,7 +543,6 @@ class _TheSellerState extends State<TheSeller> {
                             orderNumber: widget.buyerModel!.orderNumber,
                           ),
                           widget.id!);
-                  // : Fluttertoast.showToast(msg: 'الرجاء اختيار صورة');
                 },
               ),
               SizedBox(

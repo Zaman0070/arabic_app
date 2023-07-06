@@ -55,7 +55,7 @@ class _LoginPageState extends State<Login> {
             Directionality(
               textDirection: TextDirection.rtl,
               child: TextFormField(
-                maxLength: 10,
+                maxLength: 9,
                 keyboardType: TextInputType.phone,
                 controller: phoneNumberController,
                 textAlign: TextAlign.right,

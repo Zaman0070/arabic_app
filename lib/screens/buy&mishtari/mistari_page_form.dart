@@ -46,7 +46,7 @@ class _MistariPageState extends State<MistariPage> {
   late var addressController = TextEditingController(
       text: userController.currentUser.value.location ?? '');
   String ayamDate = '';
-  String countryCode = '+92';
+  String countryCode = '+966';
 
   bool isSwitched = false;
   bool isSwitched2 = false;
@@ -54,6 +54,7 @@ class _MistariPageState extends State<MistariPage> {
   ImagePickerController imagePickerController =
       Get.put(ImagePickerController());
   OneSignals oneSignals = OneSignals();
+  List<String> uids = [];
 
   List<String> images = [];
   DropListModel dropListModel = DropListModel([
@@ -386,7 +387,7 @@ class _MistariPageState extends State<MistariPage> {
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
-                        maxLength: 10,
+                        maxLength: 9,
                         keyboardType: TextInputType.phone,
                         controller: secondphoneController,
                         textAlign: TextAlign.right,
@@ -394,7 +395,7 @@ class _MistariPageState extends State<MistariPage> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: const BorderSide(width: 0.1)),
-                          labelText: 'رقم الهاتف',
+                          labelText: 'رقم هاتف المشتري / البائع',
                           hintText: 'XX-XXX-XXXX',
                           contentPadding:
                               const EdgeInsets.only(top: 0, right: 15),
@@ -530,6 +531,8 @@ class _MistariPageState extends State<MistariPage> {
                                 .then((value) {
                               List<String> uid =
                                   value.docs.map((e) => e.id).toList();
+                              uids = uid;
+
                               userController.getSpecificUser(uid[0]);
                             });
                             setState(() {
@@ -599,34 +602,45 @@ class _MistariPageState extends State<MistariPage> {
                                   secondphoneController.text.trim() == '' ||
                                   isSwitched == false ||
                                   isSwitched2 == false ||
-                                  desController.text.trim() == '' ||
                                   addressController.text.trim() == ''
                               ? Fluttertoast.showToast(
                                   msg: 'جميع الحقول مطلوبة')
-                              : imagePickerController.selectedImages.isNotEmpty
-                                  ? await FirebaseServices().addMishtriDetails(
-                                      uid: [
-                                        userController.currentUser.value.uid!,
-                                        userController.specificUser.value.uid!
-                                      ],
-                                      name: nameController.text,
-                                      phoneNumber: phoneController.text,
-                                      purpose: purposeController.text,
-                                      days: timeController.text,
-                                      secondPartyMobile:
-                                          '${countryCode.replaceAll('+', '')}${secondphoneController.text}',
-                                      description: desController.text,
-                                      address: addressController.text,
-                                      price: result.toString(),
-                                      agree1: isSwitched,
-                                      agree2: isSwitched2,
-                                      images: images[0],
-                                      isAccepted: '',
-                                      ayam: ayam!,
-                                      ayamNumber: ayamNumber!,
-                                    )
-                                  : Fluttertoast.showToast(
-                                      msg: 'الرجاء اختيار صورة');
+                              : imagePickerController.selectedImages.isEmpty
+                                  ? Fluttertoast.showToast(
+                                      msg: 'الرجاء اختيار صورة')
+                                  : uids.isEmpty
+                                      ? Fluttertoast.showToast(
+                                          msg:
+                                              'مقابل هذا الرقم البائع غير موجود')
+                                      : await FirebaseServices()
+                                          .addMishtriDetails(
+                                          uid: [
+                                            userController
+                                                .currentUser.value.uid!,
+                                            userController
+                                                .specificUser.value.uid!
+                                          ],
+                                          name: nameController.text,
+                                          phoneNumber: phoneController.text,
+                                          purpose: purposeController.text,
+                                          days: timeController.text,
+                                          secondPartyMobile:
+                                              '${countryCode.replaceAll('+', '')}${secondphoneController.text}',
+                                          description: desController.text,
+                                          address: addressController.text,
+                                          price: result.toString(),
+                                          agree1: isSwitched,
+                                          agree2: isSwitched2,
+                                          images: images[0],
+                                          isAccepted: '',
+                                          ayam: ayam!,
+                                          ayamNumber: ayamNumber!,
+                                        );
+
+                          setState(() {
+                            isSwitched = !isSwitched;
+                            isSwitched2 = !isSwitched2;
+                          });
                           await oneSignals.sendNotification(
                               userController.specificUser.value.token!,
                               '${controller.currentUser.value.name!} Send the Request',

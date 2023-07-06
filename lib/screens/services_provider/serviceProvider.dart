@@ -282,7 +282,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(width: 0.1)),
-                    labelText: 'رقم الهاتف',
+                    labelText: 'رقم هاتف المشتري / البائع',
                     hintText: 'XX-XXX-XXXX',
                     contentPadding: const EdgeInsets.only(top: 0, right: 15),
                     suffixIcon: Padding(
