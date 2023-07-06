@@ -5,6 +5,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:waist_app/Services/onsignal.dart';
 import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/controller/user_controller.dart';
@@ -29,6 +30,7 @@ class _OrdersState extends State<Orders> {
   MishtariController mishtariController = Get.put(MishtariController());
   var merchandId = TextEditingController();
   var password = TextEditingController();
+  OneSignals oneSignals = OneSignals();
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +161,21 @@ class _OrdersState extends State<Orders> {
                                               'isAccepted': 'declined',
                                             });
                                             Get.back();
+                                            userController.getSpecificUser(
+                                                buyerData.uid![0]);
+                                            print(
+                                                '${userController.specificUser.value.token}toooken');
+                                            await oneSignals.sendNotification(
+                                                userController
+                                                    .specificUser.value.token!,
+                                                '',
+                                                'طبيق وسيط: تم رفض طلبك (order detail)  من الطرف الآخر وسيتم إعادة المبلغ بعد خصم العمولة',
+                                                'assets/logo/jpeg',
+                                                token: userController
+                                                    .specificUser.value.token!,
+                                                senderName: userController
+                                                    .currentUser.value.name!,
+                                                type: 'mishtri');
                                           });
                                     }
                                   : buyerData.isAccepted == 'sellerAccepted' &&
@@ -367,7 +384,7 @@ class _OrdersState extends State<Orders> {
                       ),
                     ),
                     InkWell(
-                      onTap: accpeted,
+                      onTap: declined,
                       child: Container(
                         width: 0.4.sw,
                         height: 35.h,

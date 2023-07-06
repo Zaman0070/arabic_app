@@ -692,7 +692,7 @@ class _MistariPageState extends State<MistariPage> {
                           await oneSignals.sendNotification(
                               userController.specificUser.value.token!,
                               '${controller.currentUser.value.name!} Send the Request',
-                              purposeController.text,
+                              'مرحبا بك في تطبيق وسيط: يوجد لديك طلب (order detail) يرجى إكمال الطلب',
                               'assets/logo/jpeg',
                               token: userController.specificUser.value.token!,
                               senderName: controller.currentUser.value.name!,
