@@ -10,6 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:waist_app/Services/onsignal.dart';
 import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/image_controller.dart';
+import 'package:waist_app/controller/mishtri_controller.dart';
+import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/screens/widget/button.dart';
 import 'package:waist_app/Services/firebase_services.dart';
@@ -20,7 +22,9 @@ import '../../widgets/arrowButton.dart';
 
 // ignore: must_be_immutable
 class MistariPage extends StatefulWidget {
-  MistariPage({super.key});
+  String? id;
+  BuyerModel? buyerModel;
+  MistariPage({super.key, this.id, this.buyerModel});
 
   @override
   State<MistariPage> createState() => _MistariPageState();
@@ -30,15 +34,19 @@ class _MistariPageState extends State<MistariPage> {
   UserController userController = Get.put(UserController());
   bool value = false;
 
-  var secondphoneController = TextEditingController(text: "");
+  late var secondphoneController = TextEditingController(
+      text: widget.id == '' ? "" : widget.buyerModel!.phoneNumber);
 
-  var commodityController = TextEditingController(text: '0');
+  late var commodityController = TextEditingController(
+      text: widget.id == '' ? '0' : widget.buyerModel!.price);
 
   var purposeController = TextEditingController();
 
-  var desController = TextEditingController();
+  late var desController = TextEditingController(
+      text: widget.id == '' ? '' : widget.buyerModel!.description);
 
-  var timeController = TextEditingController();
+  late var timeController = TextEditingController(
+      text: widget.id == '' ? null : widget.buyerModel!.days);
   late var nameController =
       TextEditingController(text: userController.currentUser.value.name ?? '');
   late var phoneController = TextEditingController(
@@ -55,6 +63,7 @@ class _MistariPageState extends State<MistariPage> {
       Get.put(ImagePickerController());
   OneSignals oneSignals = OneSignals();
   List<String> uids = [];
+  MishtariController mishtariController = Get.put(MishtariController());
 
   List<String> images = [];
   DropListModel dropListModel = DropListModel([
@@ -97,8 +106,10 @@ class _MistariPageState extends State<MistariPage> {
     OptionItem(id: "11", title: "     30"),
   ]);
   OptionItem optionItemSelected = OptionItem(title: "    المدينة");
-  OptionItem optionItemSelectedday = OptionItem(title: "ايام");
-  OptionItem optionItemSelectedday1 = OptionItem(title: "1");
+  late OptionItem optionItemSelectedday =
+      OptionItem(title: widget.id == '' ? "ايام" : widget.buyerModel!.ayam!);
+  late OptionItem optionItemSelectedday1 =
+      OptionItem(title: widget.id == '' ? "1" : widget.buyerModel!.ayamNumber!);
   String? ayam;
   String? ayamNumber;
 
@@ -387,7 +398,7 @@ class _MistariPageState extends State<MistariPage> {
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
-                        maxLength: 9,
+                        maxLength: widget.id == '' ? 9 : 12,
                         keyboardType: TextInputType.phone,
                         controller: secondphoneController,
                         textAlign: TextAlign.right,
@@ -399,28 +410,30 @@ class _MistariPageState extends State<MistariPage> {
                           hintText: 'XX-XXX-XXXX',
                           contentPadding:
                               const EdgeInsets.only(top: 0, right: 15),
-                          suffixIcon: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: BC.appColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 6.6),
-                                child: Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: Text(
-                                    countryCode,
-                                    style: const TextStyle(
-                                      color: Colors.black,
+                          suffixIcon: widget.id == ''
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: BC.appColor.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 6.6),
+                                      child: Directionality(
+                                        textDirection: TextDirection.ltr,
+                                        child: Text(
+                                          countryCode,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          ),
+                                )
+                              : null,
                         ),
                       ),
                     ),
@@ -594,48 +607,83 @@ class _MistariPageState extends State<MistariPage> {
                     AppButton(
                         text: 'تأكيد الطلب و الدفع',
                         onPressed: () async {
-                          nameController.text.trim() == '' ||
-                                  phoneController.text.trim() == '' ||
-                                  purposeController.text.trim() == '' ||
-                                  commodityController.text.trim() == '' ||
-                                  timeController.text.trim() == '' ||
-                                  secondphoneController.text.trim() == '' ||
-                                  isSwitched == false ||
-                                  isSwitched2 == false ||
-                                  addressController.text.trim() == ''
-                              ? Fluttertoast.showToast(
-                                  msg: 'جميع الحقول مطلوبة')
-                              : imagePickerController.selectedImages.isEmpty
+                          widget.id == ''
+                              ? nameController.text.trim() == '' ||
+                                      phoneController.text.trim() == '' ||
+                                      purposeController.text.trim() == '' ||
+                                      commodityController.text.trim() == '' ||
+                                      timeController.text.trim() == '' ||
+                                      secondphoneController.text.trim() == '' ||
+                                      isSwitched == false ||
+                                      isSwitched2 == false ||
+                                      addressController.text.trim() == ''
                                   ? Fluttertoast.showToast(
-                                      msg: 'الرجاء اختيار صورة')
-                                  : uids.isEmpty
+                                      msg: 'جميع الحقول مطلوبة')
+                                  : imagePickerController.selectedImages.isEmpty
                                       ? Fluttertoast.showToast(
-                                          msg:
-                                              'مقابل هذا الرقم البائع غير موجود')
-                                      : await FirebaseServices()
-                                          .addMishtriDetails(
-                                          uid: [
-                                            userController
-                                                .currentUser.value.uid!,
-                                            userController
-                                                .specificUser.value.uid!
-                                          ],
-                                          name: nameController.text,
-                                          phoneNumber: phoneController.text,
-                                          purpose: purposeController.text,
-                                          days: timeController.text,
-                                          secondPartyMobile:
-                                              '${countryCode.replaceAll('+', '')}${secondphoneController.text}',
-                                          description: desController.text,
-                                          address: addressController.text,
-                                          price: result.toString(),
-                                          agree1: isSwitched,
-                                          agree2: isSwitched2,
-                                          images: images[0],
-                                          isAccepted: '',
-                                          ayam: ayam!,
-                                          ayamNumber: ayamNumber!,
-                                        );
+                                          msg: 'الرجاء اختيار صورة')
+                                      : uids.isEmpty
+                                          ? Fluttertoast.showToast(
+                                              msg:
+                                                  'مقابل هذا الرقم البائع غير موجود')
+                                          : await FirebaseServices()
+                                              .addMishtriDetails(
+                                              uid: [
+                                                userController
+                                                    .currentUser.value.uid!,
+                                                userController
+                                                    .specificUser.value.uid!
+                                              ],
+                                              name: nameController.text,
+                                              phoneNumber: phoneController.text,
+                                              purpose: purposeController.text,
+                                              days: timeController.text,
+                                              secondPartyMobile:
+                                                  '${countryCode.replaceAll('+', '')}${secondphoneController.text}',
+                                              description: desController.text,
+                                              address: addressController.text,
+                                              price: result.toString(),
+                                              agree1: isSwitched,
+                                              agree2: isSwitched2,
+                                              images: images[0],
+                                              isAccepted: '',
+                                              ayam: ayam!,
+                                              ayamNumber: ayamNumber!,
+                                            )
+                              : nameController.text.trim() == '' ||
+                                      phoneController.text.trim() == '' ||
+                                      purposeController.text.trim() == '' ||
+                                      commodityController.text.trim() == '' ||
+                                      secondphoneController.text.trim() == '' ||
+                                      isSwitched == false ||
+                                      isSwitched2 == false ||
+                                      addressController.text.trim() == ''
+                                  ? Fluttertoast.showToast(
+                                      msg: 'جميع الحقول مطلوبة')
+                                  : await mishtariController.updateMistryData(
+                                      BuyerModel(
+                                        price: widget.buyerModel!.price,
+                                        days: widget.buyerModel!.days,
+                                        secondPartyMobile: widget
+                                            .buyerModel!.secondPartyMobile,
+                                        agree1: isSwitched,
+                                        agree2: isSwitched2,
+                                        description: desController.text.trim(),
+                                        images: widget.buyerModel!.images,
+                                        name: widget.buyerModel!.name,
+                                        phoneNumber:
+                                            widget.buyerModel!.phoneNumber,
+                                        address: widget.buyerModel!.address,
+                                        isAccepted: 'sellerAccepted',
+                                        ayam: widget.buyerModel!.ayam,
+                                        ayamNumber:
+                                            widget.buyerModel!.ayamNumber,
+                                        uid: widget.buyerModel!.uid,
+                                        purpose: purposeController.text.trim(),
+                                        orderNumber:
+                                            widget.buyerModel!.orderNumber,
+                                      ),
+                                      widget.id!);
 
                           setState(() {
                             isSwitched = !isSwitched;

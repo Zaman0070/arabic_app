@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_model_list/drop_down/model.dart';
 import 'package:dropdown_model_list/drop_down/select_drop_list.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/controller/image_controller.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
+import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
@@ -20,6 +23,7 @@ import '../../widgets/button.dart';
 class TheSeller extends StatefulWidget {
   String? id;
   BuyerModel? buyerModel;
+
   TheSeller({super.key, this.buyerModel, this.id});
 
   @override
@@ -27,23 +31,26 @@ class TheSeller extends StatefulWidget {
 }
 
 class _TheSellerState extends State<TheSeller> {
+  List<String> uids = [];
   MishtariController mishtariController = Get.put(MishtariController());
   ImagePickerController imagePickerController =
       Get.put(ImagePickerController());
-  late var priceController =
-      TextEditingController(text: widget.buyerModel!.price);
-  late var desController =
-      TextEditingController(text: widget.buyerModel!.description);
-  late var daysController =
-      TextEditingController(text: widget.buyerModel!.days);
+  UserController userController = Get.put(UserController());
+  late var priceController = TextEditingController(
+      text: widget.id == '' ? null : widget.buyerModel!.price);
+  late var desController = TextEditingController(
+      text: widget.id == '' ? null : widget.buyerModel!.description);
+  late var daysController = TextEditingController(
+      text: widget.id == '' ? null : widget.buyerModel!.days);
   late var secondPartyMobileController = TextEditingController(
-      text: widget.buyerModel!.phoneNumber!.replaceAll('966', ''));
+      text: widget.id == '' ? null : widget.buyerModel!.phoneNumber);
   List<String> images = [];
   String ayamDate = '';
   bool second = false;
   bool isSwitched = false;
   bool isSwitched2 = false;
   String countryCode = '+966';
+  int result = 0;
 
   DropListModel dropListModeldays = DropListModel([
     OptionItem(id: "1", title: "     ايام"),
@@ -62,10 +69,12 @@ class _TheSellerState extends State<TheSeller> {
     OptionItem(id: "10", title: "     21"),
     OptionItem(id: "11", title: "     30"),
   ]);
-  late OptionItem optionItemSelectedday =
-      OptionItem(title: "    ${widget.buyerModel!.ayam!}");
+  late OptionItem optionItemSelectedday = OptionItem(
+      title: widget.id == '' ? 'ايام' : "    ${widget.buyerModel!.ayam!}");
   late OptionItem optionItemSelectedday1 =
-      OptionItem(title: widget.buyerModel!.ayamNumber!);
+      OptionItem(title: widget.id == '' ? '1' : widget.buyerModel!.ayamNumber!);
+  String? ayam;
+  String? ayamNumber;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +132,9 @@ class _TheSellerState extends State<TheSeller> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          widget.buyerModel!.name!,
+                          widget.id == ''
+                              ? userController.currentUser.value.name!
+                              : widget.buyerModel!.name!,
                           style: TextStyle(
                             fontSize: 13.sp,
                             fontWeight: FontWeight.w600,
@@ -147,7 +158,9 @@ class _TheSellerState extends State<TheSeller> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '+${widget.buyerModel!.phoneNumber!}',
+                          widget.id == ''
+                              ? '+${userController.currentUser.value.phoneNumber!}'
+                              : '+${widget.buyerModel!.phoneNumber!}',
                           style: TextStyle(
                             fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
@@ -171,7 +184,9 @@ class _TheSellerState extends State<TheSeller> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          widget.buyerModel!.address!.trim(),
+                          widget.id == ''
+                              ? userController.currentUser.value.location!
+                              : widget.buyerModel!.address!.trim(),
                           style: TextStyle(
                             fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
@@ -195,25 +210,38 @@ class _TheSellerState extends State<TheSeller> {
                 height: 30.h,
               ),
               UploadButton(
-                image: imagePickerController.selectedImages.isEmpty
-                    ? Container()
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: widget.buyerModel!.images == null
-                            ? Image.file(
-                                File(imagePickerController
-                                    .selectedImages[0].path),
-                                height: 40.h,
-                                width: 40.h,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.network(
-                                widget.buyerModel!.images!,
-                                height: 40.h,
-                                width: 40.h,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
+                image: widget.id == ''
+                    ? imagePickerController.selectedImages.isEmpty
+                        ? Container()
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.file(
+                              File(
+                                  imagePickerController.selectedImages[0].path),
+                              height: 40.h,
+                              width: 40.h,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                    : imagePickerController.selectedImages.isEmpty
+                        ? Container()
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: widget.buyerModel!.images == null
+                                ? Image.file(
+                                    File(imagePickerController
+                                        .selectedImages[0].path),
+                                    height: 40.h,
+                                    width: 40.h,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    widget.buyerModel!.images!,
+                                    height: 40.h,
+                                    width: 40.h,
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
                 press: () {
                   Get.bottomSheet(
                     Container(
@@ -299,34 +327,6 @@ class _TheSellerState extends State<TheSeller> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 3,
-                        child: SelectDropList(
-                          height: 40.h,
-                          containerDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.transparent),
-                              color: Colors.transparent),
-                          containerPadding: const EdgeInsets.only(left: 10),
-                          containerMargin: EdgeInsets.zero,
-                          itemSelected: optionItemSelectedday,
-                          dropListModel: dropListModeldays,
-                          showIcon: false, // Show Icon in DropDown Title
-                          showArrowIcon: false, // Show Arrow Icon in DropDown
-                          showBorder: true,
-                          paddingTop: 0,
-                          paddingBottom: 0,
-                          paddingLeft: 0,
-                          paddingRight: 0,
-                          borderColor: BC.grey,
-                          icon: Icon(Icons.person, color: BC.appColor),
-                          onOptionSelected: (optionItem) {
-                            optionItemSelectedday = optionItem;
-
-                            setState(() {});
-                          },
-                        ),
-                      ),
-                      Expanded(
                         flex: 1,
                         child: SelectDropList(
                           height: 40.h,
@@ -339,7 +339,7 @@ class _TheSellerState extends State<TheSeller> {
                           itemSelected: optionItemSelectedday1,
                           dropListModel: dropListModeldays1,
                           showIcon: false, // Show Icon in DropDown Title
-                          showArrowIcon: true, // Show Arrow Icon in DropDown
+                          showArrowIcon: false, // Show Arrow Icon in DropDown
                           showBorder: true,
                           paddingTop: 0,
                           paddingBottom: 0,
@@ -349,10 +349,39 @@ class _TheSellerState extends State<TheSeller> {
                           icon: Icon(Icons.person, color: BC.appColor),
                           onOptionSelected: (optionItem) {
                             optionItemSelectedday1 = optionItem;
+                            ayamNumber = optionItem.title;
                             daysController.text = optionItem.title;
                             daysController.text = DateTime.now()
                                 .add(Duration(days: int.parse(optionItem.id!)))
                                 .toString();
+                            setState(() {});
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: SelectDropList(
+                          height: 40.h,
+                          containerDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.transparent),
+                              color: Colors.transparent),
+                          containerPadding: const EdgeInsets.only(left: 10),
+                          containerMargin: EdgeInsets.zero,
+                          itemSelected: optionItemSelectedday,
+                          dropListModel: dropListModeldays,
+                          showIcon: false, // Show Icon in DropDown Title
+                          showArrowIcon: true, // Show Arrow Icon in DropDown
+                          showBorder: true,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                          paddingLeft: 0,
+                          paddingRight: 0,
+                          borderColor: BC.grey,
+                          icon: Icon(Icons.person, color: BC.appColor),
+                          onOptionSelected: (optionItem) {
+                            optionItemSelectedday = optionItem;
+                            ayam = optionItem.title;
                             setState(() {});
                           },
                         ),
@@ -376,31 +405,32 @@ class _TheSellerState extends State<TheSeller> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(width: 0.1)),
                     labelText: 'رقم هاتف المشتري / البائع',
-
                     hintText: 'XX-XXX-XXXX',
                     contentPadding: const EdgeInsets.only(top: 0, right: 15),
-                    // suffixIcon: Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: Container(
-                    //     decoration: BoxDecoration(
-                    //       color: BC.appColor.withOpacity(0.1),
-                    //       borderRadius: BorderRadius.circular(10),
-                    //     ),
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.symmetric(
-                    //           horizontal: 10, vertical: 6.6),
-                    //       child: Directionality(
-                    //         textDirection: TextDirection.ltr,
-                    //         child: Text(
-                    //           countryCode,
-                    //           style: const TextStyle(
-                    //             color: Colors.black,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+                    suffixIcon: widget.id == ''
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: BC.appColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6.6),
+                                child: Directionality(
+                                  textDirection: TextDirection.ltr,
+                                  child: Text(
+                                    countryCode,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : null,
                   ),
                 ),
               ),
@@ -424,7 +454,20 @@ class _TheSellerState extends State<TheSeller> {
                   ),
                   InkWell(
                     onTap: () {
+                      FirebaseFirestore.instance
+                          .collection('users')
+                          .where('phoneNumber',
+                              isEqualTo:
+                                  '${countryCode.replaceAll('+', "")}${secondPartyMobileController.text}')
+                          .get()
+                          .then((value) {
+                        List<String> uid = value.docs.map((e) => e.id).toList();
+                        uids = uid;
+
+                        userController.getSpecificUser(uid[0]);
+                      });
                       setState(() {
+                        result = int.parse(priceController.text) + 20;
                         isSwitched = !isSwitched;
                       });
                     },
@@ -522,27 +565,55 @@ class _TheSellerState extends State<TheSeller> {
                           isSwitched == false ||
                           isSwitched2 == false
                       ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
-                      : await mishtariController.updateMistryData(
-                          BuyerModel(
-                            price: priceController.text.trim(),
-                            days: daysController.text.trim(),
-                            secondPartyMobile:
-                                widget.buyerModel!.secondPartyMobile,
-                            agree1: isSwitched,
-                            agree2: isSwitched2,
-                            description: desController.text.trim(),
-                            images: widget.buyerModel!.images,
-                            name: widget.buyerModel!.name,
-                            phoneNumber: widget.buyerModel!.phoneNumber,
-                            address: widget.buyerModel!.address,
-                            isAccepted: 'sellerAccepted',
-                            ayam: widget.buyerModel!.ayam,
-                            ayamNumber: widget.buyerModel!.ayamNumber,
-                            uid: widget.buyerModel!.uid,
-                            purpose: widget.buyerModel!.purpose,
-                            orderNumber: widget.buyerModel!.orderNumber,
-                          ),
-                          widget.id!);
+                      : widget.id == ''
+                          ? await FirebaseServices().addMishtriDetails(
+                              uid: [
+                                userController.currentUser.value.uid!,
+                                userController.specificUser.value.uid!
+                              ],
+                              name: userController.currentUser.value.name!,
+                              phoneNumber:
+                                  userController.currentUser.value.phoneNumber!,
+                              purpose: '',
+                              days: daysController.text,
+                              secondPartyMobile:
+                                  '${countryCode.replaceAll('+', '')}${secondPartyMobileController.text}',
+                              description: desController.text,
+                              address:
+                                  userController.currentUser.value.location!,
+                              price: result.toString(),
+                              agree1: isSwitched,
+                              agree2: isSwitched2,
+                              images: images[0],
+                              isAccepted: '',
+                              ayam: ayam!,
+                              ayamNumber: ayamNumber!,
+                            )
+                          : await mishtariController.updateMistryData(
+                              BuyerModel(
+                                price: priceController.text.trim(),
+                                days: daysController.text.trim(),
+                                secondPartyMobile:
+                                    widget.buyerModel!.secondPartyMobile,
+                                agree1: isSwitched,
+                                agree2: isSwitched2,
+                                description: desController.text.trim(),
+                                images: widget.buyerModel!.images,
+                                name: widget.buyerModel!.name,
+                                phoneNumber: widget.buyerModel!.phoneNumber,
+                                address: widget.buyerModel!.address,
+                                isAccepted: 'sellerAccepted',
+                                ayam: widget.buyerModel!.ayam,
+                                ayamNumber: widget.buyerModel!.ayamNumber,
+                                uid: widget.buyerModel!.uid,
+                                purpose: widget.buyerModel!.purpose,
+                                orderNumber: widget.buyerModel!.orderNumber,
+                              ),
+                              widget.id!);
+                  setState(() {
+                    isSwitched = !isSwitched;
+                    isSwitched2 = !isSwitched2;
+                  });
                 },
               ),
               SizedBox(

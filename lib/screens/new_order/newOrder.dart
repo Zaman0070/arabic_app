@@ -66,14 +66,18 @@ class _NewOrderState extends State<NewOrder> {
                 Expanded(
                     child: InkWell(
                   onTap: () {
-                    Get.to(() => MistariPage());
+                    Get.to(() => MistariPage(
+                          id: '',
+                        ));
                   },
                   child: const Image(image: AssetImage('assets/Group 85.png')),
                 )),
                 Expanded(
                     child: InkWell(
                   onTap: () {
-                    Get.to(() => TheSeller());
+                    Get.to(() => TheSeller(
+                          id: '',
+                        ));
                   },
                   child: const Image(image: AssetImage('assets/Group 84.png')),
                 ))

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:waist_app/constants/colors.dart';
+import 'package:waist_app/model/buyer.dart';
 
+// ignore: must_be_immutable
 class OrderStep extends StatelessWidget {
-  const OrderStep({super.key});
+  BuyerModel buyerModel;
+  OrderStep({super.key, required this.buyerModel});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,13 @@ class OrderStep extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
               decoration: BoxDecoration(
-                  color: BC.appColor, borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(
+                    color: BC.appColor,
+                  ),
+                  color: buyerModel.isAccepted == 'payforcash'
+                      ? BC.appColor
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10)),
             ),
             const Text(
               'استلام المبلغ',
@@ -68,7 +77,13 @@ class OrderStep extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
               decoration: BoxDecoration(
-                  color: BC.appColor, borderRadius: BorderRadius.circular(10)),
+                  color: buyerModel.isAccepted == '' ||
+                          buyerModel.isAccepted == 'payforcash' ||
+                          buyerModel.isAccepted == 'sellerAccepted' ||
+                          buyerModel.isAccepted == 'buyerAccepted'
+                      ? BC.appColor
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(10)),
             ),
             const Text(
               'تقديم الطلب',

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waist_app/constants/colors.dart';
+import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/order/widget/order_step.dart';
 import 'package:waist_app/widgets/button.dart';
 
 // ignore: must_be_immutable
 class OrderBox extends StatelessWidget {
+  BuyerModel buyerModel;
   String orderNumber;
   String date;
   String purpose;
@@ -14,6 +16,7 @@ class OrderBox extends StatelessWidget {
   OrderBox(
       {super.key,
       required this.orderNumber,
+      required this.buyerModel,
       required this.date,
       required this.purpose,
       required this.orderStatus,
@@ -29,7 +32,9 @@ class OrderBox extends StatelessWidget {
           border: Border.all(color: BC.appColor)),
       child: Column(
         children: [
-          const OrderStep(),
+           OrderStep(
+            buyerModel: buyerModel,
+           ),
           SizedBox(
             height: 8.h,
           ),

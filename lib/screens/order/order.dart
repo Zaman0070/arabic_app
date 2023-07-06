@@ -9,6 +9,7 @@ import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
+import 'package:waist_app/screens/buy&mishtari/mistari_page_form.dart';
 import 'package:waist_app/screens/chat/chat_conversation.dart';
 import 'package:waist_app/screens/order/widget/order_box.dart';
 import 'package:waist_app/screens/seller&baya/theSeller.dart';
@@ -116,6 +117,7 @@ class _OrdersState extends State<Orders> {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 14),
                             child: OrderBox(
+                              buyerModel: buyerData,
                               orderNumber: '#${buyerData.orderNumber}',
                               date:
                                   DateFormat('dd/MM/yyyy  hh:mm ').format(date),
@@ -135,10 +137,15 @@ class _OrdersState extends State<Orders> {
                                                         .data!.docs[index].id,
                                                     'sellerAccepted')
                                                 .whenComplete(() {
-                                              Get.to(() => TheSeller(
-                                                  id: snapshot
-                                                      .data!.docs[index].id,
-                                                  buyerModel: buyerData));
+                                              buyerData.purpose == ''
+                                                  ? Get.to(() => MistariPage(
+                                                      id: snapshot
+                                                          .data!.docs[index].id,
+                                                      buyerModel: buyerData))
+                                                  : Get.to(() => TheSeller(
+                                                      id: snapshot
+                                                          .data!.docs[index].id,
+                                                      buyerModel: buyerData));
                                               // Get.back();
                                             });
                                             // Get.back();
