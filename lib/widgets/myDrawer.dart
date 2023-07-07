@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:waist_app/screens/AboutUs.dart';
 import 'package:waist_app/screens/calculator.dart';
 import 'package:waist_app/screens/contactUs.dart';
+import 'package:waist_app/screens/help.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/chat/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
+import 'package:waist_app/screens/order/order.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/screens/profile/profile.dart';
 import 'package:waist_app/screens/wallet.dart';
@@ -130,10 +132,11 @@ class _MyDrawerState extends State<MyDrawer> {
                   height: 10.h,
                 ),
                 InkWell(
-                  // onTap: () {
-                  //   Navigator.of(context)
-                  //       .push(MaterialPageRoute(builder: (context) => viewcart()));
-                  // },
+                  onTap: () {
+                    Get.to(() => Orders(
+                          title: 'طلباتي',
+                        ));
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -264,10 +267,9 @@ class _MyDrawerState extends State<MyDrawer> {
                   height: 10.h,
                 ),
                 InkWell(
-                  // onTap: () {
-                  //   Navigator.of(context)
-                  //       .push(MaterialPageRoute(builder: (context) => viewcart()));
-                  // },
+                  onTap: () {
+                    Get.to(() => Help());
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -345,7 +347,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.to(() =>  ContactUs());
+                    Get.to(() => ContactUs());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,

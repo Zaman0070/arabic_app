@@ -42,6 +42,9 @@ class FirebaseServices {
     required String ayam,
     required String ayamNumber,
     required List<dynamic> uid,
+    required String formType,
+    required String formfillby,
+    required String review,
     
   }) async {
     var random = Random();
@@ -72,6 +75,9 @@ class FirebaseServices {
         ayam: ayam,
         ayamNumber: ayamNumber,
         uid: uid,
+        formType: formType,
+        formfillby: formfillby,
+        review: review,
       );
       await mishtriProduct.doc().set(buyerModel.toMap()).then((value) {
         Fluttertoast.showToast(

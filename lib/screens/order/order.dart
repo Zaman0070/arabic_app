@@ -18,8 +18,10 @@ import 'package:waist_app/widgets/loading.dart';
 import '../../widgets/arrowButton.dart';
 import '../orderDetails.dart';
 
+// ignore: must_be_immutable
 class Orders extends StatefulWidget {
-  const Orders({super.key});
+  String title;
+  Orders({super.key, required this.title});
 
   @override
   State<Orders> createState() => _OrdersState();
@@ -59,9 +61,9 @@ class _OrdersState extends State<Orders> {
                   const SizedBox(
                     width: 30,
                   ),
-                  const Text(
-                    'الطلبات النشطة',
-                    style: TextStyle(
+                  Text(
+                    widget.title,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),

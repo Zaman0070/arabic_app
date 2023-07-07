@@ -461,7 +461,9 @@ class _HomePageState extends State<HomePage> {
                                   MyButton(
                                     name: 'تفاصيل الطلب',
                                     onPressed: () {
-                                      Get.to(() => const Orders());
+                                      Get.to(() => Orders(
+                                            title: 'الطلبات النشطة',
+                                          ));
                                     },
                                   ),
                                 ],

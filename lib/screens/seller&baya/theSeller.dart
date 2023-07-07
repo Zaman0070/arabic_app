@@ -567,6 +567,9 @@ class _TheSellerState extends State<TheSeller> {
                       ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
                       : widget.id == ''
                           ? await FirebaseServices().addMishtriDetails(
+                              review: '',
+                              formfillby: 'buyer',
+                              formType: 'تفاصيل الطلب للمشتري',
                               uid: [
                                 userController.currentUser.value.uid!,
                                 userController.specificUser.value.uid!
@@ -591,6 +594,7 @@ class _TheSellerState extends State<TheSeller> {
                             )
                           : await mishtariController.updateMistryData(
                               BuyerModel(
+                                review: '',
                                 price: priceController.text.trim(),
                                 days: daysController.text.trim(),
                                 secondPartyMobile:
@@ -608,6 +612,8 @@ class _TheSellerState extends State<TheSeller> {
                                 uid: widget.buyerModel!.uid,
                                 purpose: widget.buyerModel!.purpose,
                                 orderNumber: widget.buyerModel!.orderNumber,
+                                formType: widget.buyerModel!.formType,
+                                formfillby: widget.buyerModel!.formfillby,
                               ),
                               widget.id!);
                   setState(() {

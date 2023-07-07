@@ -54,9 +54,9 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                   const SizedBox(
                     width: 30,
                   ),
-                  const Text(
-                    'تفاصيل الطلب للبائع',
-                    style: TextStyle(
+                  Text(
+                    widget.buyerModel.formType!,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),

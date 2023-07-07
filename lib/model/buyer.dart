@@ -20,6 +20,9 @@ class BuyerModel {
   List<dynamic>? uid;
   String? ayam;
   String? ayamNumber;
+  String? formType;
+  String? formfillby;
+  String? review;
   BuyerModel({
     this.name,
     this.phoneNumber,
@@ -37,6 +40,9 @@ class BuyerModel {
     this.uid,
     this.ayam,
     this.ayamNumber,
+    this.formType,
+    this.formfillby,
+    this.review,
   });
 
   BuyerModel copyWith({
@@ -56,6 +62,9 @@ class BuyerModel {
     List<dynamic>? uid,
     String? ayam,
     String? ayamNumber,
+    String? formType,
+    String? formfillby,
+    String? review,
   }) {
     return BuyerModel(
       name: name ?? this.name,
@@ -74,6 +83,9 @@ class BuyerModel {
       uid: uid ?? this.uid,
       ayam: ayam ?? this.ayam,
       ayamNumber: ayamNumber ?? this.ayamNumber,
+      formType: formType ?? this.formType,
+      formfillby: formfillby ?? this.formfillby,
+      review: review ?? this.review,
     );
   }
 
@@ -95,6 +107,9 @@ class BuyerModel {
       'uid': uid,
       'ayam': ayam,
       'ayamNumber': ayamNumber,
+      'formType': formType,
+      'formfillby': formfillby,
+      'review': review,
     };
   }
 
@@ -125,6 +140,10 @@ class BuyerModel {
       ayam: map['ayam'] != null ? map['ayam'] as String : null,
       ayamNumber:
           map['ayamNumber'] != null ? map['ayamNumber'] as String : null,
+      formType: map['formType'] != null ? map['formType'] as String : null,
+      formfillby:
+          map['formfillby'] != null ? map['formfillby'] as String : null,
+      review: map['review'] != null ? map['review'] as String : null,
     );
   }
 
@@ -135,7 +154,7 @@ class BuyerModel {
 
   @override
   String toString() {
-    return 'BuyerModel(name: $name, phoneNumber: $phoneNumber, address: $address, purpose: $purpose, price: $price, description: $description, days: $days, secondPartyMobile: $secondPartyMobile, images: $images, agree1: $agree1, agree2: $agree2, orderNumber: $orderNumber, isAccepted: $isAccepted, uid: $uid, ayam: $ayam, ayamNumber: $ayamNumber)';
+    return 'BuyerModel(name: $name,formType :$formType, phoneNumber: $phoneNumber, address: $address, purpose: $purpose, price: $price, description: $description, days: $days, secondPartyMobile: $secondPartyMobile, images: $images, agree1: $agree1, agree2: $agree2, orderNumber: $orderNumber, isAccepted: $isAccepted, uid: $uid, ayam: $ayam, ayamNumber: $ayamNumber, formfillby: $formfillby, review: $review)';
   }
 
   @override
@@ -157,7 +176,10 @@ class BuyerModel {
         other.isAccepted == isAccepted &&
         listEquals(other.uid, uid) &&
         other.ayam == ayam &&
-        other.ayamNumber == ayamNumber;
+        other.ayamNumber == ayamNumber &&
+        other.formType == formType &&
+        other.formfillby == formfillby&&
+        other.review == review;
   }
 
   @override
@@ -177,6 +199,9 @@ class BuyerModel {
         isAccepted.hashCode ^
         uid.hashCode ^
         ayam.hashCode ^
-        ayamNumber.hashCode;
+        ayamNumber.hashCode ^
+        formType.hashCode ^
+        formfillby.hashCode^
+        review.hashCode;
   }
 }

@@ -628,6 +628,9 @@ class _MistariPageState extends State<MistariPage> {
                                                   'مقابل هذا الرقم البائع غير موجود')
                                           : await FirebaseServices()
                                               .addMishtriDetails(
+
+                                              formfillby: 'seller',
+                                              formType: 'تفاصيل الطلب للبائع',
                                               uid: [
                                                 userController
                                                     .currentUser.value.uid!,
@@ -649,6 +652,7 @@ class _MistariPageState extends State<MistariPage> {
                                               isAccepted: '',
                                               ayam: ayam!,
                                               ayamNumber: ayamNumber!,
+                                              review: '',
                                             )
                               : nameController.text.trim() == '' ||
                                       phoneController.text.trim() == '' ||
@@ -682,6 +686,10 @@ class _MistariPageState extends State<MistariPage> {
                                         purpose: purposeController.text.trim(),
                                         orderNumber:
                                             widget.buyerModel!.orderNumber,
+                                        formType: widget.buyerModel!.formType,
+                                        formfillby:
+                                            widget.buyerModel!.formfillby,
+                                            review: widget.buyerModel!.review,
                                       ),
                                       widget.id!);
 

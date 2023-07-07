@@ -27,7 +27,9 @@ void main() async {
       .setNotificationOpenedHandler((OSNotificationOpenedResult result) async {
     debugPrint('OneSignal: notification opened: ${result.notification.body}');
     if (result.notification.additionalData!['type'] == 'mishtri') {
-      Get.to(() => const Orders());
+      Get.to(() => Orders(
+            title: 'طلباتي',
+          ));
     } else if (result.notification.additionalData!['type'] == 'comment') {
     } else if (result.notification.additionalData!['type'] == 'chat') {
       // Get.to(() => ChatConversation(
