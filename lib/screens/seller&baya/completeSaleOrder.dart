@@ -2,47 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:waist_app/Services/firebase_services.dart';
-import 'package:waist_app/controller/user_controller.dart';
+import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/model/user.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/widgets/button.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 
-import '../constants/colors.dart';
-import '../controller/mishtri_controller.dart';
-import '../widgets/arrowButton.dart';
+import '../../constants/colors.dart';
+import '../../widgets/arrowButton.dart';
 
 // ignore: must_be_immutable
-class CompleteOrder extends StatefulWidget {
-  String id;
-  String type;
+class CompleteSaleOrder extends StatefulWidget {
   BuyerModel buyerModel;
   UserModel userModel;
-  CompleteOrder({
-    super.key,
-    required this.buyerModel,
-    required this.userModel,
-    required this.type,
-    required this.id,
-  });
+  String id;
+  CompleteSaleOrder(
+      {super.key,
+      required this.buyerModel,
+      required this.userModel,
+      required this.id});
+
   @override
-  State<CompleteOrder> createState() => _CompleteOrderState();
+  State<CompleteSaleOrder> createState() => _CompleteOrderState();
 }
 
-class _CompleteOrderState extends State<CompleteOrder> {
-  UserController userController = Get.put(UserController());
+class _CompleteOrderState extends State<CompleteSaleOrder> {
+  MishtariController mishtryController = Get.put(MishtariController());
+
+  late var nameController = TextEditingController(text: widget.buyerModel.name);
+  late var phoneController =
+      TextEditingController(text: '${widget.buyerModel.secondPartyMobile}+');
+  late var addressController =
+      TextEditingController(text: widget.buyerModel.address!.trim());
   bool isSwitched = false;
   bool isSwitched2 = false;
   bool mada = false;
-  late var nameController = TextEditingController(text: widget.buyerModel.name);
-  late var phoneController =
-      TextEditingController(text: '${widget.buyerModel.phoneNumber}+');
-  late var addressController =
-      TextEditingController(text: widget.buyerModel.address!.trim());
+
   bool second = false;
-  MishtariController mishtryController = Get.put(MishtariController());
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +70,7 @@ class _CompleteOrderState extends State<CompleteOrder> {
                       width: 30,
                     ),
                     const Text(
-                      'إكمال طلب الشراء',
+                      'إكمال طلب البيع',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -87,7 +84,7 @@ class _CompleteOrderState extends State<CompleteOrder> {
                   ],
                 ),
                 SizedBox(
-                  height: 20.h,
+                  height: 25.h,
                 ),
                 Container(
                   padding:
@@ -123,8 +120,8 @@ class _CompleteOrderState extends State<CompleteOrder> {
                         ],
                       ),
                       const Divider(),
-                      SizedBox(
-                        height: 10.h,
+                      const SizedBox(
+                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,7 +151,7 @@ class _CompleteOrderState extends State<CompleteOrder> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '+${widget.userModel.phoneNumber!}',
+                            '+${widget.userModel.phoneNumber}',
                             style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
@@ -234,8 +231,8 @@ class _CompleteOrderState extends State<CompleteOrder> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(
-                                width: 5,
+                              SizedBox(
+                                width: 5.w,
                               ),
                               Text(
                                 widget.buyerModel.price!,
@@ -257,11 +254,45 @@ class _CompleteOrderState extends State<CompleteOrder> {
                           ),
                         ],
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 60,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    widget.buyerModel.images!,
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                                color: BC.logo_clr,
+                                borderRadius: BorderRadius.circular(10),
+                                border:
+                                    Border.all(color: const Color(0xff707070))),
+                          ),
+                          Text(
+                            'صورة السلعة',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: BC.lightGrey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
                 const SizedBox(
-                  height: 25,
+                  height: 30,
                 ),
                 MytextField(
                   type: TextInputType.name,
@@ -281,27 +312,6 @@ class _CompleteOrderState extends State<CompleteOrder> {
                 const SizedBox(
                   height: 10,
                 ),
-                // InkWell(
-                //   onTap: () {},
-                //   child: Container(
-                //     width: double.infinity,
-                //     padding: const EdgeInsets.symmetric(vertical: 10),
-                //     decoration: BoxDecoration(
-                //       border: Border.all(width: 1, color: BC.appColor),
-                //       borderRadius: BorderRadius.circular(10),
-                //     ),
-                //     child: Center(
-                //       child: Text(
-                //         'تحميل صورة السلعة',
-                //         style: TextStyle(
-                //             fontWeight: FontWeight.bold,
-                //             color: BC.appColor,
-                //             fontSize: 16),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-
                 MytextField(
                   type: TextInputType.phone,
                   controller: phoneController,
@@ -418,70 +428,38 @@ class _CompleteOrderState extends State<CompleteOrder> {
                   height: 20,
                 ),
                 MyButton(
-                    name: 'تأكيد الطلب',
-                    onPressed: () async {
-                      isSwitched == false || isSwitched2 == false
-                          ? Fluttertoast.showToast(msg: 'msg')
-                          : widget.type == 'add'
-                              ? await FirebaseServices().addMishtriDetails(
-                                  serviceCompleted: false,
-                                  orderCompleted: false,
-                                  orderNumber: widget.buyerModel.orderNumber!,
-                                  formfillby: 'seller',
-                                  formType: 'تفاصيل الطلب للبائع',
-                                  uid: [
-                                    userController.currentUser.value.uid!,
-                                    widget.userModel.uid!
-                                  ],
-                                  name: nameController.text,
-                                  phoneNumber:
-                                      phoneController.text.replaceAll("+", ''),
-                                  purpose: widget.buyerModel.purpose!,
-                                  days: widget.buyerModel.days!,
-                                  secondPartyMobile: widget
-                                      .buyerModel.secondPartyMobile!
-                                      .replaceAll('+', ''),
-                                  description: widget.buyerModel.description!,
-                                  address: addressController.text,
-                                  price: widget.buyerModel.price!,
-                                  agree1: isSwitched,
-                                  agree2: isSwitched2,
-                                  images: widget.buyerModel.images!,
-                                  isAccepted: '',
-                                  ayam: widget.buyerModel.ayam!,
-                                  ayamNumber: widget.buyerModel.ayamNumber!,
-                                  review: '',
-                                )
-                              : await mishtryController.updateMistryData(
-                                  BuyerModel(
-                                    price: widget.buyerModel.price,
-                                    days: widget.buyerModel.days,
-                                    secondPartyMobile:
-                                        widget.buyerModel.secondPartyMobile,
-                                    agree1: isSwitched,
-                                    agree2: isSwitched2,
-                                    description: widget.buyerModel.description,
-                                    images: widget.buyerModel.images,
-                                    name: widget.buyerModel.name,
-                                    phoneNumber: widget.buyerModel.phoneNumber,
-                                    address: widget.buyerModel.address,
-                                    isAccepted: 'sellerAccepted',
-                                    ayam: widget.buyerModel.ayam,
-                                    ayamNumber: widget.buyerModel.ayamNumber,
-                                    uid: widget.buyerModel.uid,
-                                    purpose: widget.buyerModel.purpose,
-                                    orderNumber: widget.buyerModel.orderNumber,
-                                    formType: widget.buyerModel.formType,
-                                    formfillby: widget.buyerModel.formfillby,
-                                    review: widget.buyerModel.review,
-                                    orderCompleted: false,
-                                    serviceCompleted: false,
-                                  ),
-                                  widget.id);
-                    }),
-                SizedBox(
-                  height: 20.h,
-                ),
+                  name: 'تأكيد الطلب والدفع',
+                  onPressed: () async {
+                    isSwitched == false || isSwitched2 == false
+                        ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
+                        : await mishtryController.updateMistryData(
+                            BuyerModel(
+                              price: widget.buyerModel.price,
+                              days: widget.buyerModel.days,
+                              secondPartyMobile:
+                                  widget.buyerModel.secondPartyMobile,
+                              agree1: isSwitched,
+                              agree2: isSwitched2,
+                              description: widget.buyerModel.description,
+                              images: widget.buyerModel.images,
+                              name: widget.buyerModel.name,
+                              phoneNumber: widget.buyerModel.phoneNumber,
+                              address: widget.buyerModel.address,
+                              isAccepted: 'buyerAccepted',
+                              ayam: widget.buyerModel.ayam,
+                              ayamNumber: widget.buyerModel.ayamNumber,
+                              uid: widget.buyerModel.uid,
+                              purpose: widget.buyerModel.purpose,
+                              orderNumber: widget.buyerModel.orderNumber,
+                              formType: widget.buyerModel.formType,
+                              formfillby: widget.buyerModel.formfillby,
+                              review: widget.buyerModel.review,
+                              orderCompleted: false,
+                              serviceCompleted: false,
+                            ),
+                            widget.id);
+                  },
+                )
               ],
             ),
           ),

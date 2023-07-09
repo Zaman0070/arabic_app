@@ -15,7 +15,7 @@ import 'package:waist_app/controller/image_controller.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/model/user.dart';
-import 'package:waist_app/screens/completePurchaseOrder.dart';
+import 'package:waist_app/screens/buy&mishtari/completePurchaseOrder.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/screens/widget/button.dart';
 import 'package:waist_app/widgets/UploadImageButton.dart';

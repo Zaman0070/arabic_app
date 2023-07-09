@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:waist_app/screens/completeSaleOrder.dart';
+import 'package:waist_app/screens/seller&baya/completeSaleOrder.dart';
 import 'package:waist_app/widgets/button.dart';
 
 
@@ -417,8 +417,8 @@ class _CompleteOrderState extends State<CompleteServiceRequest> {
               MyButton(
                 name: 'تأكيد الطلب',
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => CompleteSaleOrder()));
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => CompleteSaleOrder()));
                 },
               )
             ],

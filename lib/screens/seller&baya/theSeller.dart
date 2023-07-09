@@ -466,6 +466,7 @@ class _TheSellerState extends State<TheSeller> {
                         uids = uid;
 
                         userController.getSpecificUser(uid[0]);
+                        print(uids[0]);
                       });
                       setState(() {
                         result = int.parse(priceController.text) + 20;
@@ -570,8 +571,8 @@ class _TheSellerState extends State<TheSeller> {
                       ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
                       : widget.id == ''
                           ? await FirebaseServices().addMishtriDetails(
-                            serviceCompleted: false,
-                            orderCompleted: false,
+                              serviceCompleted: false,
+                              orderCompleted: false,
                               orderNumber: randomNumber,
                               review: '',
                               formfillby: 'buyer',

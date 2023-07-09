@@ -11,8 +11,9 @@ import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/bottom_nav/bottomNavi.dart';
-import 'package:waist_app/screens/completePurchaseOrder.dart';
+import 'package:waist_app/screens/buy&mishtari/completePurchaseOrder.dart';
 import 'package:waist_app/screens/order/widget/order_box.dart';
+import 'package:waist_app/screens/seller&baya/completeSaleOrder.dart';
 import 'package:waist_app/widgets/loading.dart';
 import '../../widgets/arrowButton.dart';
 import 'orderDetails.dart';
@@ -118,8 +119,6 @@ class _OrdersState extends State<Orders> {
                           physics: const ScrollPhysics(),
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
-                            print(userController.currentUser.value.phoneNumber);
-
                             BuyerModel buyerData = BuyerModel.fromMap(
                                 snapshot.data!.docs[index].data());
                             DateTime date = DateTime.parse(buyerData.days!);
@@ -142,30 +141,42 @@ class _OrdersState extends State<Orders> {
                                         orderConfimation(
                                             context: context,
                                             accpeted: () async {
-                                              await mishtariController
-                                                  .acceptStatus(
-                                                      snapshot
-                                                          .data!.docs[index].id,
-                                                      'sellerAccepted')
-                                                  .whenComplete(() {
-                                                Get.to(() => CompleteOrder(
-                                                    id: snapshot
-                                                        .data!.docs[index].id,
-                                                    type: 'update',
-                                                    userModel: userController
-                                                        .specificUser.value,
-                                                    buyerModel: buyerData));
-                                                // buyerData.purpose == ''
-                                                //     ? Get.to(() => MistariPage(
-                                                //         id: snapshot.data!
-                                                //             .docs[index].id,
-                                                //         buyerModel: buyerData))
-                                                // : Get.to(() => TheSeller(
-                                                //     id: snapshot.data!
-                                                //         .docs[index].id,
-                                                //     buyerModel: buyerData));
-                                                // Get.back();
-                                              });
+                                              buyerData.formType == 'seller'
+                                                  ? await mishtariController
+                                                      .acceptStatus(
+                                                          snapshot.data!
+                                                              .docs[index].id,
+                                                          'sellerAccepted')
+                                                      .whenComplete(() {
+                                                      Get.to(() => CompleteOrder(
+                                                          id: snapshot.data!
+                                                              .docs[index].id,
+                                                          type: 'update',
+                                                          userModel:
+                                                              userController
+                                                                  .specificUser
+                                                                  .value,
+                                                          buyerModel:
+                                                              buyerData));
+                                                    })
+                                                  : await mishtariController
+                                                      .acceptStatus(
+                                                          snapshot.data!
+                                                              .docs[index].id,
+                                                          'byerAccepted')
+                                                      .whenComplete(() {
+                                                      Get.to(() =>
+                                                          CompleteSaleOrder(
+                                                            id: snapshot.data!
+                                                                .docs[index].id,
+                                                            buyerModel:
+                                                                buyerData,
+                                                            userModel:
+                                                                userController
+                                                                    .specificUser
+                                                                    .value,
+                                                          ));
+                                                    });
                                             },
                                             declined: () async {
                                               await FirebaseFirestore.instance
@@ -179,8 +190,6 @@ class _OrdersState extends State<Orders> {
                                               Get.back();
                                               userController.getSpecificUser(
                                                   buyerData.uid![0]);
-                                              print(
-                                                  '${userController.specificUser.value.token}toooken');
                                               await oneSignals.sendNotification(
                                                   userController.specificUser
                                                       .value.token!,

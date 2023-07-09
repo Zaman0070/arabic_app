@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/screens/AboutUs.dart';
+import 'package:waist_app/screens/auth/login.dart';
 import 'package:waist_app/screens/calculator.dart';
 import 'package:waist_app/screens/contactUs/contactUs.dart';
 import 'package:waist_app/screens/help.dart';
@@ -397,7 +398,11 @@ class _MyDrawerState extends State<MyDrawer> {
                   height: 40.h,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    await FirebaseAuth.instance
+                        .signOut()
+                        .whenComplete(() => Get.offAll(() => Login()));
+                  },
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 10),
@@ -511,9 +516,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     height: 20,
                   ),
                   MyButton(
-                    onPressed: () async {
-                      await FirebaseServices().logout();
-                    },
+                    onPressed: () {},
                     name: 'تغيير اللغة',
                   )
                 ],
