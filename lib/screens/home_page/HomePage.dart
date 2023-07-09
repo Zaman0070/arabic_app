@@ -11,6 +11,7 @@ import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/chat/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
+import 'package:waist_app/screens/notification.dart';
 import 'package:waist_app/screens/order/order.dart';
 import 'package:waist_app/widgets/myDrawer.dart';
 import '../../constants/colors.dart';
@@ -119,7 +120,9 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(() => const NotificationsPage());
+                      },
                       icon: Icon(
                         Icons.notifications,
                         size: 30.h,
