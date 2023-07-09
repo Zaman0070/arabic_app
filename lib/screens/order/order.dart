@@ -14,6 +14,7 @@ import 'package:waist_app/screens/bottom_nav/bottomNavi.dart';
 import 'package:waist_app/screens/buy&mishtari/completePurchaseOrder.dart';
 import 'package:waist_app/screens/order/widget/order_box.dart';
 import 'package:waist_app/screens/seller&baya/completeSaleOrder.dart';
+import 'package:waist_app/screens/services_provider/completeService.dart';
 import 'package:waist_app/widgets/loading.dart';
 import '../../widgets/arrowButton.dart';
 import 'orderDetails.dart';
@@ -159,24 +160,78 @@ class _OrdersState extends State<Orders> {
                                                           buyerModel:
                                                               buyerData));
                                                     })
-                                                  : await mishtariController
-                                                      .acceptStatus(
-                                                          snapshot.data!
-                                                              .docs[index].id,
-                                                          'byerAccepted')
-                                                      .whenComplete(() {
-                                                      Get.to(() =>
-                                                          CompleteSaleOrder(
-                                                            id: snapshot.data!
-                                                                .docs[index].id,
-                                                            buyerModel:
-                                                                buyerData,
-                                                            userModel:
-                                                                userController
-                                                                    .specificUser
-                                                                    .value,
-                                                          ));
-                                                    });
+                                                  : buyerData.formType ==
+                                                          'buyer'
+                                                      ? await mishtariController
+                                                          .acceptStatus(
+                                                              snapshot
+                                                                  .data!
+                                                                  .docs[index]
+                                                                  .id,
+                                                              'byerAccepted')
+                                                          .whenComplete(() {
+                                                          Get.to(() =>
+                                                              CompleteSaleOrder(
+                                                                id: snapshot
+                                                                    .data!
+                                                                    .docs[index]
+                                                                    .id,
+                                                                buyerModel:
+                                                                    buyerData,
+                                                                userModel:
+                                                                    userController
+                                                                        .specificUser
+                                                                        .value,
+                                                              ));
+                                                        })
+                                                      : buyerData.formType ==
+                                                              'serviceProvider'
+                                                          ? await mishtariController
+                                                              .acceptStatus(
+                                                                  snapshot
+                                                                      .data!
+                                                                      .docs[
+                                                                          index]
+                                                                      .id,
+                                                                  'byerAccepted')
+                                                              .whenComplete(() {
+                                                              Get.to(() =>
+                                                                  CompleteServiceProvider(
+                                                                    id: snapshot
+                                                                        .data!
+                                                                        .docs[
+                                                                            index]
+                                                                        .id,
+                                                                    buyerModel:
+                                                                        buyerData,
+                                                                    userModel: userController
+                                                                        .specificUser
+                                                                        .value,
+                                                                  ));
+                                                            })
+                                                          : await mishtariController
+                                                              .acceptStatus(
+                                                                  snapshot
+                                                                      .data!
+                                                                      .docs[
+                                                                          index]
+                                                                      .id,
+                                                                  'byerAccepted')
+                                                              .whenComplete(() {
+                                                              Get.to(() =>
+                                                                  CompleteServiceProvider(
+                                                                    id: snapshot
+                                                                        .data!
+                                                                        .docs[
+                                                                            index]
+                                                                        .id,
+                                                                    buyerModel:
+                                                                        buyerData,
+                                                                    userModel: userController
+                                                                        .specificUser
+                                                                        .value,
+                                                                  ));
+                                                            });
                                             },
                                             declined: () async {
                                               await FirebaseFirestore.instance

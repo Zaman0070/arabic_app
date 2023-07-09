@@ -1,9 +1,14 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_model_list/dropdown_model_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/Services/firebase_services.dart';
+import 'package:waist_app/Services/onsignal.dart';
+import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 
@@ -22,7 +27,14 @@ class _ServiceProviderState extends State<ServiceProvider> {
   var desController = TextEditingController();
   var daysController = TextEditingController();
   var secondPartyMobileController = TextEditingController();
+  UserController userController = Get.put(UserController());
+
   List<String> images = [];
+  int result = 0;
+  List<String> uids = [];
+  OneSignals oneSignals = OneSignals();
+
+
   String ayamDate = '';
   bool second = false;
   bool isSwitched = false;
@@ -48,6 +60,8 @@ class _ServiceProviderState extends State<ServiceProvider> {
   ]);
   OptionItem optionItemSelectedday = OptionItem(title: "    ايام");
   OptionItem optionItemSelectedday1 = OptionItem(title: "1");
+  String? ayam;
+  String? ayamNumber;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,10 +118,10 @@ class _ServiceProviderState extends State<ServiceProvider> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'محمد وحيد',
+                        Text(
+                          userController.currentUser.value.name!,
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -128,10 +142,10 @@ class _ServiceProviderState extends State<ServiceProvider> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          '+966 xx-xxx-xxxx',
+                        Text(
+                          '+${userController.currentUser.value.phoneNumber!}',
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -152,10 +166,10 @@ class _ServiceProviderState extends State<ServiceProvider> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'شارع  9 جبل حفيت',
+                        Text(
+                          userController.currentUser.value.location!,
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -228,6 +242,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                           icon: Icon(Icons.person, color: BC.appColor),
                           onOptionSelected: (optionItem) {
                             optionItemSelectedday1 = optionItem;
+                            ayamNumber = optionItem.title;
                             daysController.text = optionItem.title;
                             daysController.text = DateTime.now()
                                 .add(Duration(days: int.parse(optionItem.id!)))
@@ -259,6 +274,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                           icon: Icon(Icons.person, color: BC.appColor),
                           onOptionSelected: (optionItem) {
                             optionItemSelectedday = optionItem;
+                            ayam = optionItem.title;
 
                             setState(() {});
                           },
@@ -330,8 +346,22 @@ class _ServiceProviderState extends State<ServiceProvider> {
                   ),
                   InkWell(
                     onTap: () {
+                      FirebaseFirestore.instance
+                          .collection('users')
+                          .where('phoneNumber',
+                              isEqualTo:
+                                  '${countryCode.replaceAll('+', "")}${secondPartyMobileController.text}')
+                          .get()
+                          .then((value) {
+                        List<String> uid = value.docs.map((e) => e.id).toList();
+                        uids = uid;
+
+                        userController.getSpecificUser(uid[0]);
+                        print(uids[0]);
+                      });
                       setState(() {
                         isSwitched = !isSwitched;
+                        result = int.parse(priceController.text) + 20;
                       });
                     },
                     child: Container(
@@ -422,21 +452,50 @@ class _ServiceProviderState extends State<ServiceProvider> {
               MyButton(
                 name: 'تأكيد الطلب',
                 onPressed: () async {
+                  var random = Random();
+                  int randomNumber = random.nextInt(100000000);
                   priceController.text.trim() == '' ||
                           daysController.text.trim() == '' ||
                           secondPartyMobileController.text.trim() == '' ||
                           isSwitched == false ||
-                          isSwitched2 == false ||
-                          desController.text.trim() == ''
+                          isSwitched2 == false
                       ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
-                      : await FirebaseServices().addServiceProvider(
-                          days: ayamDate,
-                          secondPartyMobile: secondPartyMobileController.text,
+                      : await FirebaseServices().addMishtriDetails(
+                          serviceCompleted: false,
+                          orderCompleted: false,
+                          orderNumber: randomNumber,
+                          review: '',
+                          formfillby: 'serviceProvider',
+                          formType: 'تفاصيل الطلب للمشتري',
+                          uid: [
+                            userController.currentUser.value.uid!,
+                            userController.specificUser.value.uid!
+                          ],
+                          name: userController.currentUser.value.name!,
+                          phoneNumber:
+                              userController.currentUser.value.phoneNumber!,
+                          purpose: '',
+                          days: daysController.text,
+                          secondPartyMobile:
+                              '${countryCode.replaceAll('+', '')}${secondPartyMobileController.text}',
                           description: desController.text,
-                          price: priceController.text,
+                          address: userController.currentUser.value.location!,
+                          price: result.toString(),
                           agree1: isSwitched,
                           agree2: isSwitched2,
+                          images: '',
+                          isAccepted: '',
+                          ayam: ayam!,
+                          ayamNumber: ayamNumber!,
                         );
+                          await oneSignals.sendNotification(
+                              userController.specificUser.value.token!,
+                              '${userController.currentUser.value.name!} Send the Request',
+                              'مرحبا بك في تطبيق وسيط: يوجد لديك طلب (order detail) يرجى إكمال الطلب',
+                              'assets/logo/jpeg',
+                              token: userController.specificUser.value.token!,
+                              senderName: userController.currentUser.value.name!,
+                              type: 'mishtri');
                 },
               ),
               SizedBox(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/widgets/button.dart';
@@ -7,8 +8,16 @@ import 'package:waist_app/widgets/button.dart';
 import '../../constants/colors.dart';
 import '../../widgets/arrowButton.dart';
 
-class Wallet extends StatelessWidget {
+class Wallet extends StatefulWidget {
   const Wallet({super.key});
+
+  @override
+  State<Wallet> createState() => _WalletState();
+}
+
+class _WalletState extends State<Wallet> {
+  bool isSwitched = false;
+  bool isSwitched2 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -109,15 +118,104 @@ class Wallet extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
+              SizedBox(
+                height: 12.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 300.w,
+                    child: Text(
+                      'STC Pay',
+                      textDirection: TextDirection.rtl,
+                      style: TextStyle(fontSize: 15.sp),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        isSwitched = !isSwitched;
+                      });
+                    },
+                    child: Container(
+                      width: 20.h,
+                      height: 20.h,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: BC.appColor),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Icon(
+                        Icons.check,
+                        color: isSwitched ? BC.appColor : Colors.transparent,
+                        size: 15.h,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 300.w,
+                    child: Text(
+                      'Bank Transfer',
+                      textDirection: TextDirection.rtl,
+                      style: TextStyle(fontSize: 15.sp),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        isSwitched2 = !isSwitched2;
+                      });
+                    },
+                    child: Container(
+                      width: 20.h,
+                      height: 20.h,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: BC.appColor),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Icon(
+                        Icons.check,
+                        color: isSwitched2 ? BC.appColor : Colors.transparent,
+                        size: 15.h,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 12,
+              ),
               Padding(
                 padding: const EdgeInsets.only(right: 200),
                 child: MyButton(
-                  name: 'سحب الرصيد',
-                  onPressed: () {
+                    name: 'سحب الرصيد',
+                    onPressed: isSwitched == false && isSwitched2 == false
+                        ? () {
+                            Fluttertoast.showToast(
+                                msg: 'الرجاء تحديد بنك واحد');
+                          }
+                        : () {
+                            Fluttertoast.showToast(msg: 'تم سحب الرصيد بنجاح');
+                            Get.back();
+                          }
                     // Navigator.of(context).push(
                     //     MaterialPageRoute(builder: (context) => CompleteOrder()));
-                  },
-                ),
+
+                    ),
               ),
             ],
           ),

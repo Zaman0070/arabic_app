@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:waist_app/Services/firebase_services.dart';
+import 'package:waist_app/Services/onsignal.dart';
 import 'package:waist_app/controller/image_controller.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/controller/user_controller.dart';
@@ -33,6 +34,8 @@ class TheSeller extends StatefulWidget {
 
 class _TheSellerState extends State<TheSeller> {
   List<String> uids = [];
+  OneSignals oneSignals = OneSignals();
+
   MishtariController mishtariController = Get.put(MishtariController());
   ImagePickerController imagePickerController =
       Get.put(ImagePickerController());
@@ -623,10 +626,18 @@ class _TheSellerState extends State<TheSeller> {
                                 formfillby: widget.buyerModel!.formfillby,
                               ),
                               widget.id!);
-                  setState(() {
-                    isSwitched = !isSwitched;
-                    isSwitched2 = !isSwitched2;
-                  });
+                  await oneSignals.sendNotification(
+                      userController.specificUser.value.token!,
+                      '${userController.currentUser.value.name!} Send the Request',
+                      'مرحبا بك في تطبيق وسيط: يوجد لديك طلب (order detail) يرجى إكمال الطلب',
+                      'assets/logo/jpeg',
+                      token: userController.specificUser.value.token!,
+                      senderName: userController.currentUser.value.name!,
+                      type: 'mishtri');
+                  // setState(() {
+                  //   isSwitched = !isSwitched;
+                  //   isSwitched2 = !isSwitched2;
+                  // });
                 },
               ),
               SizedBox(

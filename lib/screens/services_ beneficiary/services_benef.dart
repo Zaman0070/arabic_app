@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_model_list/drop_down/model.dart';
 import 'package:dropdown_model_list/drop_down/select_drop_list.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/user_controller.dart';
+import 'package:waist_app/model/user.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/screens/widget/button.dart';
 import 'package:waist_app/Services/firebase_services.dart';
@@ -24,6 +28,7 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
   bool value = false;
 
   var secondphoneController = TextEditingController();
+  UserController userController = Get.put(UserController());
 
   var commodityController = TextEditingController(text: '0');
 
@@ -35,6 +40,9 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
   bool isSwitched = false;
   bool isSwitched2 = false;
   int result = 0;
+  UserModel userModel = UserModel();
+  List<String> uids = [];
+
   String countryCode = '+966';
   String? ayam;
   String? ayamNumber;
@@ -439,6 +447,22 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                         ),
                         InkWell(
                           onTap: () {
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .where('phoneNumber',
+                                    isEqualTo:
+                                        '${countryCode.replaceAll('+', "")}${secondphoneController.text}')
+                                .get()
+                                .then((value) {
+                              List<String> uid =
+                                  value.docs.map((e) => e.id).toList();
+                              UserModel userOther =
+                                  UserModel.fromMap(value.docs.first.data());
+                              uids = uid;
+                              userModel = userOther;
+                              userController.getSpecificUser(uid[0]);
+                            });
+
                             setState(() {
                               isSwitched2 = !isSwitched2;
                               result = int.parse(commodityController.text) + 20;
@@ -498,6 +522,8 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                     AppButton(
                         text: 'تأكيد الطلب و الدفع',
                         onPressed: () async {
+                          var random = Random();
+                          int randomNumber = random.nextInt(100000000);
                           nameController.text.trim() == '' ||
                                   phoneController.text.trim() == '' ||
                                   purposeController.text.trim() == '' ||
@@ -505,23 +531,36 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                                   timeController.text.trim() == '' ||
                                   secondphoneController.text.trim() == '' ||
                                   isSwitched == false ||
-                                  isSwitched2 == false ||
-                                  desController.text.trim() == '' ||
-                                  addressController.text.trim() == ''
+                                  isSwitched2 == false
                               ? Fluttertoast.showToast(
                                   msg: 'جميع الحقول مطلوبة')
-                              : await FirebaseServices().addServiceBeneficary(
+                              : await FirebaseServices().addMishtriDetails(
+                                  orderNumber: randomNumber,
+                                  formfillby: 'serviceBeneficiary',
+                                  formType: 'تفاصيل الطلب للبائع',
+                                  uid: [
+                                    userController.currentUser.value.uid!,
+                                    userController.specificUser.value.uid!
+                                  ],
                                   name: nameController.text,
                                   phoneNumber: phoneController.text,
                                   purpose: purposeController.text,
-                                  days: ayamDate,
-                                  secondPartyMobile: secondphoneController.text,
+                                  days: timeController.text,
+                                  secondPartyMobile:
+                                      '${countryCode.replaceAll('+', '')}${secondphoneController.text}',
                                   description: desController.text,
                                   address: addressController.text,
                                   price: result.toString(),
                                   agree1: isSwitched,
                                   agree2: isSwitched2,
-                                );
+                                  images: '',
+                                  isAccepted: '',
+                                  ayam: ayam!,
+                                  ayamNumber: ayamNumber!,
+                                  review: '',
+                                  orderCompleted: false,
+                                  serviceCompleted: false);
+                                  
                         }),
                     SizedBox(
                       height: 20.h,

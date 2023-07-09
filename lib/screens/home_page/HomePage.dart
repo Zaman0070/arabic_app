@@ -227,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                         setState(() => _index = index),
                     itemBuilder: (_, i) {
                       return Transform.scale(
-                        scale: i == _index ? 1.5 : 1.0,
+                        scale: i == _index ? 1.5 : 0.7,
                         //scaleX: 20,
                         child: Padding(
                           padding: const EdgeInsets.only(
@@ -388,6 +388,11 @@ class _HomePageState extends State<HomePage> {
                           arrayContains: FirebaseAuth.instance.currentUser!.uid)
                       .snapshots(),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
                     if (snapshot.data!.docs.isEmpty) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),

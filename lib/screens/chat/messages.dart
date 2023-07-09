@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,38 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
   UserController userController = Get.put(UserController());
+  int seconds = 0;
+  int minutes = 0;
+  int hours = 0;
+  Timer? timer;
+  @override
+  void initState() {
+    startTimer();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer!.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      setState(() {
+        seconds++;
+      });
+      if (seconds == 2) {
+        stopTimer();
+      }
+    });
+  }
+
+  void stopTimer() {
+    timer!.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,13 +114,9 @@ class _MessagesState extends State<Messages> {
                       .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return const Text('Something went wrong');
+                    if (snapshot.data == null) {
+                      return const Text('');
                     }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
                     return ListView.builder(
                         physics: const ScrollPhysics(),
                         shrinkWrap: true,
@@ -101,96 +131,111 @@ class _MessagesState extends State<Messages> {
                               DateTime.fromMillisecondsSinceEpoch(
                                   data['lastMsgTime']);
 
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 0),
-                            decoration: BoxDecoration(
-                                color: BC.appColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: BC.appColor)),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: Column(
+                          return userController.specificUser.value.name != null
+                              ? Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 0),
+                                  decoration: BoxDecoration(
+                                      color: BC.appColor.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(color: BC.appColor)),
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                DateFormat('dd/MM/yyyy  hh:mm ')
-                                                    .format(dateTime),
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
+                                          Expanded(
+                                            flex: 3,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      DateFormat(
+                                                              'dd/MM/yyyy  hh:mm ')
+                                                          .format(dateTime),
+                                                      style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      userController
+                                                          .specificUser
+                                                          .value
+                                                          .name!,
+                                                      style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                              Text(
-                                                userController
-                                                    .specificUser.value.name!,
-                                                style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w600,
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      data['lastMsg'],
+                                                      textAlign:
+                                                          TextAlign.right,
+                                                      style: const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                data['lastMsg'],
-                                                textAlign: TextAlign.right,
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ],
+                                          Expanded(
+                                            flex: 1,
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              radius: 26.h,
+                                              child: userController.specificUser
+                                                          .value.profileImage ==
+                                                      ''
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child: Image.asset(
+                                                          'assets/team.png'),
+                                                    )
+                                                  : ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                      child: Image.network(
+                                                        userController
+                                                            .specificUser
+                                                            .value
+                                                            .profileImage!,
+                                                      ),
+                                                    ),
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        radius: 26.h,
-                                        child: userController.specificUser.value
-                                                    .profileImage ==
-                                                ''
-                                            ? Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: Image.asset(
-                                                    'assets/team.png'),
-                                              )
-                                            : ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                                child: Image.network(
-                                                  userController.specificUser
-                                                      .value.profileImage!,
-                                                ),
-                                              ),
+                                      const SizedBox(
+                                        height: 10,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          );
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox();
                         });
                   }),
             ]),

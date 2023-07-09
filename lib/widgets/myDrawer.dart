@@ -1,12 +1,14 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:waist_app/screens/AboutUs.dart';
 import 'package:waist_app/screens/auth/login.dart';
 import 'package:waist_app/screens/calculator.dart';
 import 'package:waist_app/screens/contactUs/contactUs.dart';
-import 'package:waist_app/screens/help.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/chat/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
@@ -269,8 +271,12 @@ class _MyDrawerState extends State<MyDrawer> {
                   height: 10.h,
                 ),
                 InkWell(
-                  onTap: () {
-                    Get.to(() => Help());
+                  onTap: () async {
+                    Platform.isIOS
+                        ? await launch(
+                            'https://apps.apple.com/us/app/%D9%85%D8%B4%D8%AA%D8%B1%D9%8A/id1579563179')
+                        : await launch(
+                            'https://play.google.com/store/apps/details?id=com.mishtari.app');
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,

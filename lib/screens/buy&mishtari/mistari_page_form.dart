@@ -719,10 +719,10 @@ class _MistariPageState extends State<MistariPage> {
                                       ),
                                       widget.id!);
 
-                          setState(() {
-                            isSwitched = !isSwitched;
-                            isSwitched2 = !isSwitched2;
-                          });
+                          // setState(() {
+                          //   isSwitched = !isSwitched;
+                          //   isSwitched2 = !isSwitched2;
+                          // });
                           await oneSignals.sendNotification(
                               userController.specificUser.value.token!,
                               '${controller.currentUser.value.name!} Send the Request',

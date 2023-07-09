@@ -1,15 +1,13 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/chat/chat_conversation.dart';
+import 'package:waist_app/screens/help.dart';
 import 'package:waist_app/screens/order/order.dart';
 import 'package:waist_app/widgets/button.dart';
 import 'package:waist_app/widgets/loading.dart';
@@ -283,31 +281,33 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 55.h,
-                          height: 55.h,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              widget.buyerModel.images!,
-                              fit: BoxFit.cover,
-                            ),
+                    widget.formType != 'seller' || widget.formType != 'buyer'
+                        ? Container()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 55.h,
+                                height: 55.h,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    widget.buyerModel.images!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                'صورة السلعة',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: BC.lightGrey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Text(
-                          'صورة السلعة',
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: BC.lightGrey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
                     SizedBox(
                       height: 10.h,
                     ),
@@ -424,12 +424,8 @@ class _OrdersDetailsState extends State<OrdersDetails> {
               ),
               widget.uid == userController.currentUser.value.uid
                   ? InkWell(
-                      onTap: () async {
-                        Platform.isIOS
-                            ? await launch(
-                                'https://apps.apple.com/us/app/%D9%85%D8%B4%D8%AA%D8%B1%D9%8A/id1579563179')
-                            : await launch(
-                                'https://play.google.com/store/apps/details?id=com.mishtari.app');
+                      onTap: () {
+                        Get.to(() => Help());
                       },
                       child: Container(
                         width: double.infinity,
