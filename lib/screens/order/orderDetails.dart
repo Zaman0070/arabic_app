@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/chat/chat_conversation.dart';
@@ -17,7 +20,14 @@ import '../../widgets/arrowButton.dart';
 class OrdersDetails extends StatefulWidget {
   BuyerModel buyerModel;
   String id;
-  OrdersDetails({super.key, required this.buyerModel, required this.id});
+  String formType;
+  String uid;
+  OrdersDetails(
+      {super.key,
+      required this.buyerModel,
+      required this.id,
+      required this.formType,
+      required this.uid});
 
   @override
   State<OrdersDetails> createState() => _OrdersDetailsState();
@@ -306,12 +316,10 @@ class _OrdersDetailsState extends State<OrdersDetails> {
               ),
               const Spacer(),
               MyButton(
-                name: widget.buyerModel.uid![0] ==
-                        userController.currentUser.value.uid
+                name: widget.uid == userController.currentUser.value.uid
                     ? "تم  إتمام  الطلب"
                     : 'تم ارسال الطلب',
-                onPressed: widget.buyerModel.uid![0] !=
-                        userController.currentUser.value.uid
+                onPressed: widget.uid != userController.currentUser.value.uid
                     ? () {
                         FirebaseFirestore.instance
                             .collection('MishtariProducts')
@@ -412,9 +420,15 @@ class _OrdersDetailsState extends State<OrdersDetails> {
               SizedBox(
                 height: 12.h,
               ),
-              widget.buyerModel.uid![0] == userController.currentUser.value.uid
+              widget.uid == userController.currentUser.value.uid
                   ? InkWell(
-                      onTap: () async {},
+                      onTap: () async {
+                        Platform.isIOS
+                            ? await launch(
+                                'https://apps.apple.com/us/app/%D9%85%D8%B4%D8%AA%D8%B1%D9%8A/id1579563179')
+                            : await launch(
+                                'https://play.google.com/store/apps/details?id=com.mishtari.app');
+                      },
                       child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(vertical: 10),

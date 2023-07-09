@@ -386,11 +386,127 @@ class _HomePageState extends State<HomePage> {
                       .collection('MishtariProducts')
                       .where('uid',
                           arrayContains: FirebaseAuth.instance.currentUser!.uid)
-                      .where('serviceCompleted', isEqualTo: false)
                       .snapshots(),
                   builder: (context, snapshot) {
-                    if (snapshot.data == null) {
-                      return Container();
+                    if (snapshot.data!.docs.isEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 20),
+                          decoration: BoxDecoration(
+                            color: BC.appColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: BC.appColor,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 4),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: BC.appColor,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      const Text(
+                                        'تحويل المبلغ',
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 4),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: BC.appColor,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      const Text(
+                                        'قيد التنفيذ',
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 4),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: BC.appColor,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      const Text(
+                                        'استلام المبلغ',
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 4),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: BC.appColor,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                      ),
+                                      const Text(
+                                        'تقديم الطلب',
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Text(
+                                'لا يوجد طلبات نشطة',
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    color: BC.appColor,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
                     }
                     return ListView.builder(
                         padding: EdgeInsets.zero,
@@ -469,9 +585,13 @@ class _HomePageState extends State<HomePage> {
                                                 border: Border.all(
                                                   color: BC.appColor,
                                                 ),
-                                                color: buyerData.isAccepted ==
-                                                        'payforcash'
-                                                    ? BC.appColor
+                                                color: buyerData
+                                                            .serviceCompleted ==
+                                                        true
+                                                    ? buyerData.isAccepted ==
+                                                            'payforcash'
+                                                        ? BC.appColor
+                                                        : Colors.transparent
                                                     : Colors.transparent,
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
@@ -491,15 +611,22 @@ class _HomePageState extends State<HomePage> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 30, vertical: 4),
                                             decoration: BoxDecoration(
-                                                color: buyerData.isAccepted ==
-                                                            '' ||
-                                                        buyerData.isAccepted ==
-                                                            'payforcash' ||
-                                                        buyerData.isAccepted ==
-                                                            'sellerAccepted' ||
-                                                        buyerData.isAccepted ==
-                                                            'buyerAccepted'
-                                                    ? BC.appColor
+                                                color: buyerData
+                                                            .serviceCompleted ==
+                                                        true
+                                                    ? buyerData.isAccepted ==
+                                                                '' ||
+                                                            buyerData
+                                                                    .isAccepted ==
+                                                                'payforcash' ||
+                                                            buyerData
+                                                                    .isAccepted ==
+                                                                'sellerAccepted' ||
+                                                            buyerData
+                                                                    .isAccepted ==
+                                                                'buyerAccepted'
+                                                        ? BC.appColor
+                                                        : Colors.transparent
                                                     : Colors.transparent,
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
@@ -518,14 +645,22 @@ class _HomePageState extends State<HomePage> {
                                   SizedBox(
                                     height: 10.h,
                                   ),
-                                  MyButton(
-                                    name: 'تفاصيل الطلب',
-                                    onPressed: () {
-                                      Get.to(() => Orders(
-                                            title: 'الطلبات النشطة',
-                                          ));
-                                    },
-                                  ),
+                                  buyerData.serviceCompleted == true
+                                      ? MyButton(
+                                          name: 'تفاصيل الطلب',
+                                          onPressed: () {
+                                            Get.to(() => Orders(
+                                                  title: 'الطلبات النشطة',
+                                                ));
+                                          },
+                                        )
+                                      : Text(
+                                          'لا يوجد طلبات نشطة',
+                                          style: TextStyle(
+                                              fontSize: 18.sp,
+                                              color: BC.appColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                 ],
                               ),
                             ),

@@ -234,6 +234,16 @@ class _OrdersState extends State<Orders> {
                                                       .whenComplete(() async {
                                                     SmartDialog.dismiss();
                                                     Get.to(() => OrdersDetails(
+                                                        uid: buyerData
+                                                                    .formType ==
+                                                                'seller'
+                                                            ? buyerData.uid![0]
+                                                            : buyerData.uid![1],
+                                                        formType: buyerData
+                                                                    .formType ==
+                                                                'seller'
+                                                            ? 'seller'
+                                                            : 'buyer',
                                                         id: snapshot.data!
                                                             .docs[index].id,
                                                         buyerModel: buyerData));
@@ -253,6 +263,15 @@ class _OrdersState extends State<Orders> {
                                               }
                                             : () {
                                                 Get.to(() => OrdersDetails(
+                                                    uid: buyerData.formType ==
+                                                            'seller'
+                                                        ? buyerData.uid![0]
+                                                        : buyerData.uid![1],
+                                                    formType:
+                                                        buyerData.formType ==
+                                                                'seller'
+                                                            ? 'seller'
+                                                            : 'buyer',
                                                     id: snapshot
                                                         .data!.docs[index].id,
                                                     buyerModel: buyerData));
