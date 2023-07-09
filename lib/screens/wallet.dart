@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:waist_app/screens/completePurchaseOrder.dart';
 import 'package:waist_app/widgets/button.dart';
 
 import '../constants/colors.dart';
@@ -109,8 +108,8 @@ class Wallet extends StatelessWidget {
               child: MyButton(
                 name: 'سحب الرصيد',
                 onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => CompleteOrder()));
+                  // Navigator.of(context).push(
+                  //     MaterialPageRoute(builder: (context) => CompleteOrder()));
                 },
               ),
             ),

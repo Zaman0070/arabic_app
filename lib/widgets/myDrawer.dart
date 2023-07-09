@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/screens/AboutUs.dart';
 import 'package:waist_app/screens/calculator.dart';
-import 'package:waist_app/screens/contactUs.dart';
+import 'package:waist_app/screens/contactUs/contactUs.dart';
 import 'package:waist_app/screens/help.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/chat/messages.dart';

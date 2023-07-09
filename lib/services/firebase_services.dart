@@ -15,6 +15,8 @@ import 'package:waist_app/screens/auth/login.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/widgets/loading.dart';
 
+import '../screens/order/order.dart';
+
 class FirebaseServices {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   CollectionReference mishtriProduct =
@@ -45,16 +47,13 @@ class FirebaseServices {
     required String formType,
     required String formfillby,
     required String review,
-    
+    required int orderNumber,
+    required bool orderCompleted,
+    required bool serviceCompleted,
   }) async {
-    var random = Random();
-    int randomNumber = random.nextInt(100000000);
-
     SmartDialog.showLoading(
       animationBuilder: (controller, child, animationParam) {
-        return Loading(
-          text: 'بأنتظار تأكيد الطلب من قبل البائع',
-        );
+        return Loading(text: 'بأنتظار تأكيد الدفع سوف يصلك إشعار');
       },
     );
     try {
@@ -70,7 +69,7 @@ class FirebaseServices {
         images: images,
         agree1: agree1,
         agree2: agree2,
-        orderNumber: randomNumber,
+        orderNumber: orderNumber,
         isAccepted: isAccepted,
         ayam: ayam,
         ayamNumber: ayamNumber,
@@ -78,15 +77,18 @@ class FirebaseServices {
         formType: formType,
         formfillby: formfillby,
         review: review,
+        orderCompleted: orderCompleted,
+        serviceCompleted: serviceCompleted,
       );
       await mishtriProduct.doc().set(buyerModel.toMap()).then((value) {
         Fluttertoast.showToast(
             textColor: Colors.white,
             msg: 'تم إرسال الطلب بنجاح',
             backgroundColor: BC.appColor);
+        Get.to(() => Orders(
+              title: 'الطلبات النشطة',
+            ));
         SmartDialog.dismiss();
-        Get.back();
-        // routes
       });
     } catch (e) {
       SmartDialog.dismiss();

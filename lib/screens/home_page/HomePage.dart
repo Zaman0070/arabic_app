@@ -213,51 +213,110 @@ class _HomePageState extends State<HomePage> {
                 height: 20.h,
               ),
               SizedBox(
-                height: 140.h, // card height
+                height: 150.h,
+                // card height
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                  ),
                   child: PageView.builder(
-                    // reverse: true,
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: images.length,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: 6,
                     controller: _pageController,
                     onPageChanged: (int index) =>
                         setState(() => _index = index),
                     itemBuilder: (_, i) {
                       return Transform.scale(
-                        scale: i == _index ? 1.3 : 0.5,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: GestureDetector(
+                        scale: i == _index ? 1.5 : 1.0,
+                        //scaleX: 20,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 27,
+                            // left: 12,
+                            // right: 12,
+                          ),
+                          child: Column(
+                            children: [
+                              GestureDetector(
                                   onTap: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => pages[i][1]));
+                                            builder: (context) =>
+                                                pages[_index][1]));
                                   },
-                                  child: CircleAvatar(
-                                    radius: 35.h,
-                                    backgroundColor: BC.appColor,
-                                    child: Image.asset(images[i]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: CircleAvatar(
+                                      radius: 35.h,
+                                      backgroundColor: BC.appColor,
+                                      child: Image.asset(images[i]),
+                                    ),
                                   )),
-                            ),
-                            Text(
-                              names[i],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: BC.appColor),
-                            ),
-                          ],
+                              Text(
+                                names[i],
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: BC.appColor),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
                   ),
                 ),
               ),
+              // SizedBox(
+              //   height: 140.h, // card height
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(top: 20),
+              //     child: PageView.builder(
+              //       // reverse: true,
+              //       physics: const BouncingScrollPhysics(),
+              //       itemCount: images.length,
+              //       controller: _pageController,
+              //       onPageChanged: (int index) =>
+              //           setState(() => _index = index),
+              //       itemBuilder: (_, i) {
+              //         return Transform.scale(
+              //           scale: i == _index ? 1.3 : 0.85,
+              //           child: Column(
+              //             children: [
+              //               Padding(
+              //                 padding: const EdgeInsets.only(
+              //                   top: 20,
+              //                 ),
+              //                 child: GestureDetector(
+              //                     onTap: () {
+              //                       Navigator.push(
+              //                           context,
+              //                           MaterialPageRoute(
+              //                               builder: (context) => pages[i][1]));
+              //                     },
+              //                     child: CircleAvatar(
+              //                       radius: 35.h,
+              //                       backgroundColor: BC.appColor,
+              //                       child: Image.asset(images[i]),
+              //                     )),
+              //               ),
+              //               Text(
+              //                 names[i],
+              //                 textAlign: TextAlign.center,
+              //                 style: TextStyle(
+              //                     fontSize: 12.sp,
+              //                     fontWeight: FontWeight.w600,
+              //                     color: BC.appColor),
+              //               ),
+              //             ],
+              //           ),
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -327,6 +386,7 @@ class _HomePageState extends State<HomePage> {
                       .collection('MishtariProducts')
                       .where('uid',
                           arrayContains: FirebaseAuth.instance.currentUser!.uid)
+                      .where('serviceCompleted', isEqualTo: false)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.data == null) {

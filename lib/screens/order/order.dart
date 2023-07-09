@@ -10,10 +10,8 @@ import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
-import 'package:waist_app/screens/buy&mishtari/mistari_page_form.dart';
-import 'package:waist_app/screens/chat/chat_conversation.dart';
+import 'package:waist_app/screens/bottom_nav/bottomNavi.dart';
 import 'package:waist_app/screens/order/widget/order_box.dart';
-import 'package:waist_app/screens/seller&baya/theSeller.dart';
 import 'package:waist_app/widgets/loading.dart';
 import '../../widgets/arrowButton.dart';
 import '../orderDetails.dart';
@@ -36,276 +34,220 @@ class _OrdersState extends State<Orders> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage(
-                'assets/background.png',
+    return WillPopScope(
+      onWillPop: () async {
+        Get.offAll(() => const BottomNavigationExample());
+        return true;
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage(
+                  'assets/background.png',
+                ),
               ),
             ),
-          ),
-          child: ListView(
-            children: [
-              SizedBox(
-                height: 12.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  Text(
-                    widget.title,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+            child: ListView(
+              children: [
+                SizedBox(
+                  height: 12.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(
+                      width: 30,
                     ),
-                  ),
-                  ArrowButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 50.h,
-              ),
-              StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('MishtariProducts')
-                      .where('uid',
-                          arrayContains: userController.currentUser.value.uid)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    if (snapshot.data!.docs.isEmpty) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 180.h,
-                          ),
-                          Text(
-                            'لا يوجد طلبات نشطة',
-                            style: TextStyle(
-                              fontSize: 17.sp,
-                              fontWeight: FontWeight.bold,
+                    Text(
+                      widget.title,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    ArrowButton(
+                      onPressed: () {
+                        Get.offAll(() => const BottomNavigationExample());
+                      },
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 50.h,
+                ),
+                StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('MishtariProducts')
+                        .where('uid',
+                            arrayContains: userController.currentUser.value.uid)
+                        .where('serviceCompleted', isEqualTo: false)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.data!.docs.isEmpty) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 180.h,
                             ),
-                          ),
-                        ],
-                      );
-                    }
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const ScrollPhysics(),
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          print(userController.currentUser.value.phoneNumber);
+                            Text(
+                              'لا يوجد طلبات نشطة',
+                              style: TextStyle(
+                                fontSize: 17.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const ScrollPhysics(),
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            print(userController.currentUser.value.phoneNumber);
 
-                          BuyerModel buyerData = BuyerModel.fromMap(
-                              snapshot.data!.docs[index].data());
-                          DateTime date = DateTime.parse(buyerData.days!);
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 14),
-                            child: OrderBox(
-                              buyerModel: buyerData,
-                              orderNumber: '#${buyerData.orderNumber}',
-                              date:
-                                  DateFormat('dd/MM/yyyy  hh:mm ').format(date),
-                              purpose: buyerData.purpose!,
-                              orderStatus: 'توصيل طلبية',
-                              onPressed: buyerData.isAccepted == '' &&
-                                      buyerData.secondPartyMobile ==
-                                          userController
-                                              .currentUser.value.phoneNumber
-                                  ? () {
-                                      orderConfimation(
-                                          context: context,
-                                          accpeted: () async {
-                                            await mishtariController
-                                                .acceptStatus(
-                                                    snapshot
+                            BuyerModel buyerData = BuyerModel.fromMap(
+                                snapshot.data!.docs[index].data());
+                            DateTime date = DateTime.parse(buyerData.days!);
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 14),
+                              child: OrderBox(
+                                buyerModel: buyerData,
+                                orderNumber: '#${buyerData.orderNumber}',
+                                date: DateFormat('dd/MM/yyyy  hh:mm ')
+                                    .format(date),
+                                purpose: buyerData.purpose!,
+                                orderStatus: 'توصيل طلبية',
+                                onPressed: buyerData.isAccepted == '' &&
+                                        buyerData.secondPartyMobile ==
+                                            userController
+                                                .currentUser.value.phoneNumber
+                                    ? () {
+                                        orderConfimation(
+                                            context: context,
+                                            accpeted: () async {
+                                              await mishtariController
+                                                  .acceptStatus(
+                                                      snapshot
+                                                          .data!.docs[index].id,
+                                                      'sellerAccepted')
+                                                  .whenComplete(() {
+                                                Get.to(() => OrdersDetails(
+                                                    id: snapshot
                                                         .data!.docs[index].id,
-                                                    'sellerAccepted')
-                                                .whenComplete(() {
-                                              buyerData.purpose == ''
-                                                  ? Get.to(() => MistariPage(
-                                                      id: snapshot
-                                                          .data!.docs[index].id,
-                                                      buyerModel: buyerData))
-                                                  : Get.to(() => TheSeller(
-                                                      id: snapshot
-                                                          .data!.docs[index].id,
-                                                      buyerModel: buyerData));
-                                              // Get.back();
-                                            });
-                                            // Get.back();
-                                          },
-                                          declined: () async {
-                                            await FirebaseFirestore.instance
-                                                .collection('MishtariProducts')
-                                                .doc(snapshot
-                                                    .data!.docs[index].id)
-                                                .update({
-                                              'isAccepted': 'declined',
-                                            });
-                                            Get.back();
-                                            userController.getSpecificUser(
-                                                buyerData.uid![0]);
-                                            print(
-                                                '${userController.specificUser.value.token}toooken');
-                                            await oneSignals.sendNotification(
-                                                userController
-                                                    .specificUser.value.token!,
-                                                '',
-                                                'طبيق وسيط: تم رفض طلبك (order detail)  من الطرف الآخر وسيتم إعادة المبلغ بعد خصم العمولة',
-                                                'assets/logo/jpeg',
-                                                token: userController
-                                                    .specificUser.value.token!,
-                                                senderName: userController
-                                                    .currentUser.value.name!,
-                                                type: 'mishtri');
-                                          });
-                                    }
-                                  : buyerData.isAccepted == 'sellerAccepted' &&
-                                          buyerData.secondPartyMobile !=
-                                              userController
-                                                  .currentUser.value.phoneNumber
-                                      ? () {
-                                          orderConfimation(
-                                              context: context,
-                                              accpeted: () async {
-                                                await mishtariController
-                                                    .acceptStatus(
-                                                        snapshot.data!
-                                                            .docs[index].id,
-                                                        'buyerAccepted')
-                                                    .whenComplete(() {
-                                                  payment(
-                                                    context: context,
-                                                    pay: () async {
-                                                      SmartDialog.showLoading(
-                                                        animationBuilder:
-                                                            (controller, child,
-                                                                animationParam) {
-                                                          return Loading(
-                                                            text: ' ... تحميل ',
-                                                          );
-                                                        },
-                                                      );
-                                                      Future.delayed(
-                                                          const Duration(
-                                                              milliseconds:
-                                                                  2000),
-                                                          () async {
-                                                        await mishtariController
-                                                            .acceptStatus(
-                                                                snapshot
-                                                                    .data!
-                                                                    .docs[index]
-                                                                    .id,
-                                                                'payforcash')
-                                                            .whenComplete(
-                                                                () async {
-                                                          SmartDialog.dismiss();
-                                                          await FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'Chats')
-                                                              .doc(
-                                                                  '${buyerData.uid![0]}+${buyerData.uid![1]}')
-                                                              .set({
-                                                            'show': true,
-                                                            'time': DateTime
-                                                                    .now()
-                                                                .microsecondsSinceEpoch,
-                                                            'chatMap': [
-                                                              buyerData.uid![0],
-                                                              buyerData.uid![1],
-                                                            ],
-                                                            'userName':
-                                                                userController
-                                                                    .currentUser
-                                                                    .value
-                                                                    .name,
-                                                            'userUid':
-                                                                userController
-                                                                    .currentUser
-                                                                    .value
-                                                                    .uid,
-                                                            'userToken':
-                                                                userController
-                                                                    .currentUser
-                                                                    .value
-                                                                    .token,
-                                                          });
-                                                          Get.to(() =>
-                                                              ChatConversation(
-                                                                chatId:
-                                                                    '${buyerData.uid![0]}+${buyerData.uid![1]}',
-                                                                image: userController
-                                                                    .currentUser
-                                                                    .value
-                                                                    .profileImage!,
-                                                                name: userController
-                                                                    .currentUser
-                                                                    .value
-                                                                    .name!,
-                                                                reciverId:
-                                                                    buyerData
-                                                                        .uid![1],
-                                                              ));
-                                                        });
-                                                      });
-                                                    },
-                                                  );
-                                                  // Get.back();
-                                                });
+                                                    buyerModel: buyerData));
+                                                // buyerData.purpose == ''
+                                                //     ? Get.to(() => MistariPage(
+                                                //         id: snapshot.data!
+                                                //             .docs[index].id,
+                                                //         buyerModel: buyerData))
+                                                // : Get.to(() => TheSeller(
+                                                //     id: snapshot.data!
+                                                //         .docs[index].id,
+                                                //     buyerModel: buyerData));
                                                 // Get.back();
-                                              },
-                                              declined: () async {
-                                                await FirebaseFirestore.instance
-                                                    .collection(
-                                                        'MishtariProducts')
-                                                    .doc(snapshot
-                                                        .data!.docs[index].id)
-                                                    .update({
-                                                  'isAccepted': 'declined',
-                                                });
-                                                Get.back();
                                               });
-                                        }
-                                      : buyerData.isAccepted == '' &&
-                                              buyerData.phoneNumber ==
-                                                  userController.currentUser
-                                                      .value.phoneNumber
-                                          ? () {
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                      'يرجى انتظار البائع لقبول العرض');
-                                            }
-                                          : () {
-                                              Get.to(() => OrdersDetails(
-                                                  buyerModel: buyerData));
                                             },
-                            ),
-                          );
-                        });
-                  })
-            ],
+                                            declined: () async {
+                                              await FirebaseFirestore.instance
+                                                  .collection(
+                                                      'MishtariProducts')
+                                                  .doc(snapshot
+                                                      .data!.docs[index].id)
+                                                  .update({
+                                                'isAccepted': 'declined',
+                                              });
+                                              Get.back();
+                                              userController.getSpecificUser(
+                                                  buyerData.uid![0]);
+                                              print(
+                                                  '${userController.specificUser.value.token}toooken');
+                                              await oneSignals.sendNotification(
+                                                  userController.specificUser
+                                                      .value.token!,
+                                                  '',
+                                                  'طبيق وسيط: تم رفض طلبك (order detail)  من الطرف الآخر وسيتم إعادة المبلغ بعد خصم العمولة',
+                                                  'assets/logo/jpeg',
+                                                  token: userController
+                                                      .specificUser
+                                                      .value
+                                                      .token!,
+                                                  senderName: userController
+                                                      .currentUser.value.name!,
+                                                  type: 'mishtri');
+                                            });
+                                      }
+                                    : buyerData.isAccepted ==
+                                                'sellerAccepted' &&
+                                            buyerData.secondPartyMobile !=
+                                                userController.currentUser.value
+                                                    .phoneNumber
+                                        ? () {
+                                            payment(
+                                              context: context,
+                                              pay: () async {
+                                                SmartDialog.showLoading(
+                                                  animationBuilder: (controller,
+                                                      child, animationParam) {
+                                                    return Loading(
+                                                      text: ' ... تحميل ',
+                                                    );
+                                                  },
+                                                );
+                                                Future.delayed(
+                                                    const Duration(
+                                                        milliseconds: 2000),
+                                                    () async {
+                                                  await mishtariController
+                                                      .acceptStatus(
+                                                          snapshot.data!
+                                                              .docs[index].id,
+                                                          'payforcash')
+                                                      .whenComplete(() async {
+                                                    SmartDialog.dismiss();
+                                                    Get.to(() => OrdersDetails(
+                                                        id: snapshot.data!
+                                                            .docs[index].id,
+                                                        buyerModel: buyerData));
+                                                  });
+                                                });
+                                              },
+                                            );
+                                          }
+                                        : buyerData.isAccepted == '' &&
+                                                buyerData.phoneNumber ==
+                                                    userController.currentUser
+                                                        .value.phoneNumber
+                                            ? () {
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        'يرجى انتظار البائع لقبول العرض');
+                                              }
+                                            : () {
+                                                Get.to(() => OrdersDetails(
+                                                    id: snapshot
+                                                        .data!.docs[index].id,
+                                                    buyerModel: buyerData));
+                                              },
+                              ),
+                            );
+                          });
+                    })
+              ],
+            ),
           ),
         ),
       ),
@@ -356,20 +298,40 @@ class _OrdersState extends State<Orders> {
                   'هل أنت متأكد من إتمام الخدمة',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.bold,
                       fontSize: 16.sp,
                       color: Colors.black),
                 ),
                 SizedBox(
-                  height: 10.h,
+                  height: 20.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
+                      onTap: declined,
+                      child: Container(
+                        width: 0.44.sw,
+                        height: 35.h,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: BC.appColor),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'رفض العرض',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.sp,
+                                color: BC.appColor),
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
                       onTap: accpeted,
                       child: Container(
-                        width: 0.4.sw,
+                        width: 0.44.sw,
                         height: 35.h,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -378,27 +340,8 @@ class _OrdersState extends State<Orders> {
                           child: Text(
                             'قبول العرض',
                             style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18.sp,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: declined,
-                      child: Container(
-                        width: 0.4.sw,
-                        height: 35.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: BC.appColor),
-                        child: Center(
-                          child: Text(
-                            'رفض العرض',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.sp,
                                 color: Colors.white),
                           ),
                         ),

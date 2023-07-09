@@ -23,6 +23,8 @@ class BuyerModel {
   String? formType;
   String? formfillby;
   String? review;
+  bool? orderCompleted;
+  bool? serviceCompleted;
   BuyerModel({
     this.name,
     this.phoneNumber,
@@ -43,6 +45,8 @@ class BuyerModel {
     this.formType,
     this.formfillby,
     this.review,
+    this.orderCompleted,
+    this.serviceCompleted,
   });
 
   BuyerModel copyWith({
@@ -65,6 +69,8 @@ class BuyerModel {
     String? formType,
     String? formfillby,
     String? review,
+    bool? orderCompleted,
+    bool? serviceCompleted,
   }) {
     return BuyerModel(
       name: name ?? this.name,
@@ -86,6 +92,8 @@ class BuyerModel {
       formType: formType ?? this.formType,
       formfillby: formfillby ?? this.formfillby,
       review: review ?? this.review,
+      orderCompleted: orderCompleted ?? this.orderCompleted,
+      serviceCompleted: serviceCompleted ?? this.serviceCompleted,
     );
   }
 
@@ -110,6 +118,8 @@ class BuyerModel {
       'formType': formType,
       'formfillby': formfillby,
       'review': review,
+      'orderCompleted': orderCompleted,
+      'serviceCompleted': serviceCompleted,
     };
   }
 
@@ -144,6 +154,9 @@ class BuyerModel {
       formfillby:
           map['formfillby'] != null ? map['formfillby'] as String : null,
       review: map['review'] != null ? map['review'] as String : null,
+      orderCompleted:
+          map['orderCompleted'] != null ? map['orderCompleted'] as bool : null,
+      serviceCompleted: map['serviceCompleted'] != null? map['serviceCompleted'] as bool : null,
     );
   }
 
@@ -154,7 +167,7 @@ class BuyerModel {
 
   @override
   String toString() {
-    return 'BuyerModel(name: $name,formType :$formType, phoneNumber: $phoneNumber, address: $address, purpose: $purpose, price: $price, description: $description, days: $days, secondPartyMobile: $secondPartyMobile, images: $images, agree1: $agree1, agree2: $agree2, orderNumber: $orderNumber, isAccepted: $isAccepted, uid: $uid, ayam: $ayam, ayamNumber: $ayamNumber, formfillby: $formfillby, review: $review)';
+    return 'BuyerModel(name: $name,formType :$formType, phoneNumber: $phoneNumber, address: $address, purpose: $purpose, price: $price, description: $description, days: $days, secondPartyMobile: $secondPartyMobile, images: $images, agree1: $agree1, agree2: $agree2, orderNumber: $orderNumber, isAccepted: $isAccepted, uid: $uid, ayam: $ayam, ayamNumber: $ayamNumber, formfillby: $formfillby, review: $review, orderCompleted: $orderCompleted, serviceCompleted: $serviceCompleted)';
   }
 
   @override
@@ -178,8 +191,10 @@ class BuyerModel {
         other.ayam == ayam &&
         other.ayamNumber == ayamNumber &&
         other.formType == formType &&
-        other.formfillby == formfillby&&
-        other.review == review;
+        other.formfillby == formfillby &&
+        other.review == review &&
+        other.orderCompleted == orderCompleted&&
+        other.serviceCompleted == serviceCompleted;
   }
 
   @override
@@ -201,7 +216,9 @@ class BuyerModel {
         ayam.hashCode ^
         ayamNumber.hashCode ^
         formType.hashCode ^
-        formfillby.hashCode^
-        review.hashCode;
+        formfillby.hashCode ^
+        review.hashCode ^
+        orderCompleted.hashCode^
+        serviceCompleted.hashCode;
   }
 }

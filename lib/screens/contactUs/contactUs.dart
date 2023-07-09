@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:waist_app/widgets/button.dart';
-import '../constants/colors.dart';
-import '../widgets/arrowButton.dart';
-import '../widgets/loading.dart';
+import 'package:waist_app/model/buyer.dart';
+import '../../constants/colors.dart';
+import '../../widgets/arrowButton.dart';
+import '../../widgets/loading.dart';
 
 // ignore: must_be_immutable
 class ContactUs extends StatelessWidget {
@@ -171,45 +172,6 @@ class ContactUs extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: TextFormField(
-                  controller: messageControllre,
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                    hintText: 'اكتب شكوى هنا',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              MyButton(
-                  name: 'ارسال',
-                  onPressed: () async {
-                    SmartDialog.showLoading(
-                      animationBuilder: (controller, child, animationParam) {
-                        return Loading(
-                          text: ' ... تحميل ',
-                        );
-                      },
-                    );
-                    await FirebaseFirestore.instance
-                        .collection('complain')
-                        .add({
-                      'message': messageControllre.text,
-                      'date': DateTime.now(),
-                    }).whenComplete(() {
-                      SmartDialog.dismiss();
-                      Fluttertoast.showToast(msg: 'تم ارسال الشكوى بنجاح');
-                    });
-                  }),
               const Spacer(),
               InkWell(
                 onTap: () {
@@ -247,7 +209,7 @@ class ContactUs extends StatelessWidget {
         builder: (context) {
           return Container(
             color: const Color(0xff737373),
-            height: MediaQuery.of(context).size.height * 0.8,
+            height: 550.h,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: const BoxDecoration(
@@ -267,7 +229,7 @@ class ContactUs extends StatelessWidget {
                       Text(
                         'الطلبات السابقة',
                         style: TextStyle(
-                          fontSize: 20.sp,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -291,98 +253,158 @@ class ContactUs extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const Divider(),
                   SizedBox(
                     height: 10.h,
                   ),
                   Text(
                     'يرجي اختيار الطلب قبل تقديم الأعتراض',
-                    style: TextStyle(fontSize: 15.sp),
+                    style:
+                        TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 10.h,
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    decoration: BoxDecoration(
-                        color: BC.appColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: BC.appColor)),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '#32813132',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: BC.appColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'رقم الطلب',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: BC.lightGrey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '04:00 23/02/2023',
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              'التاريخ و الوقت',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: BC.lightGrey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'توصيل طلبية',
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              'الغرض',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: BC.lightGrey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
+                  SizedBox(
+                    height: 285.h,
+                    child: StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('MishtariProducts')
+                            .where('uid',
+                                arrayContains:
+                                    FirebaseAuth.instance.currentUser!.uid)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.data == null) {
+                            return Container();
+                          }
+                          return ListView.builder(
+                              padding: EdgeInsets.zero,
+                              physics: const ScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                BuyerModel buyerData = BuyerModel.fromMap(
+                                    snapshot.data!.docs[index].data());
+                                DateTime date = DateTime.parse(buyerData.days!);
+                                return InkWell(
+                                  onTap: () {
+                                    SmartDialog.showLoading(
+                                      animationBuilder:
+                                          (controller, child, animationParam) {
+                                        return Loading(
+                                          text: 'أرسل تقريرك بنجاح إلى المسؤول',
+                                        );
+                                      },
+                                    );
+                                    Future.delayed(const Duration(seconds: 2),
+                                        () {
+                                      FirebaseFirestore.instance
+                                          .collection('Report')
+                                          .doc()
+                                          .set({
+                                        'uid': FirebaseAuth
+                                            .instance.currentUser!.uid,
+                                        'report': 'report',
+                                        'orderNumber': buyerData.orderNumber,
+                                      });
+                                      SmartDialog.dismiss();
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 15),
+                                      decoration: BoxDecoration(
+                                          color: BC.appColor.withOpacity(0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          border:
+                                              Border.all(color: BC.appColor)),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '#${buyerData.orderNumber}',
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: BC.appColor,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Text(
+                                                'رقم الطلب',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: BC.lightGrey,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                DateFormat('dd/MM/yyyy  hh:mm ')
+                                                    .format(date),
+                                                style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Text(
+                                                'التاريخ و الوقت',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: BC.lightGrey,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                buyerData.purpose!,
+                                                style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Text(
+                                                'الغرض',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: BC.lightGrey,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        }),
+                  ),
                 ],
               ),
             ),

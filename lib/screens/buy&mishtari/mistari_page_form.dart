@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_model_list/dropdown_model_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,13 +14,15 @@ import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/image_controller.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/model/buyer.dart';
+import 'package:waist_app/model/user.dart';
+import 'package:waist_app/screens/completePurchaseOrder.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/screens/widget/button.dart';
-import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/widgets/UploadImageButton.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 import '../../controller/user_controller.dart';
 import '../../widgets/arrowButton.dart';
+import '../../widgets/loading.dart';
 
 // ignore: must_be_immutable
 class MistariPage extends StatefulWidget {
@@ -112,6 +116,21 @@ class _MistariPageState extends State<MistariPage> {
       OptionItem(title: widget.id == '' ? "1" : widget.buyerModel!.ayamNumber!);
   String? ayam;
   String? ayamNumber;
+  UserModel userModel = UserModel();
+  completeOrder(BuyerModel buyerModel, UserModel userModel) {
+    SmartDialog.showLoading(
+      animationBuilder: (controller, child, animationParam) {
+        return Loading(text: 'بأنتظار تأكيد الدفع سوف يصلك إشعار');
+      },
+    );
+    Future.delayed(const Duration(seconds: 2), () {
+      Get.to((CompleteOrder(
+        buyerModel: buyerModel,
+        userModel: userModel,
+      )));
+      SmartDialog.dismiss();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -383,7 +402,6 @@ class _MistariPageState extends State<MistariPage> {
                                 onOptionSelected: (optionItem) {
                                   optionItemSelectedday = optionItem;
                                   ayam = optionItem.title;
-
                                   setState(() {});
                                 },
                               ),
@@ -544,8 +562,10 @@ class _MistariPageState extends State<MistariPage> {
                                 .then((value) {
                               List<String> uid =
                                   value.docs.map((e) => e.id).toList();
+                              UserModel userOther =
+                                  UserModel.fromMap(value.docs.first.data());
                               uids = uid;
-
+                              userModel = userOther;
                               userController.getSpecificUser(uid[0]);
                             });
                             setState(() {
@@ -607,6 +627,8 @@ class _MistariPageState extends State<MistariPage> {
                     AppButton(
                         text: 'تأكيد الطلب و الدفع',
                         onPressed: () async {
+                          var random = Random();
+                          int randomNumber = random.nextInt(100000000);
                           widget.id == ''
                               ? nameController.text.trim() == '' ||
                                       phoneController.text.trim() == '' ||
@@ -626,34 +648,36 @@ class _MistariPageState extends State<MistariPage> {
                                           ? Fluttertoast.showToast(
                                               msg:
                                                   'مقابل هذا الرقم البائع غير موجود')
-                                          : await FirebaseServices()
-                                              .addMishtriDetails(
-
-                                              formfillby: 'seller',
-                                              formType: 'تفاصيل الطلب للبائع',
-                                              uid: [
-                                                userController
-                                                    .currentUser.value.uid!,
-                                                userController
-                                                    .specificUser.value.uid!
-                                              ],
-                                              name: nameController.text,
-                                              phoneNumber: phoneController.text,
-                                              purpose: purposeController.text,
-                                              days: timeController.text,
-                                              secondPartyMobile:
-                                                  '${countryCode.replaceAll('+', '')}${secondphoneController.text}',
-                                              description: desController.text,
-                                              address: addressController.text,
-                                              price: result.toString(),
-                                              agree1: isSwitched,
-                                              agree2: isSwitched2,
-                                              images: images[0],
-                                              isAccepted: '',
-                                              ayam: ayam!,
-                                              ayamNumber: ayamNumber!,
-                                              review: '',
-                                            )
+                                          : completeOrder(
+                                              BuyerModel(
+                                                orderNumber: randomNumber,
+                                                formfillby: 'seller',
+                                                formType: 'تفاصيل الطلب للبائع',
+                                                uid: [
+                                                  userController
+                                                      .currentUser.value.uid!,
+                                                  userController
+                                                      .specificUser.value.uid!
+                                                ],
+                                                name: nameController.text,
+                                                phoneNumber:
+                                                    phoneController.text,
+                                                purpose: purposeController.text,
+                                                days: timeController.text,
+                                                secondPartyMobile:
+                                                    '${countryCode.replaceAll('+', '')}${secondphoneController.text}',
+                                                description: desController.text,
+                                                address: addressController.text,
+                                                price: result.toString(),
+                                                agree1: isSwitched,
+                                                agree2: isSwitched2,
+                                                images: images[0],
+                                                isAccepted: '',
+                                                ayam: ayam!,
+                                                ayamNumber: ayamNumber!,
+                                                review: '',
+                                              ),
+                                              userModel)
                               : nameController.text.trim() == '' ||
                                       phoneController.text.trim() == '' ||
                                       purposeController.text.trim() == '' ||
@@ -689,7 +713,7 @@ class _MistariPageState extends State<MistariPage> {
                                         formType: widget.buyerModel!.formType,
                                         formfillby:
                                             widget.buyerModel!.formfillby,
-                                            review: widget.buyerModel!.review,
+                                        review: widget.buyerModel!.review,
                                       ),
                                       widget.id!);
 

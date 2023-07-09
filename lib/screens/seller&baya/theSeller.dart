@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_model_list/drop_down/model.dart';
 import 'package:dropdown_model_list/drop_down/select_drop_list.dart';
@@ -559,6 +560,8 @@ class _TheSellerState extends State<TheSeller> {
               MyButton(
                 name: 'تأكيد الطلب',
                 onPressed: () async {
+                  var random = Random();
+                  int randomNumber = random.nextInt(100000000);
                   priceController.text.trim() == '' ||
                           daysController.text.trim() == '' ||
                           secondPartyMobileController.text.trim() == '' ||
@@ -567,6 +570,9 @@ class _TheSellerState extends State<TheSeller> {
                       ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
                       : widget.id == ''
                           ? await FirebaseServices().addMishtriDetails(
+                            serviceCompleted: false,
+                            orderCompleted: false,
+                              orderNumber: randomNumber,
                               review: '',
                               formfillby: 'buyer',
                               formType: 'تفاصيل الطلب للمشتري',
