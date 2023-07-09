@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/bottom_nav/bottomNavi.dart';
+import 'package:waist_app/screens/order/order.dart';
 import 'package:waist_app/widgets/loading.dart';
 
 class MishtariController extends GetxController {
@@ -101,7 +102,9 @@ class MishtariController extends GetxController {
           .doc(id)
           .update(buyerModel.toMap());
       update();
-      Get.offAll(() => const BottomNavigationExample());
+      Get.to(() => Orders(
+            title: 'الطلبات النشطة',
+          ));
       SmartDialog.dismiss();
     } catch (e) {}
   }

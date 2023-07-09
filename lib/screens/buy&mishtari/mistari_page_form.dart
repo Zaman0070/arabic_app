@@ -125,6 +125,8 @@ class _MistariPageState extends State<MistariPage> {
     );
     Future.delayed(const Duration(seconds: 2), () {
       Get.to((CompleteOrder(
+        id: '',
+        type: 'add',
         buyerModel: buyerModel,
         userModel: userModel,
       )));

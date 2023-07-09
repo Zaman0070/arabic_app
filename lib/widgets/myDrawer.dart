@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/screens/AboutUs.dart';
 import 'package:waist_app/screens/calculator.dart';
 import 'package:waist_app/screens/contactUs/contactUs.dart';
@@ -11,7 +12,7 @@ import 'package:waist_app/screens/new_order/newOrder.dart';
 import 'package:waist_app/screens/order/order.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/screens/profile/profile.dart';
-import 'package:waist_app/screens/wallet.dart';
+import 'package:waist_app/screens/wallet/wallet.dart';
 import 'package:waist_app/widgets/button.dart';
 import '../constants/colors.dart';
 import '../screens/notification.dart';
@@ -510,7 +511,9 @@ class _MyDrawerState extends State<MyDrawer> {
                     height: 20,
                   ),
                   MyButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await FirebaseServices().logout();
+                    },
                     name: 'تغيير اللغة',
                   )
                 ],

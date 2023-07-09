@@ -88,17 +88,18 @@ class _EditProfileState extends State<EditProfile> {
                     onTap: () async {
                       await userController.updateUser(
                         UserModel(
-                          name: nameController.text,
-                          phoneNumber: phoneController.text,
-                          location: cityController.text,
-                          email: emailController.text,
-                          profileImage:
-                              // ignore: unnecessary_null_comparison
-                              imageUrl.isEmpty
-                                  ? widget.userModel.profileImage
-                                  : imageUrl[0],
-                          uid: widget.userModel.uid,
-                        ),
+                            token: widget.userModel.token,
+                            name: nameController.text,
+                            phoneNumber: phoneController.text,
+                            location: cityController.text,
+                            email: emailController.text,
+                            profileImage:
+                                // ignore: unnecessary_null_comparison
+                                imageUrl.isEmpty
+                                    ? widget.userModel.profileImage
+                                    : imageUrl[0],
+                            uid: widget.userModel.uid,
+                            walletBalance: widget.userModel.walletBalance),
                       );
                       Get.back();
                     },

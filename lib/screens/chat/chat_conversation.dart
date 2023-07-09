@@ -57,6 +57,7 @@ class _ChatConversationState extends State<ChatConversation>
         'read': false,
         'show': true,
         'lastMsg': msgController.text,
+        'lastMsgTime': DateTime.now().microsecondsSinceEpoch,
         'chatMap': [FirebaseAuth.instance.currentUser!.uid, widget.reciverId],
         'time': DateFormat("dd - MMM - yyyy").format(DateTime.now()),
         'userToken': '',
@@ -89,12 +90,17 @@ class _ChatConversationState extends State<ChatConversation>
           ),
           child: Column(
             children: [
+              SizedBox(
+                height: 12.h,
+              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(),
+                    const SizedBox(
+                      width: 34,
+                    ),
                     const Text(
                       'الرسائل',
                       style: TextStyle(

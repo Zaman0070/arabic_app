@@ -11,16 +11,21 @@ import 'package:waist_app/widgets/button.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
 
 import '../constants/colors.dart';
+import '../controller/mishtri_controller.dart';
 import '../widgets/arrowButton.dart';
 
 // ignore: must_be_immutable
 class CompleteOrder extends StatefulWidget {
+  String id;
+  String type;
   BuyerModel buyerModel;
   UserModel userModel;
   CompleteOrder({
     super.key,
     required this.buyerModel,
     required this.userModel,
+    required this.type,
+    required this.id,
   });
   @override
   State<CompleteOrder> createState() => _CompleteOrderState();
@@ -37,6 +42,7 @@ class _CompleteOrderState extends State<CompleteOrder> {
   late var addressController =
       TextEditingController(text: widget.buyerModel.address!.trim());
   bool second = false;
+  MishtariController mishtryController = Get.put(MishtariController());
 
   @override
   Widget build(BuildContext context) {
@@ -416,35 +422,62 @@ class _CompleteOrderState extends State<CompleteOrder> {
                     onPressed: () async {
                       isSwitched == false || isSwitched2 == false
                           ? Fluttertoast.showToast(msg: 'msg')
-                          : await FirebaseServices().addMishtriDetails(
-                              serviceCompleted: false,
-                              orderCompleted: false,
-                              orderNumber: widget.buyerModel.orderNumber!,
-                              formfillby: 'seller',
-                              formType: 'تفاصيل الطلب للبائع',
-                              uid: [
-                                userController.currentUser.value.uid!,
-                                widget.userModel.uid!
-                              ],
-                              name: nameController.text,
-                              phoneNumber:
-                                  phoneController.text.replaceAll("+", ''),
-                              purpose: widget.buyerModel.purpose!,
-                              days: widget.buyerModel.days!,
-                              secondPartyMobile: widget
-                                  .buyerModel.secondPartyMobile!
-                                  .replaceAll('+', ''),
-                              description: widget.buyerModel.description!,
-                              address: addressController.text,
-                              price: widget.buyerModel.price!,
-                              agree1: isSwitched,
-                              agree2: isSwitched2,
-                              images: widget.buyerModel.images!,
-                              isAccepted: '',
-                              ayam: widget.buyerModel.ayam!,
-                              ayamNumber: widget.buyerModel.ayamNumber!,
-                              review: '',
-                            );
+                          : widget.type == 'add'
+                              ? await FirebaseServices().addMishtriDetails(
+                                  serviceCompleted: false,
+                                  orderCompleted: false,
+                                  orderNumber: widget.buyerModel.orderNumber!,
+                                  formfillby: 'seller',
+                                  formType: 'تفاصيل الطلب للبائع',
+                                  uid: [
+                                    userController.currentUser.value.uid!,
+                                    widget.userModel.uid!
+                                  ],
+                                  name: nameController.text,
+                                  phoneNumber:
+                                      phoneController.text.replaceAll("+", ''),
+                                  purpose: widget.buyerModel.purpose!,
+                                  days: widget.buyerModel.days!,
+                                  secondPartyMobile: widget
+                                      .buyerModel.secondPartyMobile!
+                                      .replaceAll('+', ''),
+                                  description: widget.buyerModel.description!,
+                                  address: addressController.text,
+                                  price: widget.buyerModel.price!,
+                                  agree1: isSwitched,
+                                  agree2: isSwitched2,
+                                  images: widget.buyerModel.images!,
+                                  isAccepted: '',
+                                  ayam: widget.buyerModel.ayam!,
+                                  ayamNumber: widget.buyerModel.ayamNumber!,
+                                  review: '',
+                                )
+                              : await mishtryController.updateMistryData(
+                                  BuyerModel(
+                                    price: widget.buyerModel.price,
+                                    days: widget.buyerModel.days,
+                                    secondPartyMobile:
+                                        widget.buyerModel.secondPartyMobile,
+                                    agree1: isSwitched,
+                                    agree2: isSwitched2,
+                                    description: widget.buyerModel.description,
+                                    images: widget.buyerModel.images,
+                                    name: widget.buyerModel.name,
+                                    phoneNumber: widget.buyerModel.phoneNumber,
+                                    address: widget.buyerModel.address,
+                                    isAccepted: 'sellerAccepted',
+                                    ayam: widget.buyerModel.ayam,
+                                    ayamNumber: widget.buyerModel.ayamNumber,
+                                    uid: widget.buyerModel.uid,
+                                    purpose: widget.buyerModel.purpose,
+                                    orderNumber: widget.buyerModel.orderNumber,
+                                    formType: widget.buyerModel.formType,
+                                    formfillby: widget.buyerModel.formfillby,
+                                    review: widget.buyerModel.review,
+                                    orderCompleted: false,
+                                    serviceCompleted: false,
+                                  ),
+                                  widget.id);
                     }),
                 SizedBox(
                   height: 20.h,

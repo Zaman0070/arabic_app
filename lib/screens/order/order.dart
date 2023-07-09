@@ -11,10 +11,11 @@ import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/bottom_nav/bottomNavi.dart';
+import 'package:waist_app/screens/completePurchaseOrder.dart';
 import 'package:waist_app/screens/order/widget/order_box.dart';
 import 'package:waist_app/widgets/loading.dart';
 import '../../widgets/arrowButton.dart';
-import '../orderDetails.dart';
+import 'orderDetails.dart';
 
 // ignore: must_be_immutable
 class Orders extends StatefulWidget {
@@ -136,6 +137,8 @@ class _OrdersState extends State<Orders> {
                                             userController
                                                 .currentUser.value.phoneNumber
                                     ? () {
+                                        userController
+                                            .getSpecificUser(buyerData.uid![0]);
                                         orderConfimation(
                                             context: context,
                                             accpeted: () async {
@@ -145,9 +148,12 @@ class _OrdersState extends State<Orders> {
                                                           .data!.docs[index].id,
                                                       'sellerAccepted')
                                                   .whenComplete(() {
-                                                Get.to(() => OrdersDetails(
+                                                Get.to(() => CompleteOrder(
                                                     id: snapshot
                                                         .data!.docs[index].id,
+                                                    type: 'update',
+                                                    userModel: userController
+                                                        .specificUser.value,
                                                     buyerModel: buyerData));
                                                 // buyerData.purpose == ''
                                                 //     ? Get.to(() => MistariPage(

@@ -10,8 +10,9 @@ import 'package:waist_app/screens/chat/chat_conversation.dart';
 import 'package:waist_app/screens/order/order.dart';
 import 'package:waist_app/widgets/button.dart';
 import 'package:waist_app/widgets/loading.dart';
-import '../constants/colors.dart';
-import '../widgets/arrowButton.dart';
+import '../../constants/colors.dart';
+import '../../widgets/arrowButton.dart';
+
 // ignore: must_be_immutable
 class OrdersDetails extends StatefulWidget {
   BuyerModel buyerModel;
@@ -304,12 +305,13 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                 ),
               ),
               const Spacer(),
-              
               MyButton(
-                name: orderCompleted || widget.buyerModel.orderCompleted == true
+                name: widget.buyerModel.uid![0] ==
+                        userController.currentUser.value.uid
                     ? "تم  إتمام  الطلب"
                     : 'تم ارسال الطلب',
-                onPressed: orderCompleted == false
+                onPressed: widget.buyerModel.uid![0] !=
+                        userController.currentUser.value.uid
                     ? () {
                         FirebaseFirestore.instance
                             .collection('MishtariProducts')
@@ -324,7 +326,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                     : () {
                         orderConfimation(
                             context: context,
-                            accpeted: () {
+                            accpeted: () async {
                               SmartDialog.showLoading(
                                 animationBuilder:
                                     (controller, child, animationParam) {
@@ -333,12 +335,19 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                                   );
                                 },
                               );
-                              Future.delayed(const Duration(seconds: 2), () {
-                                FirebaseFirestore.instance
+                              Future.delayed(const Duration(seconds: 2),
+                                  () async {
+                                await FirebaseFirestore.instance
                                     .collection('MishtariProducts')
                                     .doc(widget.id)
                                     .update({
                                   'serviceCompleted': true,
+                                });
+                                await FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(widget.buyerModel.uid![1])
+                                    .update({
+                                  'walletBalance': widget.buyerModel.price,
                                 });
                                 SmartDialog.dismiss();
                                 Get.to(() => Orders(
@@ -346,7 +355,9 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                                     ));
                               });
                             },
-                            declined: () {});
+                            declined: () {
+                              Get.back();
+                            });
                       },
               ),
               SizedBox(
@@ -354,6 +365,9 @@ class _OrdersDetailsState extends State<OrdersDetails> {
               ),
               InkWell(
                 onTap: () async {
+                  await userController
+                      .getSpecificUser(widget.buyerModel.uid![1]);
+
                   await FirebaseFirestore.instance
                       .collection('Chats')
                       .doc(
@@ -398,7 +412,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
               SizedBox(
                 height: 12.h,
               ),
-              orderCompleted || widget.buyerModel.orderCompleted == true
+              widget.buyerModel.uid![0] == userController.currentUser.value.uid
                   ? InkWell(
                       onTap: () async {},
                       child: Container(

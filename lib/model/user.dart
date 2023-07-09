@@ -9,6 +9,7 @@ class UserModel {
   String? profileImage;
   String? uid;
   String? token;
+  int? walletBalance;
   UserModel({
     this.name,
     this.email,
@@ -17,8 +18,8 @@ class UserModel {
     this.profileImage,
     this.uid,
     this.token,
+    this.walletBalance,
   });
- 
 
   UserModel copyWith({
     String? name,
@@ -28,6 +29,7 @@ class UserModel {
     String? profileImage,
     String? uid,
     String? token,
+    int? walletBalance,
   }) {
     return UserModel(
       name: name ?? this.name,
@@ -37,6 +39,7 @@ class UserModel {
       profileImage: profileImage ?? this.profileImage,
       uid: uid ?? this.uid,
       token: token ?? this.token,
+      walletBalance: walletBalance ?? this.walletBalance,
     );
   }
 
@@ -49,6 +52,7 @@ class UserModel {
       'profileImage': profileImage,
       'uid': uid,
       'token': token,
+      'walletBalance': walletBalance,
     };
   }
 
@@ -56,45 +60,51 @@ class UserModel {
     return UserModel(
       name: map['name'] != null ? map['name'] as String : null,
       email: map['email'] != null ? map['email'] as String : null,
-      phoneNumber: map['phoneNumber'] != null ? map['phoneNumber'] as String : null,
+      phoneNumber:
+          map['phoneNumber'] != null ? map['phoneNumber'] as String : null,
       location: map['location'] != null ? map['location'] as String : null,
-      profileImage: map['profileImage'] != null ? map['profileImage'] as String : null,
+      profileImage:
+          map['profileImage'] != null ? map['profileImage'] as String : null,
       uid: map['uid'] != null ? map['uid'] as String : null,
       token: map['token'] != null ? map['token'] as String : null,
+      walletBalance:
+          map['walletBalance'] != null ? map['walletBalance'] as int : null,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'UserModel(name: $name, email: $email, phoneNumber: $phoneNumber, location: $location, profileImage: $profileImage, uid: $uid, token: $token)';
+    return 'UserModel(name: $name, email: $email, phoneNumber: $phoneNumber, location: $location, profileImage: $profileImage, uid: $uid, token: $token, walletBalance: $walletBalance)';
   }
 
   @override
   bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.name == name &&
-      other.email == email &&
-      other.phoneNumber == phoneNumber &&
-      other.location == location &&
-      other.profileImage == profileImage &&
-      other.uid == uid &&
-      other.token == token;
+
+    return other.name == name &&
+        other.email == email &&
+        other.phoneNumber == phoneNumber &&
+        other.location == location &&
+        other.profileImage == profileImage &&
+        other.uid == uid &&
+        other.token == token &&
+        other.walletBalance == walletBalance;
   }
 
   @override
   int get hashCode {
     return name.hashCode ^
-      email.hashCode ^
-      phoneNumber.hashCode ^
-      location.hashCode ^
-      profileImage.hashCode ^
-      uid.hashCode ^
-      token.hashCode;
+        email.hashCode ^
+        phoneNumber.hashCode ^
+        location.hashCode ^
+        profileImage.hashCode ^
+        uid.hashCode ^
+        token.hashCode ^
+        walletBalance.hashCode;
   }
 }

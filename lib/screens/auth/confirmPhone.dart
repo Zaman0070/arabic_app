@@ -63,6 +63,7 @@ class _LoginPageState extends State<OTP> {
           profileImage: '',
           location: '',
           name: '',
+          walletBalance: 0,
         );
         _phoneService.users.doc(user.uid).set(userModel.toMap()).then((value) {
           Get.offAll(() => const BottomNavigationExample());
