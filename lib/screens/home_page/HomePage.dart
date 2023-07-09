@@ -611,9 +611,16 @@ class _HomePageState extends State<HomePage> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 30, vertical: 4),
                                             decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: buyerData
+                                                              .serviceCompleted ==
+                                                          true
+                                                      ? BC.appColor
+                                                      : Colors.transparent,
+                                                ),
                                                 color: buyerData
                                                             .serviceCompleted ==
-                                                        true
+                                                        false
                                                     ? buyerData.isAccepted ==
                                                                 '' ||
                                                             buyerData
@@ -645,7 +652,7 @@ class _HomePageState extends State<HomePage> {
                                   SizedBox(
                                     height: 10.h,
                                   ),
-                                  buyerData.serviceCompleted == true
+                                  buyerData.serviceCompleted == false
                                       ? MyButton(
                                           name: 'تفاصيل الطلب',
                                           onPressed: () {

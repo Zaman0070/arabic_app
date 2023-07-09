@@ -86,16 +86,13 @@ class _MessagesState extends State<Messages> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     }
-                    if (snapshot.data!.docs.isEmpty) {
-                      return const Text('');
-                    }
 
                     return ListView.builder(
                         physics: const ScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
-                          DocumentSnapshot data = snapshot.data!.docs[index];
+                          var data = snapshot.data!.docs[index];
                           userController.getSpecificUser(data['chatMap'][0] ==
                                   userController.currentUser.value.uid
                               ? data['chatMap'][0]

@@ -387,6 +387,8 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                       widget.buyerModel.uid![0],
                       widget.buyerModel.uid![1],
                     ],
+                    'lastMsg': '',
+                    'lastMsgTime': DateTime.now().microsecondsSinceEpoch,
                     'userName': userController.currentUser.value.name,
                     'userUid': userController.currentUser.value.uid,
                     'userToken': userController.currentUser.value.token,
