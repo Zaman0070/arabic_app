@@ -18,6 +18,8 @@ import '../../widgets/arrowButton.dart';
 import '../../widgets/button.dart';
 
 class ServiceProvider extends StatefulWidget {
+  const ServiceProvider({super.key});
+
   @override
   State<ServiceProvider> createState() => _ServiceProviderState();
 }
@@ -33,7 +35,6 @@ class _ServiceProviderState extends State<ServiceProvider> {
   int result = 0;
   List<String> uids = [];
   OneSignals oneSignals = OneSignals();
-
 
   String ayamDate = '';
   bool second = false;
@@ -487,15 +488,17 @@ class _ServiceProviderState extends State<ServiceProvider> {
                           isAccepted: '',
                           ayam: ayam!,
                           ayamNumber: ayamNumber!,
+                          byerUid: userController.specificUser.value.uid!,
+                          sellerUid: userController.currentUser.value.uid!,
                         );
-                          await oneSignals.sendNotification(
-                              userController.specificUser.value.token!,
-                              '${userController.currentUser.value.name!} Send the Request',
-                              'مرحبا بك في تطبيق وسيط: يوجد لديك طلب (order detail) يرجى إكمال الطلب',
-                              'assets/logo/jpeg',
-                              token: userController.specificUser.value.token!,
-                              senderName: userController.currentUser.value.name!,
-                              type: 'mishtri');
+                  await oneSignals.sendNotification(
+                      userController.specificUser.value.token!,
+                      '${userController.currentUser.value.name!} Send the Request',
+                      'مرحبا بك في تطبيق وسيط: يوجد لديك طلب (order detail) يرجى إكمال الطلب',
+                      'assets/logo/jpeg',
+                      token: userController.specificUser.value.token!,
+                      senderName: userController.currentUser.value.name!,
+                      type: 'mishtri');
                 },
               ),
               SizedBox(

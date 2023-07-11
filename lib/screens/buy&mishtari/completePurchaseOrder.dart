@@ -427,7 +427,7 @@ class _CompleteOrderState extends State<CompleteOrder> {
                                   serviceCompleted: false,
                                   orderCompleted: false,
                                   orderNumber: widget.buyerModel.orderNumber!,
-                                  formfillby: 'seller',
+                                  formfillby: 'buyer',
                                   formType: 'تفاصيل الطلب للبائع',
                                   uid: [
                                     userController.currentUser.value.uid!,
@@ -451,6 +451,8 @@ class _CompleteOrderState extends State<CompleteOrder> {
                                   ayam: widget.buyerModel.ayam!,
                                   ayamNumber: widget.buyerModel.ayamNumber!,
                                   review: '',
+                                  byerUid: widget.buyerModel.byerUid!,
+                                  sellerUid: widget.buyerModel.sellerUid!,
                                 )
                               : await mishtryController.updateMistryData(
                                   BuyerModel(
@@ -476,6 +478,8 @@ class _CompleteOrderState extends State<CompleteOrder> {
                                     review: widget.buyerModel.review,
                                     orderCompleted: false,
                                     serviceCompleted: false,
+                                    byerUid: widget.buyerModel.byerUid,
+                                    sellerUid: widget.buyerModel.sellerUid,
                                   ),
                                   widget.id);
                     }),

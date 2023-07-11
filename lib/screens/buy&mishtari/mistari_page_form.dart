@@ -653,7 +653,7 @@ class _MistariPageState extends State<MistariPage> {
                                           : completeOrder(
                                               BuyerModel(
                                                 orderNumber: randomNumber,
-                                                formfillby: 'seller',
+                                                formfillby: 'buyer',
                                                 formType: 'تفاصيل الطلب للبائع',
                                                 uid: [
                                                   userController
@@ -678,6 +678,10 @@ class _MistariPageState extends State<MistariPage> {
                                                 ayam: ayam!,
                                                 ayamNumber: ayamNumber!,
                                                 review: '',
+                                                byerUid: userController
+                                                    .currentUser.value.uid!,
+                                                sellerUid: userController
+                                                    .specificUser.value.uid!,
                                               ),
                                               userModel)
                               : nameController.text.trim() == '' ||
@@ -716,6 +720,8 @@ class _MistariPageState extends State<MistariPage> {
                                         formfillby:
                                             widget.buyerModel!.formfillby,
                                         review: widget.buyerModel!.review,
+                                        byerUid: widget.buyerModel!.byerUid,
+                                        sellerUid: widget.buyerModel!.sellerUid,
                                       ),
                                       widget.id!);
 

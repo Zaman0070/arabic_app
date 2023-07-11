@@ -424,6 +424,8 @@ class _CompleteOrderState extends State<CompleteServiceProvider> {
                               review: widget.buyerModel.review,
                               orderCompleted: false,
                               serviceCompleted: false,
+                              byerUid: widget.buyerModel.byerUid,
+                              sellerUid: widget.buyerModel.sellerUid,
                             ),
                             widget.id);
                   },

@@ -71,7 +71,8 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                     width: 30,
                   ),
                   Text(
-                    widget.uid == userController.currentUser.value.uid
+                    widget.buyerModel.byerUid ==
+                            userController.currentUser.value.uid
                         ? 'تفاصيل الطلب للمشتري'
                         : 'تفاصيل الطلب للبائع',
                     style: const TextStyle(
@@ -439,7 +440,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
               SizedBox(
                 height: 12.h,
               ),
-              widget.uid == userController.currentUser.value.uid
+              widget.buyerModel.byerUid == userController.currentUser.value.uid
                   ? InkWell(
                       onTap: () {
                         Get.to(() => Help());

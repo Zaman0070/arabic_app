@@ -50,6 +50,8 @@ class FirebaseServices {
     required int orderNumber,
     required bool orderCompleted,
     required bool serviceCompleted,
+    required String byerUid,
+    required String sellerUid,
   }) async {
     SmartDialog.showLoading(
       animationBuilder: (controller, child, animationParam) {
@@ -79,6 +81,8 @@ class FirebaseServices {
         review: review,
         orderCompleted: orderCompleted,
         serviceCompleted: serviceCompleted,
+        byerUid: byerUid,
+        sellerUid: sellerUid,
       );
       await mishtriProduct.doc().set(buyerModel.toMap()).then((value) {
         Fluttertoast.showToast(

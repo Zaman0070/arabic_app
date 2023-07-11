@@ -18,7 +18,7 @@ import 'package:waist_app/widgets/textFormfield.dart';
 
 // ignore: must_be_immutable
 class ServicesBeneficary extends StatefulWidget {
-  ServicesBeneficary({super.key});
+  const ServicesBeneficary({super.key});
 
   @override
   State<ServicesBeneficary> createState() => _ServicesBeneficaryState();
@@ -559,8 +559,12 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                                   ayamNumber: ayamNumber!,
                                   review: '',
                                   orderCompleted: false,
-                                  serviceCompleted: false);
-                                  
+                                  serviceCompleted: false,
+                                  byerUid:
+                                      userController.currentUser.value.uid!,
+                                  sellerUid:
+                                      userController.specificUser.value.uid!,
+                                );
                         }),
                     SizedBox(
                       height: 20.h,

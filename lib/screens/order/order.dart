@@ -126,11 +126,9 @@ class _OrdersState extends State<Orders> {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 14),
                               child: OrderBox(
-                                buttonText: buyerData.secondPartyMobile ==
-                                        userController
-                                            .currentUser.value.phoneNumber
-                                    ? 'متابعة الطلب'
-                                    : 'متابعة الخدمة',
+                                buttonText: buyerData.formfillby == 'seller'
+                                    ? 'متابعة الخدمة'
+                                    : 'متابعة الطلب',
                                 buyerModel: buyerData,
                                 orderNumber: '#${buyerData.orderNumber}',
                                 date: DateFormat('dd/MM/yyyy  hh:mm ')

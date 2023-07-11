@@ -578,7 +578,7 @@ class _TheSellerState extends State<TheSeller> {
                               orderCompleted: false,
                               orderNumber: randomNumber,
                               review: '',
-                              formfillby: 'buyer',
+                              formfillby: 'seller',
                               formType: 'تفاصيل الطلب للمشتري',
                               uid: [
                                 userController.currentUser.value.uid!,
@@ -601,6 +601,8 @@ class _TheSellerState extends State<TheSeller> {
                               isAccepted: '',
                               ayam: ayam!,
                               ayamNumber: ayamNumber!,
+                              byerUid: userController.specificUser.value.uid!,
+                              sellerUid: userController.currentUser.value.uid!,
                             )
                           : await mishtariController.updateMistryData(
                               BuyerModel(
@@ -624,6 +626,8 @@ class _TheSellerState extends State<TheSeller> {
                                 orderNumber: widget.buyerModel!.orderNumber,
                                 formType: widget.buyerModel!.formType,
                                 formfillby: widget.buyerModel!.formfillby,
+                                byerUid: widget.buyerModel!.byerUid,
+                                sellerUid: widget.buyerModel!.sellerUid,
                               ),
                               widget.id!);
                   await oneSignals.sendNotification(
