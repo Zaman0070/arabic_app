@@ -12,6 +12,7 @@ class OrderBox extends StatelessWidget {
   String date;
   String purpose;
   String orderStatus;
+  String buttonText;
   Function() onPressed;
   OrderBox(
       {super.key,
@@ -20,7 +21,9 @@ class OrderBox extends StatelessWidget {
       required this.date,
       required this.purpose,
       required this.orderStatus,
-      required this.onPressed});
+      required this.onPressed,
+      required this.buttonText
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +135,7 @@ class OrderBox extends StatelessWidget {
           SizedBox(
             height: 10.h,
           ),
-          MyButton(name: 'متابعة الطلب', onPressed: onPressed)
+          MyButton(name: buttonText, onPressed: onPressed)
         ],
       ),
     );

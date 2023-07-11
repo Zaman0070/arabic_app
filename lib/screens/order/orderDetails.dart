@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:waist_app/Services/onsignal.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/buyer.dart';
+import 'package:waist_app/model/user.dart';
 import 'package:waist_app/screens/chat/chat_conversation.dart';
 import 'package:waist_app/screens/help.dart';
 import 'package:waist_app/screens/order/order.dart';
@@ -16,6 +18,7 @@ import '../../widgets/arrowButton.dart';
 
 // ignore: must_be_immutable
 class OrdersDetails extends StatefulWidget {
+  UserModel user;
   BuyerModel buyerModel;
   String id;
   String formType;
@@ -25,7 +28,8 @@ class OrdersDetails extends StatefulWidget {
       required this.buyerModel,
       required this.id,
       required this.formType,
-      required this.uid});
+      required this.uid,
+      required this.user});
 
   @override
   State<OrdersDetails> createState() => _OrdersDetailsState();
@@ -33,6 +37,7 @@ class OrdersDetails extends StatefulWidget {
 
 class _OrdersDetailsState extends State<OrdersDetails> {
   UserController userController = Get.put(UserController());
+  OneSignals oneSignals = OneSignals();
 
   late DateTime date = DateTime.parse(widget.buyerModel.days!);
   late int difference = DateTime.now().difference(date).inDays;
@@ -66,7 +71,9 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                     width: 30,
                   ),
                   Text(
-                    widget.buyerModel.formType!,
+                    widget.uid == userController.currentUser.value.uid
+                        ? 'تفاصيل الطلب للمشتري'
+                        : 'تفاصيل الطلب للبائع',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -281,7 +288,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    widget.formType != 'seller' || widget.formType != 'buyer'
+                    widget.formType != 'seller' && widget.formType != 'buyer'
                         ? Container()
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -353,15 +360,25 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                                 });
                                 await FirebaseFirestore.instance
                                     .collection('users')
-                                    .doc(widget.buyerModel.uid![1])
+                                    .doc(widget.user.uid)
                                     .update({
-                                  'walletBalance': widget.buyerModel.price,
+                                  'walletBalance': FieldValue.increment(
+                                      int.parse(widget.buyerModel.price!)),
                                 });
                                 SmartDialog.dismiss();
                                 Get.to(() => Orders(
                                       title: 'الطلبات النشطة',
                                     ));
                               });
+                              await oneSignals.sendNotification(
+                                  widget.user.token!,
+                                  '',
+                                  'تطبيق وسيط: تم تأكيد طلبك من الطرف الآخر وبانتظار تأكيد إنهاء المعاملة',
+                                  'assets/logo/jpeg',
+                                  token: widget.user.token!,
+                                  senderName:
+                                      userController.currentUser.value.name!,
+                                  type: 'mishtri');
                             },
                             declined: () {
                               Get.back();

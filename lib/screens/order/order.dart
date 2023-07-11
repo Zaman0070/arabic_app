@@ -126,6 +126,11 @@ class _OrdersState extends State<Orders> {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 14),
                               child: OrderBox(
+                                buttonText: buyerData.secondPartyMobile ==
+                                        userController
+                                            .currentUser.value.phoneNumber
+                                    ? 'متابعة الطلب'
+                                    : 'متابعة الخدمة',
                                 buyerModel: buyerData,
                                 orderNumber: '#${buyerData.orderNumber}',
                                 date: DateFormat('dd/MM/yyyy  hh:mm ')
@@ -266,6 +271,8 @@ class _OrdersState extends State<Orders> {
                                                 userController.currentUser.value
                                                     .phoneNumber
                                         ? () {
+                                            userController.getSpecificUser(
+                                                buyerData.uid![0]);
                                             payment(
                                               context: context,
                                               pay: () async {
@@ -289,16 +296,15 @@ class _OrdersState extends State<Orders> {
                                                       .whenComplete(() async {
                                                     SmartDialog.dismiss();
                                                     Get.to(() => OrdersDetails(
+                                                        user: userController
+                                                            .specificUser.value,
                                                         uid: buyerData
                                                                     .formType ==
                                                                 'seller'
                                                             ? buyerData.uid![0]
                                                             : buyerData.uid![1],
                                                         formType: buyerData
-                                                                    .formType ==
-                                                                'seller'
-                                                            ? 'seller'
-                                                            : 'buyer',
+                                                            .formfillby!,
                                                         id: snapshot.data!
                                                             .docs[index].id,
                                                         buyerModel: buyerData));
@@ -312,21 +318,22 @@ class _OrdersState extends State<Orders> {
                                                     userController.currentUser
                                                         .value.phoneNumber
                                             ? () {
+                                                userController.getSpecificUser(
+                                                    buyerData.uid![0]);
                                                 Fluttertoast.showToast(
                                                     msg:
                                                         'يرجى انتظار البائع لقبول العرض');
                                               }
                                             : () {
                                                 Get.to(() => OrdersDetails(
+                                                    user: userController
+                                                        .specificUser.value,
                                                     uid: buyerData.formType ==
                                                             'seller'
                                                         ? buyerData.uid![0]
                                                         : buyerData.uid![1],
                                                     formType:
-                                                        buyerData.formType ==
-                                                                'seller'
-                                                            ? 'seller'
-                                                            : 'buyer',
+                                                        buyerData.formfillby!,
                                                     id: snapshot
                                                         .data!.docs[index].id,
                                                     buyerModel: buyerData));

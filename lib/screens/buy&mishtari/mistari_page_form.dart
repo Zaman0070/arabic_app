@@ -426,7 +426,7 @@ class _MistariPageState extends State<MistariPage> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: const BorderSide(width: 0.1)),
-                          labelText: 'رقم هاتف المشتري / البائع',
+                          labelText: 'رقم هاتف البائع',
                           hintText: 'XX-XXX-XXXX',
                           contentPadding:
                               const EdgeInsets.only(top: 0, right: 15),

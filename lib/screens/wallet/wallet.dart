@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/widgets/button.dart';
+import 'package:waist_app/widgets/loading.dart';
 
 import '../../constants/colors.dart';
 import '../../widgets/arrowButton.dart';
@@ -21,206 +24,240 @@ class _WalletState extends State<Wallet> {
 
   @override
   Widget build(BuildContext context) {
-    UserController userController = Get.put(UserController());
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage(
-              'assets/background.png',
-            ),
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 12.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(
-                    width: 30,
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.data == null) {
+              return Container();
+            }
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage(
+                    'assets/background.png',
                   ),
-                  const Text(
-                    'المحفظة',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  ArrowButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 40.h,
-              ),
-              Container(
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: BC.appColor),
-                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              child: SafeArea(
+                child: Column(
                   children: [
+                    SizedBox(
+                      height: 12.h,
+                    ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        const SizedBox(
+                          width: 30,
+                        ),
                         const Text(
-                          'ريال',
+                          'المحفظة',
                           style: TextStyle(
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
+                        ArrowButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40.h,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: BC.appColor),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Text(
+                                'ريال',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                snapshot.data!['walletBalance'].toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'الرصيد الحالي',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    color: BC.lightGrey),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Image(
+                                image: AssetImage('assets/WalletS.png'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 300.w,
+                          child: Text(
+                            'STC Pay',
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(fontSize: 15.sp),
+                          ),
                         ),
-                        Text(
-                          userController.currentUser.value.walletBalance
-                              .toString(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
+                        SizedBox(
+                          width: 10.w,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              isSwitched = !isSwitched;
+                            });
+                          },
+                          child: Container(
+                            width: 20.h,
+                            height: 20.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: BC.appColor),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Icon(
+                              Icons.check,
+                              color:
+                                  isSwitched ? BC.appColor : Colors.transparent,
+                              size: 15.h,
+                            ),
                           ),
                         ),
                       ],
                     ),
+                    const SizedBox(
+                      height: 12,
+                    ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'الرصيد الحالي',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: BC.lightGrey),
+                        SizedBox(
+                          width: 300.w,
+                          child: Text(
+                            'Bank Transfer',
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(fontSize: 15.sp),
+                          ),
                         ),
-                        const SizedBox(
-                          width: 10,
+                        SizedBox(
+                          width: 10.w,
                         ),
-                        const Image(
-                          image: AssetImage('assets/WalletS.png'),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              isSwitched2 = !isSwitched2;
+                            });
+                          },
+                          child: Container(
+                            width: 20.h,
+                            height: 20.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: BC.appColor),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Icon(
+                              Icons.check,
+                              color: isSwitched2
+                                  ? BC.appColor
+                                  : Colors.transparent,
+                              size: 15.h,
+                            ),
+                          ),
                         ),
                       ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 200),
+                      child: MyButton(
+                          name: 'سحب الرصيد',
+                          onPressed: isSwitched == false && isSwitched2 == false
+                              ? () {
+                                  Fluttertoast.showToast(
+                                      msg: 'الرجاء تحديد بنك واحد');
+                                }
+                              : () async {
+                                  SmartDialog.showLoading(
+                                    animationBuilder:
+                                        (controller, child, animationParam) {
+                                      return Loading(
+                                        text: ' ... تحميل ',
+                                      );
+                                    },
+                                  );
+
+                                  await FirebaseFirestore.instance
+                                      .collection('withdrawRequests')
+                                      .doc()
+                                      .set({
+                                    'userId':
+                                        FirebaseAuth.instance.currentUser!.uid,
+                                    'amount': snapshot.data!['walletBalance'],
+                                  });
+
+                                  await FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                      .update({
+                                    'walletBalance': 0,
+                                  });
+                                  SmartDialog.dismiss();
+                                  Fluttertoast.showToast(
+                                      msg: 'تم سحب الرصيد بنجاح');
+                                  Get.back();
+                                }),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 12.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 300.w,
-                    child: Text(
-                      'STC Pay',
-                      textDirection: TextDirection.rtl,
-                      style: TextStyle(fontSize: 15.sp),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        isSwitched = !isSwitched;
-                      });
-                    },
-                    child: Container(
-                      width: 20.h,
-                      height: 20.h,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: BC.appColor),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Icon(
-                        Icons.check,
-                        color: isSwitched ? BC.appColor : Colors.transparent,
-                        size: 15.h,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 300.w,
-                    child: Text(
-                      'Bank Transfer',
-                      textDirection: TextDirection.rtl,
-                      style: TextStyle(fontSize: 15.sp),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        isSwitched2 = !isSwitched2;
-                      });
-                    },
-                    child: Container(
-                      width: 20.h,
-                      height: 20.h,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: BC.appColor),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Icon(
-                        Icons.check,
-                        color: isSwitched2 ? BC.appColor : Colors.transparent,
-                        size: 15.h,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 200),
-                child: MyButton(
-                    name: 'سحب الرصيد',
-                    onPressed: isSwitched == false && isSwitched2 == false
-                        ? () {
-                            Fluttertoast.showToast(
-                                msg: 'الرجاء تحديد بنك واحد');
-                          }
-                        : () {
-                            Fluttertoast.showToast(msg: 'تم سحب الرصيد بنجاح');
-                            Get.back();
-                          }
-                    // Navigator.of(context).push(
-                    //     MaterialPageRoute(builder: (context) => CompleteOrder()));
-
-                    ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            );
+          }),
     );
   }
 }

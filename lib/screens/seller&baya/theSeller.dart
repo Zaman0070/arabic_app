@@ -408,7 +408,7 @@ class _TheSellerState extends State<TheSeller> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(width: 0.1)),
-                    labelText: 'رقم هاتف المشتري / البائع',
+                    labelText: 'رقم هاتف المشتري',
                     hintText: 'XX-XXX-XXXX',
                     contentPadding: const EdgeInsets.only(top: 0, right: 15),
                     suffixIcon: widget.id == ''
