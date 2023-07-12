@@ -203,8 +203,8 @@ class _ServiceProviderState extends State<ServiceProvider> {
               MytextField(
                 type: TextInputType.name,
                 controller: desController,
-                text: 'وصف السلعة(اختياري)',
-                hint: 'وصف السلعة(اختياري)',
+                text: 'وصف الخدمة(اختياري)',
+                hint: 'وصف الخدمة(اختياري)',
               ),
               SizedBox(
                 height: 15.h,
@@ -299,7 +299,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(width: 0.1)),
-                    labelText: 'رقم هاتف المشتري / البائع',
+                    labelText: 'رقم هاتف المشتري',
                     hintText: 'XX-XXX-XXXX',
                     contentPadding: const EdgeInsets.only(top: 0, right: 15),
                     suffixIcon: Padding(

@@ -4,7 +4,6 @@ import 'package:waist_app/screens/home_page/HomePage.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
 import 'package:waist_app/widgets/myDrawer.dart';
 
-
 import '../../constants/colors.dart';
 
 class BottomNavigationExample extends StatefulWidget {
@@ -39,18 +38,27 @@ class _BottomNavigationExampleState extends State {
       key: _scaffold,
       body: _pages[_selectedTab],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: BC.appColor,
         currentIndex: _selectedTab,
         onTap: (index) => _changeTab(index),
-        selectedItemColor: BC.appColor,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
         items: [
           BottomNavigationBarItem(
-              icon: Image.asset('assets/material-share.png'), label: "مشاركة"),
+              icon: Image.asset(
+                'assets/material-share.png',
+                color: Colors.white,
+              ),
+              label: "مشاركة"),
           BottomNavigationBarItem(
-              icon: Image.asset('assets/Icon awesome-plus-circle.png'),
+              icon: Image.asset('assets/Icon awesome-plus-circle.png',
+                  color: Colors.white),
               label: "طلب جديد"),
           BottomNavigationBarItem(
-              icon: Image.asset('assets/Icon ionic-ios-home.png'),
+              icon: Image.asset(
+                'assets/Icon ionic-ios-home.png',
+                color: Colors.white,
+              ),
               label: "الرئيسية"),
         ],
       ),

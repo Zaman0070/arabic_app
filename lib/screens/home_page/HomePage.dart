@@ -8,6 +8,7 @@ import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/model/buyer.dart';
+import 'package:waist_app/screens/AboutUs.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/chat/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
@@ -79,11 +80,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   List pages = [
-    ['Messages', Messages()],
+    ['Messages', const Messages()],
     ['HowtoUse', HowToUse()],
     ['NewOrder', NewOrder()],
     ['NewOrder', NewOrder()],
-    ['NewOrder', NewOrder()],
+    ['NewOrder', const AboutUs()],
     ['HistoryEmpty', HistoryEmpty()],
   ];
   final PageController _pageController =

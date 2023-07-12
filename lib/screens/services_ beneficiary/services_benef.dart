@@ -226,8 +226,8 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                     MytextField(
                       type: TextInputType.name,
                       controller: desController,
-                      text: 'وصف السلعة(اختياري)',
-                      hint: 'وصف السلعة(اختياري)',
+                      text: 'وصف الخدمة(اختياري)',
+                      hint: 'وصف الخدمة(اختياري)',
                     ),
                     SizedBox(
                       height: 10.h,
@@ -329,7 +329,7 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: const BorderSide(width: 0.1)),
-                          labelText: 'رقم هاتف المشتري / البائع',
+                          labelText: 'رقم هاتف البائع',
                           hintText: 'XX-XXX-XXXX',
                           contentPadding:
                               const EdgeInsets.only(top: 0, right: 15),
