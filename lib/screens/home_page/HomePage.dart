@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/AboutUs.dart';
+import 'package:waist_app/screens/Safty.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/chat/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
@@ -16,9 +17,7 @@ import 'package:waist_app/screens/notification.dart';
 import 'package:waist_app/screens/order/order.dart';
 import 'package:waist_app/widgets/myDrawer.dart';
 import '../../constants/colors.dart';
-
 import '../../widgets/button.dart';
-import '../histroy_page/historyEmpty.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -58,8 +57,8 @@ class _HomePageState extends State<HomePage> {
     'assets/slider/Message.png',
     'assets/slider/How to use.png',
     'assets/slider/Add.png',
-    'assets/slider/Delivery.png',
     'assets/slider/Verified.png',
+    // 'assets/slider/Delivery.png',
     'assets/slider/Info.png',
   ];
   List names = [
@@ -67,8 +66,8 @@ class _HomePageState extends State<HomePage> {
     'دليل الأستخدام',
     'طلب جديد',
     'الضمانات',
+    // 'وسيط مواقع التسوق',
     'عن التطبيق',
-    'وسيط مواقع التسوق',
   ];
   int _current = 0;
   List<T> map<T>(List list, Function handler) {
@@ -83,9 +82,9 @@ class _HomePageState extends State<HomePage> {
     ['Messages', const Messages()],
     ['HowtoUse', HowToUse()],
     ['NewOrder', NewOrder()],
-    ['NewOrder', NewOrder()],
-    ['NewOrder', const AboutUs()],
-    ['HistoryEmpty', HistoryEmpty()],
+    ['NewOrder', safty()],
+    // ['NewOrder', const AboutUs()],
+    ['HistoryEmpty', const AboutUs()],
   ];
   final PageController _pageController =
       PageController(viewportFraction: 0.25, keepPage: true, initialPage: 2);
@@ -225,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: PageView.builder(
                     physics: const BouncingScrollPhysics(),
-                    itemCount: 6,
+                    itemCount: images.length,
                     controller: _pageController,
                     onPageChanged: (int index) =>
                         setState(() => _index = index),
