@@ -13,9 +13,16 @@ class MytextField extends StatelessWidget {
   MytextField({this.text, this.controller, this.enable, this.hint, this.type});
   @override
   Widget build(BuildContext context) {
+    ScrollController textFieldScrollController = ScrollController();
     return Directionality(
       textDirection: TextDirection.rtl,
       child: TextFormField(
+        onChanged: (value) {
+          textFieldScrollController.jumpTo(textFieldScrollController.position.maxScrollExtent);
+        },
+        minLines: null,
+        maxLines: null,
+        scrollController: textFieldScrollController,
         keyboardType: type,
         enabled: enable,
         controller: controller,
@@ -27,6 +34,7 @@ class MytextField extends StatelessWidget {
           labelText: text,
           hintText: hint,
           contentPadding: const EdgeInsets.only(top: 0, right: 15),
+
         ),
       ),
     );

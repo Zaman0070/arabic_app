@@ -71,7 +71,7 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
   ]);
   DropListModel dropListModeldays = DropListModel([
     OptionItem(id: "1", title: "     ايام"),
-    OptionItem(id: "2", title: "     ماه"),
+    OptionItem(id: "2", title: "     شهر"),
   ]);
   DropListModel dropListModeldays1 = DropListModel([
     OptionItem(id: "1", title: "     1"),
@@ -329,7 +329,7 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: const BorderSide(width: 0.1)),
-                          labelText: 'رقم هاتف البائع',
+                          labelText: 'رقم هاتف مقدم الخدمة',
                           hintText: 'XX-XXX-XXXX',
                           contentPadding:
                               const EdgeInsets.only(top: 0, right: 15),
@@ -535,6 +535,8 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                               ? Fluttertoast.showToast(
                                   msg: 'جميع الحقول مطلوبة')
                               : await FirebaseServices().addMishtriDetails(
+                                 timeExtandRequest: '',
+                                timeExtandRequestAccepted: false,
                                   orderNumber: randomNumber,
                                   formfillby: 'serviceBeneficiary',
                                   formType: 'تفاصيل الطلب للبائع',

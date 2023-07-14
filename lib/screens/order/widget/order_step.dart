@@ -37,6 +37,9 @@ class OrderStep extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
               decoration: BoxDecoration(
+                  color: buyerModel.isAccepted == 'underProcess'
+                      ? BC.appColor
+                      : Colors.transparent,
                   border: Border.all(
                     color: BC.appColor,
                   ),
@@ -60,7 +63,10 @@ class OrderStep extends StatelessWidget {
                   border: Border.all(
                     color: BC.appColor,
                   ),
-                  color: buyerModel.isAccepted == 'payforcash'
+                  color: buyerModel.isAccepted == 'payforcash' ||
+                          buyerModel.isAccepted == 'sellerAccepted' ||
+                          buyerModel.isAccepted == 'buyerAccepted' ||
+                          buyerModel.isAccepted == 'underProcess'
                       ? BC.appColor
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(10)),
@@ -80,7 +86,8 @@ class OrderStep extends StatelessWidget {
                   color: buyerModel.isAccepted == '' ||
                           buyerModel.isAccepted == 'payforcash' ||
                           buyerModel.isAccepted == 'sellerAccepted' ||
-                          buyerModel.isAccepted == 'buyerAccepted'
+                          buyerModel.isAccepted == 'buyerAccepted' ||
+                          buyerModel.isAccepted == 'underProcess'
                       ? BC.appColor
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(10)),

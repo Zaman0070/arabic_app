@@ -9,9 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/user.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
-
 import '../../constants/colors.dart';
-
 import '../../controller/image_controller.dart';
 import '../../widgets/arrowButton.dart';
 

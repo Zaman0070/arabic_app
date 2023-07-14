@@ -178,7 +178,7 @@ class _CompleteOrderState extends State<CompleteOrder> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.userModel.location!,
+                            widget.buyerModel.address!.trim(),
                             style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
@@ -424,6 +424,8 @@ class _CompleteOrderState extends State<CompleteOrder> {
                           ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
                           : widget.type == 'add'
                               ? await FirebaseServices().addMishtriDetails(
+                                  timeExtandRequest: '',
+                                  timeExtandRequestAccepted: false,
                                   serviceCompleted: false,
                                   orderCompleted: false,
                                   orderNumber: widget.buyerModel.orderNumber!,
@@ -480,6 +482,8 @@ class _CompleteOrderState extends State<CompleteOrder> {
                                     serviceCompleted: false,
                                     byerUid: widget.buyerModel.byerUid,
                                     sellerUid: widget.buyerModel.sellerUid,
+                                    timeExtandRequest: '',
+                                    timeExtandRequestAccepted: false,
                                   ),
                                   widget.id);
                     }),

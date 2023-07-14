@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_model_list/dropdown_model_list.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +93,7 @@ class _MistariPageState extends State<MistariPage> {
   ]);
   DropListModel dropListModeldays = DropListModel([
     OptionItem(id: "1", title: "ايام"),
-    OptionItem(id: "2", title: "ماه"),
+    OptionItem(id: "2", title: "شهر"),
   ]);
   DropListModel dropListModeldays1 = DropListModel([
     OptionItem(id: "1", title: "     1"),
@@ -722,13 +721,11 @@ class _MistariPageState extends State<MistariPage> {
                                         review: widget.buyerModel!.review,
                                         byerUid: widget.buyerModel!.byerUid,
                                         sellerUid: widget.buyerModel!.sellerUid,
+                                        timeExtandRequest: '',
+                                        timeExtandRequestAccepted: false,
                                       ),
                                       widget.id!);
 
-                          // setState(() {
-                          //   isSwitched = !isSwitched;
-                          //   isSwitched2 = !isSwitched2;
-                          // });
                           await oneSignals.sendNotification(
                               userController.specificUser.value.token!,
                               '${controller.currentUser.value.name!} Send the Request',
@@ -737,6 +734,21 @@ class _MistariPageState extends State<MistariPage> {
                               token: userController.specificUser.value.token!,
                               senderName: controller.currentUser.value.name!,
                               type: 'mishtri');
+                          await userController.updateUserInForm(
+                            UserModel(
+                              token: userController.currentUser.value.token!,
+                              name: nameController.text,
+                              phoneNumber: phoneController.text,
+                              location:
+                                  userController.currentUser.value.location,
+                              email: userController.currentUser.value.email,
+                              profileImage:
+                                  userController.currentUser.value.profileImage,
+                              uid: userController.currentUser.value.uid,
+                              walletBalance: userController
+                                  .currentUser.value.walletBalance,
+                            ),
+                          );
                         }),
                     SizedBox(
                       height: 20.h,

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_model_list/drop_down/model.dart';
 import 'package:dropdown_model_list/drop_down/select_drop_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -58,7 +59,7 @@ class _TheSellerState extends State<TheSeller> {
 
   DropListModel dropListModeldays = DropListModel([
     OptionItem(id: "1", title: "     ايام"),
-    OptionItem(id: "2", title: "     ماه"),
+    OptionItem(id: "2", title: "     شهر"),
   ]);
   DropListModel dropListModeldays1 = DropListModel([
     OptionItem(id: "1", title: "     1"),
@@ -73,6 +74,7 @@ class _TheSellerState extends State<TheSeller> {
     OptionItem(id: "10", title: "     21"),
     OptionItem(id: "11", title: "     30"),
   ]);
+  ScrollController textFieldScrollController = ScrollController();
   late OptionItem optionItemSelectedday = OptionItem(
       title: widget.id == '' ? 'ايام' : "    ${widget.buyerModel!.ayam!}");
   late OptionItem optionItemSelectedday1 =
@@ -316,6 +318,28 @@ class _TheSellerState extends State<TheSeller> {
                 text: 'وصف السلعة(اختياري)',
                 hint: 'وصف السلعة(اختياري)',
               ),
+
+              //   TextField(
+              // controller: desController,
+              // textDirection: TextDirection.rtl,
+              //     scrollController: textFieldScrollController,
+              //     keyboardType: TextInputType.multiline,
+              //     minLines: null,
+              //     maxLines: null,
+              //     onChanged: (value) {
+              //       textFieldScrollController.jumpTo(textFieldScrollController.position.maxScrollExtent);
+              //     },
+              //     decoration: InputDecoration(
+              //       border: OutlineInputBorder(
+              //           borderRadius: BorderRadius.circular(10),
+              //           borderSide: const BorderSide(width: 0.1)),
+              //       labelText: 'وصف السلعة(اختياري)',
+              //       hintText: 'وصف السلعة(اختياري)',
+              //       alignLabelWithHint: true,
+              //       hintTextDirection: TextDirection.rtl,
+              //       contentPadding: const EdgeInsets.only(top: 0, right: 15),
+              //     ),
+              //   ),
               SizedBox(
                 height: 15.h,
               ),
@@ -574,6 +598,8 @@ class _TheSellerState extends State<TheSeller> {
                       ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
                       : widget.id == ''
                           ? await FirebaseServices().addMishtriDetails(
+                              timeExtandRequest: '',
+                              timeExtandRequestAccepted: false,
                               serviceCompleted: false,
                               orderCompleted: false,
                               orderNumber: randomNumber,

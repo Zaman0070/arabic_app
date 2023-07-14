@@ -104,9 +104,12 @@ class _CalculatorState extends State<Calculator> {
                       height: 10.h,
                     ),
                     MytextField(
+                      enable : false,
                       controller: resultController,
                       text: 'العمولة شامل الضريبة',
                     ),
+
+
                     SizedBox(
                       height: 10.h,
                     ),

@@ -44,7 +44,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
 
   DropListModel dropListModeldays = DropListModel([
     OptionItem(id: "1", title: "     ايام"),
-    OptionItem(id: "2", title: "     ماه"),
+    OptionItem(id: "2", title: "     شهر"),
   ]);
   DropListModel dropListModeldays1 = DropListModel([
     OptionItem(id: "1", title: "     1"),
@@ -299,7 +299,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(width: 0.1)),
-                    labelText: 'رقم هاتف المشتري',
+                    labelText: 'رقم هاتف المستفيد',
                     hintText: 'XX-XXX-XXXX',
                     contentPadding: const EdgeInsets.only(top: 0, right: 15),
                     suffixIcon: Padding(
@@ -337,7 +337,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                   SizedBox(
                     width: 290.w,
                     child: Text(
-                      'أتعهد بأن تكون السلعة حسب المتفق عليها وفي خلاف ذلك سيتم استرجاع المبلغ للطرف الأول',
+                      'أتعهد بأن تكون الخدمة حسب المتفق عليها وفي خلاف ذلك سيتم استرجاع المبلغ للطرف الأول',
                       textDirection: TextDirection.rtl,
                       style: TextStyle(fontSize: 12.sp),
                     ),
@@ -462,6 +462,8 @@ class _ServiceProviderState extends State<ServiceProvider> {
                           isSwitched2 == false
                       ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
                       : await FirebaseServices().addMishtriDetails(
+                          timeExtandRequest: '',
+                          timeExtandRequestAccepted: false,
                           serviceCompleted: false,
                           orderCompleted: false,
                           orderNumber: randomNumber,

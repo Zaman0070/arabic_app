@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -26,6 +28,9 @@ class OTP extends StatefulWidget {
 
 class _LoginPageState extends State<OTP> {
   String error = '';
+  late Timer _timer;
+  int _start = 60;
+
 
   PhoneService _phoneService = PhoneService();
   final TextEditingController _fieldOne = TextEditingController();
@@ -91,6 +96,37 @@ class _LoginPageState extends State<OTP> {
     }
   }
 
+
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -116,7 +152,9 @@ class _LoginPageState extends State<OTP> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ArrowButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   )
                 ],
               ),
@@ -155,7 +193,7 @@ class _LoginPageState extends State<OTP> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '60 ثانية',
+                        '$_start ثانية',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: BC.appColor),
                       ),
@@ -200,7 +238,11 @@ class _LoginPageState extends State<OTP> {
                   ),
                   InkWell(
                     onTap: () {
-                      _showDialog();
+                      setState(() {
+                         _start = 60;
+                         startTimer();
+                      });
+                      _phoneService.verificationPhoneNumber(context, widget.number);
                     },
                     child: Container(
                       width: double.infinity,

@@ -134,61 +134,119 @@ class _OrdersState extends State<Orders> {
                                 date: DateFormat('dd/MM/yyyy  hh:mm ')
                                     .format(date),
                                 purpose: buyerData.purpose!,
-                                orderStatus: 'توصيل طلبية',
-                                onPressed: buyerData.isAccepted == '' &&
-                                        buyerData.secondPartyMobile ==
-                                            userController
-                                                .currentUser.value.phoneNumber
+                                orderStatus: buyerData.isAccepted == '' ||
+                                        buyerData.isAccepted ==
+                                            'sellerAccepted' ||
+                                        buyerData.isAccepted == 'buyerAccepted'
+                                    ? 'تقديم الطلب'
+                                    : buyerData.isAccepted == 'payforcash'
+                                        ? 'استلام المبلغ'
+                                        : buyerData.isAccepted == 'underProcess'
+                                            ? 'قيد التنفيذ'
+                                            : 'تحويل المبلغ',
+                                onPressed: buyerData
+                                                .timeExtandRequestAccepted ==
+                                            true &&
+                                        buyerData.byerUid ==
+                                            userController.currentUser.value.uid
                                     ? () {
-                                        userController
-                                            .getSpecificUser(buyerData.uid![0]);
-                                        orderConfimation(
+                                        extandTime(
                                             context: context,
                                             accpeted: () async {
-                                              buyerData.formType == 'seller'
-                                                  ? await mishtariController
-                                                      .acceptStatus(
-                                                          snapshot.data!
-                                                              .docs[index].id,
-                                                          'sellerAccepted')
-                                                      .whenComplete(() {
-                                                      Get.to(() => CompleteOrder(
-                                                          id: snapshot.data!
-                                                              .docs[index].id,
-                                                          type: 'update',
-                                                          userModel:
-                                                              userController
-                                                                  .specificUser
-                                                                  .value,
-                                                          buyerModel:
-                                                              buyerData));
-                                                    })
-                                                  : buyerData.formType ==
-                                                          'buyer'
+                                              SmartDialog.showLoading(
+                                                animationBuilder: (controller,
+                                                    child, animationParam) {
+                                                  return Loading(
+                                                    text: ' ... تحميل ',
+                                                  );
+                                                },
+                                              );
+                                              await FirebaseFirestore.instance
+                                                  .collection(
+                                                      'MishtariProducts')
+                                                  .doc(snapshot
+                                                      .data!.docs[index].id)
+                                                  .update({
+                                                'days':
+                                                    buyerData.timeExtandRequest,
+                                                'timeExtandRequestAccepted':
+                                                    false
+                                              });
+                                              SmartDialog.dismiss();
+                                              Get.back();
+                                            },
+                                            declined: () async {
+                                              SmartDialog.showLoading(
+                                                animationBuilder: (controller,
+                                                    child, animationParam) {
+                                                  return Loading(
+                                                    text: ' ... تحميل ',
+                                                  );
+                                                },
+                                              );
+                                              await FirebaseFirestore.instance
+                                                  .collection(
+                                                      'MishtariProducts')
+                                                  .doc(snapshot
+                                                      .data!.docs[index].id)
+                                                  .update({
+                                                'days':
+                                                    buyerData.timeExtandRequest,
+                                                'timeExtandRequestAccepted':
+                                                    false
+                                              });
+                                              SmartDialog.dismiss();
+                                              Get.back();
+                                              await oneSignals.sendNotification(
+                                                  userController.specificUser
+                                                      .value.token!,
+                                                  '',
+                                                  'يقبل المشتري عرض تمديد الوقت',
+                                                  'assets/logo/jpeg',
+                                                  token: userController
+                                                      .specificUser
+                                                      .value
+                                                      .token!,
+                                                  senderName: userController
+                                                      .currentUser.value.name!,
+                                                  type: 'mishtri');
+                                            });
+                                        //////////Extand Time////////////
+                                      }
+                                    : buyerData.isAccepted == '' &&
+                                            buyerData.secondPartyMobile ==
+                                                userController.currentUser.value
+                                                    .phoneNumber
+                                        ? () {
+                                            userController.getSpecificUser(
+                                                buyerData.uid![0]);
+                                            orderConfimation(
+                                                context: context,
+                                                accpeted: () async {
+                                                  buyerData.formType == 'seller'
                                                       ? await mishtariController
                                                           .acceptStatus(
                                                               snapshot
                                                                   .data!
                                                                   .docs[index]
                                                                   .id,
-                                                              'byerAccepted')
+                                                              'sellerAccepted')
                                                           .whenComplete(() {
-                                                          Get.to(() =>
-                                                              CompleteSaleOrder(
-                                                                id: snapshot
-                                                                    .data!
-                                                                    .docs[index]
-                                                                    .id,
-                                                                buyerModel:
-                                                                    buyerData,
-                                                                userModel:
-                                                                    userController
-                                                                        .specificUser
-                                                                        .value,
-                                                              ));
+                                                          Get.to(() => CompleteOrder(
+                                                              id: snapshot
+                                                                  .data!
+                                                                  .docs[index]
+                                                                  .id,
+                                                              type: 'update',
+                                                              userModel:
+                                                                  userController
+                                                                      .specificUser
+                                                                      .value,
+                                                              buyerModel:
+                                                                  buyerData));
                                                         })
                                                       : buyerData.formType ==
-                                                              'serviceProvider'
+                                                              'buyer'
                                                           ? await mishtariController
                                                               .acceptStatus(
                                                                   snapshot
@@ -199,7 +257,7 @@ class _OrdersState extends State<Orders> {
                                                                   'byerAccepted')
                                                               .whenComplete(() {
                                                               Get.to(() =>
-                                                                  CompleteServiceProvider(
+                                                                  CompleteSaleOrder(
                                                                     id: snapshot
                                                                         .data!
                                                                         .docs[
@@ -212,87 +270,159 @@ class _OrdersState extends State<Orders> {
                                                                         .value,
                                                                   ));
                                                             })
-                                                          : await mishtariController
-                                                              .acceptStatus(
-                                                                  snapshot
-                                                                      .data!
-                                                                      .docs[
-                                                                          index]
-                                                                      .id,
-                                                                  'byerAccepted')
-                                                              .whenComplete(() {
-                                                              Get.to(() =>
-                                                                  CompleteServiceProvider(
-                                                                    id: snapshot
-                                                                        .data!
-                                                                        .docs[
-                                                                            index]
-                                                                        .id,
-                                                                    buyerModel:
-                                                                        buyerData,
-                                                                    userModel: userController
-                                                                        .specificUser
-                                                                        .value,
-                                                                  ));
-                                                            });
-                                            },
-                                            declined: () async {
-                                              await FirebaseFirestore.instance
-                                                  .collection(
-                                                      'MishtariProducts')
-                                                  .doc(snapshot
-                                                      .data!.docs[index].id)
-                                                  .update({
-                                                'isAccepted': 'declined',
-                                              });
-                                              Get.back();
-                                              userController.getSpecificUser(
-                                                  buyerData.uid![0]);
-                                              await oneSignals.sendNotification(
-                                                  userController.specificUser
-                                                      .value.token!,
-                                                  '',
-                                                  'طبيق وسيط: تم رفض طلبك (order detail)  من الطرف الآخر وسيتم إعادة المبلغ بعد خصم العمولة',
-                                                  'assets/logo/jpeg',
-                                                  token: userController
-                                                      .specificUser
-                                                      .value
-                                                      .token!,
-                                                  senderName: userController
-                                                      .currentUser.value.name!,
-                                                  type: 'mishtri');
-                                            });
-                                      }
-                                    : buyerData.isAccepted ==
-                                                'sellerAccepted' &&
-                                            buyerData.secondPartyMobile !=
-                                                userController.currentUser.value
-                                                    .phoneNumber
-                                        ? () {
-                                            userController.getSpecificUser(
-                                                buyerData.uid![0]);
-                                            payment(
-                                              context: context,
-                                              pay: () async {
-                                                SmartDialog.showLoading(
-                                                  animationBuilder: (controller,
-                                                      child, animationParam) {
-                                                    return Loading(
-                                                      text: ' ... تحميل ',
+                                                          : buyerData.formType ==
+                                                                  'serviceProvider'
+                                                              ? await mishtariController
+                                                                  .acceptStatus(
+                                                                      snapshot
+                                                                          .data!
+                                                                          .docs[
+                                                                              index]
+                                                                          .id,
+                                                                      'byerAccepted')
+                                                                  .whenComplete(
+                                                                      () {
+                                                                  Get.to(() =>
+                                                                      CompleteServiceProvider(
+                                                                        id: snapshot
+                                                                            .data!
+                                                                            .docs[index]
+                                                                            .id,
+                                                                        buyerModel:
+                                                                            buyerData,
+                                                                        userModel: userController
+                                                                            .specificUser
+                                                                            .value,
+                                                                      ));
+                                                                })
+                                                              : await mishtariController
+                                                                  .acceptStatus(
+                                                                      snapshot
+                                                                          .data!
+                                                                          .docs[
+                                                                              index]
+                                                                          .id,
+                                                                      'byerAccepted')
+                                                                  .whenComplete(
+                                                                      () {
+                                                                  Get.to(() =>
+                                                                      CompleteServiceProvider(
+                                                                        id: snapshot
+                                                                            .data!
+                                                                            .docs[index]
+                                                                            .id,
+                                                                        buyerModel:
+                                                                            buyerData,
+                                                                        userModel: userController
+                                                                            .specificUser
+                                                                            .value,
+                                                                      ));
+                                                                });
+                                                },
+                                                declined: () async {
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection(
+                                                          'MishtariProducts')
+                                                      .doc(snapshot
+                                                          .data!.docs[index].id)
+                                                      .update({
+                                                    'isAccepted': 'declined',
+                                                  });
+                                                  Get.back();
+                                                  userController
+                                                      .getSpecificUser(
+                                                          buyerData.uid![0]);
+                                                  await oneSignals.sendNotification(
+                                                      userController
+                                                          .specificUser
+                                                          .value
+                                                          .token!,
+                                                      '',
+                                                      'طبيق وسيط: تم رفض طلبك (order detail)  من الطرف الآخر وسيتم إعادة المبلغ بعد خصم العمولة',
+                                                      'assets/logo/jpeg',
+                                                      token: userController
+                                                          .specificUser
+                                                          .value
+                                                          .token!,
+                                                      senderName: userController
+                                                          .currentUser
+                                                          .value
+                                                          .name!,
+                                                      type: 'mishtri');
+                                                });
+                                          }
+                                        : buyerData.isAccepted ==
+                                                    'buyerAccepted' &&
+                                                buyerData.secondPartyMobile ==
+                                                    userController.currentUser
+                                                        .value.phoneNumber
+                                            ? () {
+                                                userController.getSpecificUser(
+                                                    buyerData.uid![0]);
+                                                payment(
+                                                  context: context,
+                                                  pay: () async {
+                                                    SmartDialog.showLoading(
+                                                      animationBuilder:
+                                                          (controller, child,
+                                                              animationParam) {
+                                                        return Loading(
+                                                          text: ' ... تحميل ',
+                                                        );
+                                                      },
                                                     );
+                                                    Future.delayed(
+                                                        const Duration(
+                                                            milliseconds: 2000),
+                                                        () async {
+                                                      await mishtariController
+                                                          .acceptStatus(
+                                                              snapshot
+                                                                  .data!
+                                                                  .docs[index]
+                                                                  .id,
+                                                              'payforcash')
+                                                          .whenComplete(
+                                                              () async {
+                                                        SmartDialog.dismiss();
+                                                        Get.to(() => OrdersDetails(
+                                                            user: userController
+                                                                .specificUser
+                                                                .value,
+                                                            uid: buyerData
+                                                                        .formType ==
+                                                                    'seller'
+                                                                ? buyerData
+                                                                    .uid![0]
+                                                                : buyerData
+                                                                    .uid![1],
+                                                            formType: buyerData
+                                                                .formfillby!,
+                                                            id: snapshot.data!
+                                                                .docs[index].id,
+                                                            buyerModel:
+                                                                buyerData));
+                                                      });
+                                                    });
                                                   },
                                                 );
-                                                Future.delayed(
-                                                    const Duration(
-                                                        milliseconds: 2000),
-                                                    () async {
-                                                  await mishtariController
-                                                      .acceptStatus(
-                                                          snapshot.data!
-                                                              .docs[index].id,
-                                                          'payforcash')
-                                                      .whenComplete(() async {
-                                                    SmartDialog.dismiss();
+                                              }
+                                            : buyerData.isAccepted == '' &&
+                                                    buyerData.phoneNumber ==
+                                                        userController
+                                                            .currentUser
+                                                            .value
+                                                            .phoneNumber
+                                                ? () {
+                                                    userController
+                                                        .getSpecificUser(
+                                                            buyerData.uid![0]);
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            'يرجى انتظار البائع لقبول العرض');
+                                                  }
+                                                : () {
                                                     Get.to(() => OrdersDetails(
                                                         user: userController
                                                             .specificUser.value,
@@ -306,36 +436,7 @@ class _OrdersState extends State<Orders> {
                                                         id: snapshot.data!
                                                             .docs[index].id,
                                                         buyerModel: buyerData));
-                                                  });
-                                                });
-                                              },
-                                            );
-                                          }
-                                        : buyerData.isAccepted == '' &&
-                                                buyerData.phoneNumber ==
-                                                    userController.currentUser
-                                                        .value.phoneNumber
-                                            ? () {
-                                                userController.getSpecificUser(
-                                                    buyerData.uid![0]);
-                                                Fluttertoast.showToast(
-                                                    msg:
-                                                        'يرجى انتظار البائع لقبول العرض');
-                                              }
-                                            : () {
-                                                Get.to(() => OrdersDetails(
-                                                    user: userController
-                                                        .specificUser.value,
-                                                    uid: buyerData.formType ==
-                                                            'seller'
-                                                        ? buyerData.uid![0]
-                                                        : buyerData.uid![1],
-                                                    formType:
-                                                        buyerData.formfillby!,
-                                                    id: snapshot
-                                                        .data!.docs[index].id,
-                                                    buyerModel: buyerData));
-                                              },
+                                                  },
                               ),
                             );
                           });
@@ -345,6 +446,112 @@ class _OrdersState extends State<Orders> {
           ),
         ),
       ),
+    );
+  }
+
+  void extandTime({
+    required BuildContext context,
+    required Function() accpeted,
+    required Function() declined,
+  }) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      enableDrag: true,
+      backgroundColor: const Color(0xfff9fafe),
+      elevation: 0.01,
+      useSafeArea: true,
+      context: context,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 160.h,
+          width: 1.sw,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 10.h,
+                ),
+                Center(
+                  child: Container(
+                    width: 20.h,
+                    height: 5.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.grey.withOpacity(0.3),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Text(
+                  'يرسل البائع عرض تمديد الوقت',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.sp,
+                      color: Colors.black),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: declined,
+                      child: Container(
+                        width: 0.44.sw,
+                        height: 35.h,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: BC.appColor),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'رفض العرض',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.sp,
+                                color: BC.appColor),
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: accpeted,
+                      child: Container(
+                        width: 0.44.sw,
+                        height: 35.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: BC.appColor),
+                        child: Center(
+                          child: Text(
+                            'قبول العرض',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.sp,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

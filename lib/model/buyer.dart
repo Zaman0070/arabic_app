@@ -27,6 +27,8 @@ class BuyerModel {
   bool? serviceCompleted;
   String? byerUid;
   String? sellerUid;
+  String? timeExtandRequest;
+  bool? timeExtandRequestAccepted;
   BuyerModel({
     this.name,
     this.phoneNumber,
@@ -51,6 +53,8 @@ class BuyerModel {
     this.serviceCompleted,
     this.byerUid,
     this.sellerUid,
+    this.timeExtandRequest,
+    this.timeExtandRequestAccepted,
   });
 
   BuyerModel copyWith({
@@ -77,6 +81,8 @@ class BuyerModel {
     bool? serviceCompleted,
     String? byerUid,
     String? sellerUid,
+    String? timeExtandRequest,
+    bool? timeExtandRequestAccepted,
   }) {
     return BuyerModel(
       name: name ?? this.name,
@@ -102,6 +108,9 @@ class BuyerModel {
       serviceCompleted: serviceCompleted ?? this.serviceCompleted,
       byerUid: byerUid ?? this.byerUid,
       sellerUid: sellerUid ?? this.sellerUid,
+      timeExtandRequest: timeExtandRequest ?? this.timeExtandRequest,
+      timeExtandRequestAccepted:
+          timeExtandRequestAccepted ?? this.timeExtandRequestAccepted,
     );
   }
 
@@ -130,6 +139,8 @@ class BuyerModel {
       'serviceCompleted': serviceCompleted,
       'byerUid': byerUid,
       'sellerUid': sellerUid,
+      'timeExtandRequest': timeExtandRequest,
+      'timeExtandRequestAccepted': timeExtandRequestAccepted,
     };
   }
 
@@ -171,6 +182,12 @@ class BuyerModel {
           : null,
       byerUid: map['byerUid'] != null ? map['byerUid'] as String : null,
       sellerUid: map['sellerUid'] != null ? map['sellerUid'] as String : null,
+      timeExtandRequest: map['timeExtandRequest'] != null
+          ? map['timeExtandRequest'] as String
+          : null,
+      timeExtandRequestAccepted: map['timeExtandRequestAccepted'] != null
+          ? map['timeExtandRequestAccepted'] as bool
+          : null,
     );
   }
 
@@ -181,7 +198,7 @@ class BuyerModel {
 
   @override
   String toString() {
-    return 'BuyerModel(name: $name, phoneNumber: $phoneNumber, address: $address, purpose: $purpose, price: $price, description: $description, days: $days, secondPartyMobile: $secondPartyMobile, images: $images, agree1: $agree1, agree2: $agree2, orderNumber: $orderNumber, isAccepted: $isAccepted, uid: $uid, ayam: $ayam, ayamNumber: $ayamNumber, formType: $formType, formfillby: $formfillby, review: $review, orderCompleted: $orderCompleted, serviceCompleted: $serviceCompleted, byerUid: $byerUid, sellerUid: $sellerUid)';
+    return 'BuyerModel(name: $name, phoneNumber: $phoneNumber, address: $address, purpose: $purpose, price: $price, description: $description, days: $days, secondPartyMobile: $secondPartyMobile, images: $images, agree1: $agree1, agree2: $agree2, orderNumber: $orderNumber, isAccepted: $isAccepted, uid: $uid, ayam: $ayam, ayamNumber: $ayamNumber, formType: $formType, formfillby: $formfillby, review: $review, orderCompleted: $orderCompleted, serviceCompleted: $serviceCompleted, byerUid: $byerUid, sellerUid: $sellerUid, timeExtandRequest: $timeExtandRequest, timeExtandRequestAccepted: $timeExtandRequestAccepted)';
   }
 
   @override
@@ -210,7 +227,9 @@ class BuyerModel {
         other.orderCompleted == orderCompleted &&
         other.serviceCompleted == serviceCompleted &&
         other.byerUid == byerUid &&
-        other.sellerUid == sellerUid;
+        other.sellerUid == sellerUid &&
+        other.timeExtandRequest == timeExtandRequest &&
+        other.timeExtandRequestAccepted == timeExtandRequestAccepted;
   }
 
   @override
@@ -237,6 +256,8 @@ class BuyerModel {
         orderCompleted.hashCode ^
         serviceCompleted.hashCode ^
         byerUid.hashCode ^
-        sellerUid.hashCode;
+        sellerUid.hashCode ^
+        timeExtandRequest.hashCode ^
+        timeExtandRequestAccepted.hashCode;
   }
 }

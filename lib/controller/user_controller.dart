@@ -70,4 +70,23 @@ class UserController extends GetxController {
       fetchCurrentUser();
     } catch (e) {}
   }
+
+  Future<void> updateUserInForm(UserModel userModel) async {
+    SmartDialog.showLoading(
+      animationBuilder: (controller, child, animationParam) {
+        return Loading(
+          text: 'تحميل',
+        );
+      },
+    );
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userModel.uid)
+          .update(userModel.toMap());
+      SmartDialog.dismiss();
+      update();
+      fetchCurrentUser();
+    } catch (e) {}
+  }
 }

@@ -569,6 +569,10 @@ class _HomePageState extends State<HomePage> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 30, vertical: 4),
                                             decoration: BoxDecoration(
+                                                color: buyerData.isAccepted ==
+                                                        'underProcess'
+                                                    ? BC.appColor
+                                                    : Colors.transparent,
                                                 border: Border.all(
                                                   color: BC.appColor,
                                                 ),
@@ -593,13 +597,15 @@ class _HomePageState extends State<HomePage> {
                                                 border: Border.all(
                                                   color: BC.appColor,
                                                 ),
-                                                color: buyerData
-                                                            .serviceCompleted ==
-                                                        true
-                                                    ? buyerData.isAccepted ==
-                                                            'payforcash'
-                                                        ? BC.appColor
-                                                        : Colors.transparent
+                                                color: buyerData.isAccepted ==
+                                                            'payforcash' ||
+                                                        buyerData.isAccepted ==
+                                                            'sellerAccepted' ||
+                                                        buyerData.isAccepted ==
+                                                            'buyerAccepted' ||
+                                                        buyerData.isAccepted ==
+                                                            'underProcess'
+                                                    ? BC.appColor
                                                     : Colors.transparent,
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
@@ -639,7 +645,10 @@ class _HomePageState extends State<HomePage> {
                                                                 'sellerAccepted' ||
                                                             buyerData
                                                                     .isAccepted ==
-                                                                'buyerAccepted'
+                                                                'buyerAccepted' ||
+                                                            buyerData
+                                                                    .isAccepted ==
+                                                                'underProcess'
                                                         ? BC.appColor
                                                         : Colors.transparent
                                                     : Colors.transparent,
