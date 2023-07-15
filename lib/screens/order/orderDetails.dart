@@ -46,7 +46,8 @@ class _OrdersDetailsState extends State<OrdersDetails> {
   late int difference = DateTime.now().difference(date).inDays;
   bool orderCompleted = false;
   late var timeController = TextEditingController();
-  late OptionItem optionItemSelectedday1 = OptionItem(title: ' 1 أيام');
+  late OptionItem optionItemSelectedday1 =
+      OptionItem(title: ' 1 أيام', id: "1");
   DropListModel dropListModeldays1 = DropListModel([
     OptionItem(id: "1", title: ' 1 أيام'),
     OptionItem(id: "2", title: ' 2 أيام'),
@@ -356,6 +357,8 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                   ? InkWell(
                       onTap: () {
                         orderExtendDate(
+                          optionItem: optionItemSelectedday1,
+                          dropListModel: dropListModeldays1,
                           increaseDateTime: () async {
                             SmartDialog.showLoading(
                               animationBuilder:
@@ -433,6 +436,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                         Get.back();
                       }
                     : () {
+                        setState(() {});
                         orderConfimation(
                             context: context,
                             accpeted: () async {
@@ -695,9 +699,11 @@ class _OrdersDetailsState extends State<OrdersDetails> {
     );
   }
 
-  void orderExtendDate({
+  orderExtendDate({
     required BuildContext context,
     required Function() increaseDateTime,
+    required OptionItem optionItem,
+    required DropListModel dropListModel,
   }) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -770,17 +776,16 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                               color: Colors.transparent),
                           containerPadding: const EdgeInsets.only(left: 10),
                           containerMargin: EdgeInsets.zero,
-                          itemSelected: optionItemSelectedday1,
-                          dropListModel: dropListModeldays1,
-                          showIcon: false, // Show Icon in DropDown Title
-                          showArrowIcon: false, // Show Arrow Icon in DropDown
+                          itemSelected: optionItem,
+                          dropListModel: dropListModel,
+                          showIcon: false, 
+                          showArrowIcon: false, 
                           showBorder: true,
                           paddingTop: 0,
                           paddingBottom: 0,
                           paddingLeft: 0,
                           paddingRight: 0,
                           borderColor: BC.grey,
-
                           onOptionSelected: (optionItem) {
                             optionItemSelectedday1 = optionItem;
                             ayamNumber = optionItem.title;

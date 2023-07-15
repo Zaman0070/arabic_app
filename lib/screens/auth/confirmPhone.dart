@@ -1,7 +1,5 @@
-// ignore_for_file: avoid_print
-
 import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -21,7 +19,7 @@ import '../../widgets/otpInput.dart';
 class OTP extends StatefulWidget {
   final String? number;
   final String? verId;
-  OTP({this.number, this.verId});
+  const OTP({super.key, this.number, this.verId});
   @override
   State<OTP> createState() => _LoginPageState();
 }
@@ -31,8 +29,7 @@ class _LoginPageState extends State<OTP> {
   late Timer _timer;
   int _start = 60;
 
-
-  PhoneService _phoneService = PhoneService();
+  final PhoneService _phoneService = PhoneService();
   final TextEditingController _fieldOne = TextEditingController();
   final TextEditingController _fieldTwo = TextEditingController();
   final TextEditingController _fieldThree = TextEditingController();
@@ -56,28 +53,44 @@ class _LoginPageState extends State<OTP> {
 
       final authResult = await _auth.signInWithCredential(credential);
       final User user = authResult.user!;
-
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+      print(user.uid);
+      print(user.phoneNumber);
+      final QuerySnapshot result = await users
+          .where('phoneNumber',
+              isEqualTo: user.phoneNumber!.replaceAll("+", ''))
+          .get();
+      List<DocumentSnapshot> document = result.docs;
       // ignore: unnecessary_null_comparison
       if (user != null) {
-        OSDeviceState? status = await OneSignal.shared.getDeviceState();
-        UserModel userModel = UserModel(
-          token: status!.userId,
-          uid: user.uid,
-          phoneNumber: user.phoneNumber!.replaceAll("+", ''),
-          email: '',
-          profileImage: '',
-          location: '',
-          name: '',
-          walletBalance: 0,
-        );
-        _phoneService.users.doc(user.uid).set(userModel.toMap()).then((value) {
-          Get.offAll(() => const BottomNavigationExample());
+        if (document.isEmpty) {
+          OSDeviceState? status = await OneSignal.shared.getDeviceState();
+          UserModel userModel = UserModel(
+            token: status!.userId,
+            uid: user.uid,
+            phoneNumber: user.phoneNumber!.replaceAll("+", ''),
+            email: '',
+            profileImage: '',
+            location: '',
+            name: '',
+            walletBalance: 0,
+          );
+          _phoneService.users
+              .doc(user.uid)
+              .set(userModel.toMap())
+              .then((value) {
+            Get.offAll(() => const BottomNavigationExample());
 
-          // ignore: invalid_return_type_for_catch_error
-        }).catchError((error) =>
             // ignore: invalid_return_type_for_catch_error
-            Fluttertoast.showToast(msg: 'Faild to add user : $error'));
-        SmartDialog.dismiss();
+          }).catchError((error) =>
+                  // ignore: invalid_return_type_for_catch_error
+                  Fluttertoast.showToast(msg: 'Faild to add user : $error'));
+          SmartDialog.dismiss();
+        } else {
+          Get.offAll(() => const BottomNavigationExample());
+          SmartDialog.dismiss();
+        }
       } else {
         print('login Failed');
         if (mounted) {
@@ -96,7 +109,6 @@ class _LoginPageState extends State<OTP> {
     }
   }
 
-
   @override
   void initState() {
     startTimer();
@@ -107,7 +119,7 @@ class _LoginPageState extends State<OTP> {
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
       oneSec,
-          (Timer timer) {
+      (Timer timer) {
         if (_start == 0) {
           setState(() {
             timer.cancel();
@@ -239,10 +251,11 @@ class _LoginPageState extends State<OTP> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                         _start = 60;
-                         startTimer();
+                        _start = 60;
+                        startTimer();
                       });
-                      _phoneService.verificationPhoneNumber(context, widget.number);
+                      _phoneService.verificationPhoneNumber(
+                          context, widget.number);
                     },
                     child: Container(
                       width: double.infinity,
