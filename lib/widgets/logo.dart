@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/colors.dart';
 
@@ -8,13 +9,15 @@ class LogoConatiner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.33,
-      height: MediaQuery.of(context).size.height * 0.2,
+      width: 150.h,
+      height: 150.h,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
           image: const DecorationImage(
-            image: AssetImage('assets/logo.jpeg',),
-          ),
+              image: AssetImage(
+                'assets/logo.jpeg',
+              ),
+              fit: BoxFit.cover),
           color: BC.logo_clr,
           borderRadius: BorderRadius.circular(30),
           border: Border.all(color: const Color(0xff707070))),

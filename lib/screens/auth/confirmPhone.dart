@@ -116,8 +116,8 @@ class _LoginPageState extends State<OTP> {
   }
 
   void startTimer() {
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
         if (_start == 0) {
@@ -165,7 +165,7 @@ class _LoginPageState extends State<OTP> {
                 children: [
                   ArrowButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Get.back();
                     },
                   )
                 ],

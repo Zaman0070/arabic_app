@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:waist_app/screens/AboutUs.dart';
 import 'package:waist_app/screens/home_page/HomePage.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
@@ -46,18 +47,23 @@ class _BottomNavigationExampleState extends State {
         items: [
           BottomNavigationBarItem(
               icon: Image.asset(
-                'assets/material-share.png',
+                'assets/Icon material-share.png',
                 color: Colors.white,
+                height: 22.h,
               ),
               label: "مشاركة"),
           BottomNavigationBarItem(
-              icon: Image.asset('assets/Icon awesome-plus-circle.png',
-                  color: Colors.white),
+              icon: Image.asset(
+                'assets/Icon awesome-plus-circle.png',
+                color: Colors.white,
+                height: 22.h,
+              ),
               label: "طلب جديد"),
           BottomNavigationBarItem(
               icon: Image.asset(
                 'assets/Icon ionic-ios-home.png',
                 color: Colors.white,
+                height: 22.h,
               ),
               label: "الرئيسية"),
         ],

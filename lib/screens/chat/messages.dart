@@ -86,6 +86,7 @@ class _MessagesState extends State<Messages> {
                       image: const AssetImage(
                         'assets/Icon awesome-plus-circle.png',
                       ),
+                      height: 25.h,
                       color: BC.appColor,
                     ),
                   ),

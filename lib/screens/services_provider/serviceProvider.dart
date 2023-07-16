@@ -58,6 +58,12 @@ class _ServiceProviderState extends State<ServiceProvider> {
     OptionItem(id: "9", title: "     14"),
     OptionItem(id: "10", title: "     21"),
     OptionItem(id: "11", title: "     30"),
+    OptionItem(id: "12", title: "     35"),
+    OptionItem(id: "13", title: "     40"),
+    OptionItem(id: "14", title: "     45"),
+    OptionItem(id: "15", title: "     50"),
+    OptionItem(id: "16", title: "     55"),
+    OptionItem(id: "17", title: "     60"),
   ]);
   OptionItem optionItemSelectedday = OptionItem(title: "    ايام");
   OptionItem optionItemSelectedday1 = OptionItem(title: "1");
@@ -252,35 +258,56 @@ class _ServiceProviderState extends State<ServiceProvider> {
                           },
                         ),
                       ),
-                      Expanded(
-                        flex: 3,
-                        child: SelectDropList(
-                          height: 40.h,
-                          containerDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.transparent),
-                              color: Colors.transparent),
-                          containerPadding: const EdgeInsets.only(left: 10),
-                          containerMargin: EdgeInsets.zero,
-                          itemSelected: optionItemSelectedday,
-                          dropListModel: dropListModeldays,
-                          showIcon: false, // Show Icon in DropDown Title
-                          showArrowIcon: true, // Show Arrow Icon in DropDown
-                          showBorder: true,
-                          paddingTop: 0,
-                          paddingBottom: 0,
-                          paddingLeft: 0,
-                          paddingRight: 0,
-                          borderColor: BC.grey,
-                          icon: Icon(Icons.person, color: BC.appColor),
-                          onOptionSelected: (optionItem) {
-                            optionItemSelectedday = optionItem;
-                            ayam = optionItem.title;
+                      // Expanded(
+                      //   flex: 3,
+                      //   child: SelectDropList(
+                      //     height: 40.h,
+                      //     containerDecoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //         border: Border.all(color: Colors.transparent),
+                      //         color: Colors.transparent),
+                      //     containerPadding: const EdgeInsets.only(left: 10),
+                      //     containerMargin: EdgeInsets.zero,
+                      //     itemSelected: optionItemSelectedday,
+                      //     dropListModel: dropListModeldays,
+                      //     showIcon: false, // Show Icon in DropDown Title
+                      //     showArrowIcon: true, // Show Arrow Icon in DropDown
+                      //     showBorder: true,
+                      //     paddingTop: 0,
+                      //     paddingBottom: 0,
+                      //     paddingLeft: 0,
+                      //     paddingRight: 0,
+                      //     borderColor: BC.grey,
+                      //     icon: Icon(Icons.person, color: BC.appColor),
+                      //     onOptionSelected: (optionItem) {
+                      //       optionItemSelectedday = optionItem;
+                      //       ayam = optionItem.title;
 
-                            setState(() {});
-                          },
-                        ),
-                      ),
+                      //       setState(() {});
+                      //     },
+                      //   ),
+                      // ),
+                      Expanded(
+                          flex: 3,
+                          child: SizedBox(
+                            height: 40.h,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'ايام',
+                                    style: TextStyle(fontSize: 16.sp),
+                                  ),
+                                  const Icon(Icons.arrow_drop_down)
+                                ],
+                              ),
+                            ),
+                          )),
                     ],
                   ),
                 ),
@@ -488,7 +515,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                           agree2: isSwitched2,
                           images: '',
                           isAccepted: '',
-                          ayam: ayam!,
+                          ayam: 'ايام',
                           ayamNumber: ayamNumber!,
                           byerUid: userController.specificUser.value.uid!,
                           sellerUid: userController.currentUser.value.uid!,

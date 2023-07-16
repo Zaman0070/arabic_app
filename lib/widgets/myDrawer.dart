@@ -73,8 +73,11 @@ class _MyDrawerState extends State<MyDrawer> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      const Image(
-                        image: AssetImage('assets/Add.png'),
+                      Image(
+                        image: const AssetImage(
+                          'assets/Add.png',
+                        ),
+                        height: 22.h,
                       ),
                     ],
                   ),
@@ -99,8 +102,10 @@ class _MyDrawerState extends State<MyDrawer> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      const Image(
-                        image: AssetImage('assets/Wallet.png'),
+                      Image(
+                        image: const AssetImage('assets/Wallet.png'),
+                        height: 22.h,
+                        color: Colors.white,
                       ),
                     ],
                   ),
@@ -110,8 +115,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const Messages()));
+                    Get.to(() => const Messages());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -126,8 +130,9 @@ class _MyDrawerState extends State<MyDrawer> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      const Image(
-                        image: AssetImage('assets/Chat.png'),
+                      Image(
+                        image: const AssetImage('assets/Chat.png'),
+                        height: 22.h,
                       ),
                     ],
                   ),
@@ -154,8 +159,9 @@ class _MyDrawerState extends State<MyDrawer> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      const Image(
-                        image: AssetImage('assets/Bag.png'),
+                      Image(
+                        image: const AssetImage('assets/Bag.png'),
+                        height: 22.h,
                       ),
                     ],
                   ),
@@ -165,8 +171,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const Profile()));
+                    Get.to(() => const Profile());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -181,8 +186,9 @@ class _MyDrawerState extends State<MyDrawer> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      const Image(
-                        image: AssetImage('assets/Person.png'),
+                      Image(
+                        image: const AssetImage('assets/Person.png'),
+                        height: 22.h,
                       ),
                     ],
                   ),
@@ -209,8 +215,9 @@ class _MyDrawerState extends State<MyDrawer> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      const Image(
-                        image: AssetImage('assets/Languaage.png'),
+                      Image(
+                        image: const AssetImage('assets/Languaage.png'),
+                        height: 22.h,
                       ),
                     ],
                   ),
@@ -261,8 +268,9 @@ class _MyDrawerState extends State<MyDrawer> {
                       SizedBox(
                         width: 10.h,
                       ),
-                      const Image(
-                        image: AssetImage('assets/Calculator.png'),
+                      Image(
+                        image: const AssetImage('assets/Calculator.png'),
+                        height: 22.h,
                       ),
                     ],
                   ),
@@ -291,8 +299,9 @@ class _MyDrawerState extends State<MyDrawer> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      const Image(
-                        image: AssetImage('assets/Users.png'),
+                      Image(
+                        image: const AssetImage('assets/Users.png'),
+                        height: 22.h,
                       ),
                     ],
                   ),
@@ -318,8 +327,9 @@ class _MyDrawerState extends State<MyDrawer> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      const Image(
-                        image: AssetImage('assets/How to use.png'),
+                      Image(
+                        image: const AssetImage('assets/How to use.png'),
+                        height: 22.h,
                       ),
                     ],
                   ),
@@ -344,8 +354,9 @@ class _MyDrawerState extends State<MyDrawer> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      const Image(
-                        image: AssetImage('assets/policy.png'),
+                      Image(
+                        image: const AssetImage('assets/policy.png'),
+                        height: 22.h,
                       ),
                     ],
                   ),
@@ -394,8 +405,9 @@ class _MyDrawerState extends State<MyDrawer> {
                       SizedBox(
                         width: 10.w,
                       ),
-                      const Image(
-                        image: AssetImage('assets/Info.png'),
+                      Image(
+                        image: const AssetImage('assets/Info.png'),
+                        height: 22.h,
                       ),
                     ],
                   ),
