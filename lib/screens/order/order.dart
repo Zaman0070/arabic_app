@@ -409,35 +409,121 @@ class _OrdersState extends State<Orders> {
                                                   },
                                                 );
                                               }
-                                            : buyerData.isAccepted == '' &&
-                                                    buyerData.phoneNumber ==
+                                            : buyerData.orderCompleted ==
+                                                        true &&
+                                                    buyerData.byerUid ==
                                                         userController
                                                             .currentUser
                                                             .value
-                                                            .phoneNumber
+                                                            .uid
                                                 ? () {
-                                                    userController
-                                                        .getSpecificUser(
-                                                            buyerData.uid![0]);
-                                                    Fluttertoast.showToast(
-                                                        msg:
-                                                            'يرجى انتظار البائع لقبول العرض');
+                                                    orderConfimation(
+                                                        context: context,
+                                                        accpeted: () async {
+                                                          SmartDialog
+                                                              .showLoading(
+                                                            animationBuilder:
+                                                                (controller,
+                                                                    child,
+                                                                    animationParam) {
+                                                              return Loading(
+                                                                text:
+                                                                    'تم استلام الطلب سيتم تحويل المبلغ',
+                                                              );
+                                                            },
+                                                          );
+                                                          Future.delayed(
+                                                              const Duration(
+                                                                  seconds: 2),
+                                                              () async {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'MishtariProducts')
+                                                                .doc(snapshot
+                                                                    .data!
+                                                                    .docs[index]
+                                                                    .id)
+                                                                .update({
+                                                              'serviceCompleted':
+                                                                  true,
+                                                            });
+
+                                                            SmartDialog
+                                                                .dismiss();
+                                                            Get.back();
+                                                          });
+                                                          await oneSignals.sendNotification(
+                                                              userController
+                                                                  .specificUser
+                                                                  .value
+                                                                  .token!,
+                                                              '',
+                                                              'تم الانتهاء من طلبك',
+                                                              'assets/logo/jpeg',
+                                                              token: userController
+                                                                  .specificUser
+                                                                  .value
+                                                                  .token!,
+                                                              senderName:
+                                                                  userController
+                                                                      .currentUser
+                                                                      .value
+                                                                      .name!,
+                                                              type: 'mishtri');
+                                                          Get.back();
+                                                        },
+                                                        declined: () async {
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'MishtariProducts')
+                                                              .doc(snapshot
+                                                                  .data!
+                                                                  .docs[index]
+                                                                  .id)
+                                                              .update({
+                                                            'orderCompleted':
+                                                                false,
+                                                          });
+                                                          Get.back();
+                                                        });
+                                                    ///////////    /////////     /////////
                                                   }
-                                                : () {
-                                                    Get.to(() => OrdersDetails(
-                                                        user: userController
-                                                            .specificUser.value,
-                                                        uid: buyerData
-                                                                    .formType ==
-                                                                'seller'
-                                                            ? buyerData.uid![0]
-                                                            : buyerData.uid![1],
-                                                        formType: buyerData
-                                                            .formfillby!,
-                                                        id: snapshot.data!
-                                                            .docs[index].id,
-                                                        buyerModel: buyerData));
-                                                  },
+                                                : buyerData.isAccepted == '' &&
+                                                        buyerData.phoneNumber ==
+                                                            userController
+                                                                .currentUser
+                                                                .value
+                                                                .phoneNumber
+                                                    ? () {
+                                                        userController
+                                                            .getSpecificUser(
+                                                                buyerData
+                                                                    .uid![0]);
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                'يرجى انتظار البائع لقبول العرض');
+                                                      }
+                                                    : () {
+                                                        Get.to(() => OrdersDetails(
+                                                            user: userController
+                                                                .specificUser
+                                                                .value,
+                                                            uid: buyerData
+                                                                        .formType ==
+                                                                    'seller'
+                                                                ? buyerData
+                                                                    .uid![0]
+                                                                : buyerData
+                                                                    .uid![1],
+                                                            formType: buyerData
+                                                                .formfillby!,
+                                                            id: snapshot.data!
+                                                                .docs[index].id,
+                                                            buyerModel:
+                                                                buyerData));
+                                                      },
                               ),
                             );
                           });
@@ -641,6 +727,134 @@ class _OrdersState extends State<Orders> {
                         child: Center(
                           child: Text(
                             'قبول العرض',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.sp,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void acceptOrderConfimation({
+    required BuildContext context,
+    required Function() accpeted,
+    required Function() declined,
+  }) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      enableDrag: true,
+      backgroundColor: const Color(0xfff9fafe),
+      elevation: 0.01,
+      useSafeArea: true,
+      context: context,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 160.h,
+          width: 1.sw,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 5.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(),
+                    Text(
+                      'تأكيد الطلب',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
+                          color: Colors.black),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: BC.appColor,
+                            borderRadius: BorderRadius.circular(30)),
+                        child: const Icon(
+                          Icons.close_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 12.h,
+                ),
+                Text(
+                  'هل أنت متأكد من إتمام الخدمة',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.sp,
+                      color: Colors.black),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: declined,
+                      child: Container(
+                        width: 0.44.sw,
+                        height: 35.h,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: BC.appColor),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'الغاء',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.sp,
+                                color: BC.appColor),
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: accpeted,
+                      child: Container(
+                        width: 0.44.sw,
+                        height: 35.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: BC.appColor),
+                        child: Center(
+                          child: Text(
+                            'إتمام الطلب',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.sp,

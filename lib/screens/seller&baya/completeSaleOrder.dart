@@ -458,6 +458,9 @@ class _CompleteOrderState extends State<CompleteSaleOrder> {
                               serviceCompleted: false,
                               byerUid: widget.buyerModel.byerUid,
                               sellerUid: widget.buyerModel.sellerUid,
+                              timeExtandRequest: '',
+                              timeExtandRequestAccepted: false,
+                              time: widget.buyerModel.time,
                             ),
                             widget.id);
                   },

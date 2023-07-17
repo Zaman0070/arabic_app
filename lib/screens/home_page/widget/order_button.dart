@@ -196,10 +196,12 @@ class OrderButtonHome extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 30, vertical: 4),
                                   decoration: BoxDecoration(
-                                      color:
-                                          buyerData.isAccepted == 'underProcess'
+                                      color: buyerData.serviceCompleted == false
+                                          ? buyerData.isAccepted ==
+                                                  'underProcess'
                                               ? BC.appColor
-                                              : Colors.transparent,
+                                              : Colors.transparent
+                                          : Colors.transparent,
                                       border: Border.all(
                                         color: BC.appColor,
                                       ),
@@ -223,15 +225,17 @@ class OrderButtonHome extends StatelessWidget {
                                       border: Border.all(
                                         color: BC.appColor,
                                       ),
-                                      color: buyerData.isAccepted ==
-                                                  'payforcash' ||
-                                              buyerData.isAccepted ==
-                                                  'sellerAccepted' ||
-                                              buyerData.isAccepted ==
-                                                  'buyerAccepted' ||
-                                              buyerData.isAccepted ==
-                                                  'underProcess'
-                                          ? BC.appColor
+                                      color: buyerData.serviceCompleted == false
+                                          ? buyerData.isAccepted ==
+                                                      'payforcash' ||
+                                                  buyerData.isAccepted ==
+                                                      'sellerAccepted' ||
+                                                  buyerData.isAccepted ==
+                                                      'buyerAccepted' ||
+                                                  buyerData.isAccepted ==
+                                                      'underProcess'
+                                              ? BC.appColor
+                                              : Colors.transparent
                                           : Colors.transparent,
                                       borderRadius: BorderRadius.circular(10)),
                                 ),

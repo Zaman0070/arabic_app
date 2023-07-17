@@ -421,7 +421,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                                     .collection('MishtariProducts')
                                     .doc(widget.id)
                                     .update({
-                                  'serviceCompleted': true,
+                                  'orderCompleted': true,
                                 });
                                 await FirebaseFirestore.instance
                                     .collection('users')

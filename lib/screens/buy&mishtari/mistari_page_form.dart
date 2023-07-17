@@ -679,37 +679,43 @@ class _MistariPageState extends State<MistariPage> {
                                                   'مقابل هذا الرقم البائع غير موجود')
                                           : completeOrder(
                                               BuyerModel(
-                                                orderNumber: randomNumber,
-                                                formfillby: 'buyer',
-                                                formType: 'تفاصيل الطلب للبائع',
-                                                uid: [
-                                                  userController
+                                                  orderNumber: randomNumber,
+                                                  formfillby: 'buyer',
+                                                  formType:
+                                                      'تفاصيل الطلب للبائع',
+                                                  uid: [
+                                                    userController
+                                                        .currentUser.value.uid!,
+                                                    userController
+                                                        .specificUser.value.uid!
+                                                  ],
+                                                  name: nameController.text,
+                                                  phoneNumber:
+                                                      phoneController.text,
+                                                  purpose:
+                                                      purposeController.text,
+                                                  days: timeController.text,
+                                                  secondPartyMobile:
+                                                      '${countryCode.replaceAll('+', '')}${secondphoneController.text}',
+                                                  description:
+                                                      desController.text,
+                                                  address:
+                                                      addressController.text,
+                                                  price: result.toString(),
+                                                  agree1: isSwitched,
+                                                  agree2: isSwitched2,
+                                                  images: images,
+                                                  isAccepted: '',
+                                                  ayam: 'ايام',
+                                                  ayamNumber: ayamNumber!,
+                                                  review: '',
+                                                  byerUid: userController
                                                       .currentUser.value.uid!,
-                                                  userController
-                                                      .specificUser.value.uid!
-                                                ],
-                                                name: nameController.text,
-                                                phoneNumber:
-                                                    phoneController.text,
-                                                purpose: purposeController.text,
-                                                days: timeController.text,
-                                                secondPartyMobile:
-                                                    '${countryCode.replaceAll('+', '')}${secondphoneController.text}',
-                                                description: desController.text,
-                                                address: addressController.text,
-                                                price: result.toString(),
-                                                agree1: isSwitched,
-                                                agree2: isSwitched2,
-                                                images: images,
-                                                isAccepted: '',
-                                                ayam: 'ايام',
-                                                ayamNumber: ayamNumber!,
-                                                review: '',
-                                                byerUid: userController
-                                                    .currentUser.value.uid!,
-                                                sellerUid: userController
-                                                    .specificUser.value.uid!,
-                                              ),
+                                                  sellerUid: userController
+                                                      .specificUser.value.uid!,
+                                                  timeExtandRequest: '',
+                                                  timeExtandRequestAccepted:
+                                                      false),
                                               userModel)
                               : nameController.text.trim() == '' ||
                                       phoneController.text.trim() == '' ||
@@ -751,6 +757,7 @@ class _MistariPageState extends State<MistariPage> {
                                         sellerUid: widget.buyerModel!.sellerUid,
                                         timeExtandRequest: '',
                                         timeExtandRequestAccepted: false,
+                                        time: widget.buyerModel!.time,
                                       ),
                                       widget.id!);
 
