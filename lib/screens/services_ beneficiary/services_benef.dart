@@ -583,7 +583,7 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                                   price: result.toString(),
                                   agree1: isSwitched,
                                   agree2: isSwitched2,
-                                  images: '',
+                                  images: [],
                                   isAccepted: '',
                                   ayam: 'ايام',
                                   ayamNumber: ayamNumber!,

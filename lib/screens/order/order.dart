@@ -90,6 +90,7 @@ class _OrdersState extends State<Orders> {
                         .where('uid',
                             arrayContains: userController.currentUser.value.uid)
                         .where('serviceCompleted', isEqualTo: false)
+                        .orderBy('time')
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {

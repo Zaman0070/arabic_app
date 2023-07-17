@@ -23,6 +23,19 @@ class ImagePickerController extends GetxController {
     return uploadImagesToFirebase(selectedImages);
   }
 
+  Future<List<String>> pickMulti() async {
+    final picker = ImagePicker();
+    final pickedFiles = await picker.pickMultiImage();
+    if (pickedFiles.isNotEmpty) {
+      selectedImages.assignAll(
+          pickedFiles.map((pickedFile) => File(pickedFile.path)).toList());
+    }
+    if (selectedImages.isEmpty) {
+      return [];
+    }
+    return uploadImagesToFirebase(selectedImages);
+  }
+
   Future<List<String>> uploadImagesToFirebase(List selectedImages) async {
     SmartDialog.showLoading(
       animationBuilder: (controller, child, animationParam) {

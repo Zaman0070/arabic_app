@@ -295,7 +295,7 @@ class _MistariPageState extends State<MistariPage> {
                                     InkWell(
                                       onTap: () async {
                                         images = await imagePickerController
-                                            .pickImage(ImageSource.gallery)
+                                            .pickMulti()
                                             .whenComplete(() {
                                           Get.back();
                                         });
@@ -700,7 +700,7 @@ class _MistariPageState extends State<MistariPage> {
                                                 price: result.toString(),
                                                 agree1: isSwitched,
                                                 agree2: isSwitched2,
-                                                images: images[0],
+                                                images: images,
                                                 isAccepted: '',
                                                 ayam: 'ايام',
                                                 ayamNumber: ayamNumber!,

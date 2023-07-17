@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:waist_app/model/buyer.dart';
+import 'package:waist_app/screens/contactUs/widget/report_textField.dart';
 import '../../constants/colors.dart';
 import '../../widgets/arrowButton.dart';
 import '../../widgets/loading.dart';
@@ -81,7 +82,10 @@ class ContactUs extends StatelessWidget {
                     SizedBox(
                       width: 20.w,
                     ),
-                    Image.asset('assets/whatsapp.png')
+                    Image.asset(
+                      'assets/whatsapp.png',
+                      height: 28.h,
+                    )
                   ],
                 ),
               ),
@@ -119,27 +123,27 @@ class ContactUs extends StatelessWidget {
               SizedBox(
                 height: 20.h,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'حي 90 الرياض ',
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    width: 12.w,
-                  ),
-                  Text(
-                    'العنوان',
-                    style:
-                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    width: 12.w,
-                  ),
-                  Image.asset('assets/Location.png')
-                ],
+              InkWell(
+                onTap: () {
+                  Get.to(() => ReportTextField());
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'مراسلة الادارة',
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      width: 12.w,
+                    ),
+                    Image.asset(
+                      'assets/Location.png',
+                      height: 28.h,
+                    )
+                  ],
+                ),
               ),
               SizedBox(
                 height: 20.h,
@@ -168,7 +172,10 @@ class ContactUs extends StatelessWidget {
                     SizedBox(
                       width: 12.w,
                     ),
-                    Image.asset('assets/Mail.png')
+                    Image.asset(
+                      'assets/Mail.png',
+                      height: 21.h,
+                    )
                   ],
                 ),
               ),

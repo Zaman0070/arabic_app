@@ -268,7 +268,7 @@ class _CompleteOrderState extends State<CompleteSaleOrder> {
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: NetworkImage(
-                                    widget.buyerModel.images!,
+                                    widget.buyerModel.images![0],
                                   ),
                                   fit: BoxFit.cover,
                                 ),

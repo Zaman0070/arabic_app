@@ -248,7 +248,7 @@ class _TheSellerState extends State<TheSeller> {
                                     fit: BoxFit.cover,
                                   )
                                 : Image.network(
-                                    widget.buyerModel!.images!,
+                                    widget.buyerModel!.images![0],
                                     height: 40.h,
                                     width: 40.h,
                                     fit: BoxFit.cover,
@@ -288,7 +288,7 @@ class _TheSellerState extends State<TheSeller> {
                             InkWell(
                               onTap: () async {
                                 images = await imagePickerController
-                                    .pickImage(ImageSource.gallery)
+                                    .pickMulti()
                                     .whenComplete(() {
                                   Get.back();
                                 });
@@ -650,7 +650,7 @@ class _TheSellerState extends State<TheSeller> {
                               price: result.toString(),
                               agree1: isSwitched,
                               agree2: isSwitched2,
-                              images: images[0],
+                              images: images,
                               isAccepted: '',
                               ayam: 'ايام',
                               ayamNumber: ayamNumber!,

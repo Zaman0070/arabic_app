@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/widgets/button.dart';
 import 'package:waist_app/widgets/loading.dart';
+import 'package:waist_app/widgets/textFormfield.dart';
 
 import '../../constants/colors.dart';
 import '../../widgets/arrowButton.dart';
@@ -23,6 +24,9 @@ class _WalletState extends State<Wallet> {
   bool isSwitched2 = false;
   String $bankName = "";
   var accountDetailsController = TextEditingController();
+  var firstnameController = TextEditingController();
+  var lastnameController = TextEditingController();
+  var phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -135,16 +139,12 @@ class _WalletState extends State<Wallet> {
                       height: 12.h,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        SizedBox(
-                          width: 300.w,
-                          child: Text(
-                            'STC Pay',
-                            textDirection: TextDirection.rtl,
-                            style: TextStyle(fontSize: 15.sp),
-                          ),
+                        Image.asset(
+                          'assets/stc.png',
+                          height: 24.h,
                         ),
                         SizedBox(
                           width: 10.w,
@@ -176,15 +176,16 @@ class _WalletState extends State<Wallet> {
                       height: 12,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           width: 300.w,
                           child: Text(
-                            'Bank Transfer',
+                            'تحويل بنكي',
                             textDirection: TextDirection.rtl,
-                            style: TextStyle(fontSize: 15.sp),
+                            style: TextStyle(
+                                fontSize: 15.sp, fontWeight: FontWeight.bold),
                           ),
                         ),
                         SizedBox(
@@ -214,53 +215,55 @@ class _WalletState extends State<Wallet> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 12,
+                    SizedBox(
+                      height: 20.h,
                     ),
                     isSwitched == false && isSwitched2 == false
-                        ? SizedBox()
-                        : Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: TextFormField(
-                              maxLines: 4,
-                              keyboardType: TextInputType.phone,
-                              controller: accountDetailsController,
-                              textAlign: TextAlign.right,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(width: 0.1)),
-                                labelText: isSwitched
+                        ? const SizedBox()
+                        : isSwitched == true
+                            ? Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: MytextField(
+                                            type: TextInputType.name,
+                                            controller: lastnameController,
+                                            text: 'اسم العائلة',
+                                            hint: 'اسم العائلة'),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: MytextField(
+                                            type: TextInputType.name,
+                                            controller: firstnameController,
+                                            text: 'الاسم الأول',
+                                            hint: 'الاسم الأول'),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  MytextField(
+                                      type: TextInputType.phone,
+                                      controller: phoneController,
+                                      text: 'رقم التليفون',
+                                      hint: '+966 XXXXXXXXX'),
+                                ],
+                              )
+                            : MytextField(
+                                type: TextInputType.number,
+                                controller: accountDetailsController,
+                                text: isSwitched
                                     ? 'تفاصيل حساب STC'
                                     : "تفاصيل حساب Bank",
-                                // hintText: isSwitched? 'تفاصيل حساب STC' : "تفاصيل حساب Bank",
-                                contentPadding:
-                                    const EdgeInsets.only(top: 0, right: 15),
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: BC.appColor.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 6.6),
-                                      child: Directionality(
-                                        textDirection: TextDirection.ltr,
-                                        child: Text(
-                                          $bankName,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                hint: isSwitched
+                                    ? 'تفاصيل حساب STC'
+                                    : "iban number",
                               ),
-                            ),
-                          ),
                     const SizedBox(
                       height: 12,
                     ),
@@ -278,45 +281,96 @@ class _WalletState extends State<Wallet> {
                                           .toString() ==
                                       "0") {
                                     Fluttertoast.showToast(msg: 'رصيدك منخفض');
-                                  } else if (accountDetailsController
-                                      .text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg:
-                                            'الرجاء إدخال التفاصيل المصرفية الخاصة بك');
                                   } else {
-                                    SmartDialog.showLoading(
-                                      animationBuilder:
-                                          (controller, child, animationParam) {
-                                        return Loading(
-                                          text: ' ... تحميل ',
+                                    if (isSwitched == true &&
+                                        isSwitched2 == false) {
+                                      if (firstnameController.text.trim() ==
+                                              '' ||
+                                          lastnameController.text.trim() ==
+                                              '' ||
+                                          phoneController.text.trim() == "") {
+                                        Fluttertoast.showToast(
+                                            msg: 'الرجاء إدخال جميع الحقول');
+                                      } else {
+                                        SmartDialog.showLoading(
+                                          animationBuilder: (controller, child,
+                                              animationParam) {
+                                            return Loading(
+                                              text: ' ... تحميل ',
+                                            );
+                                          },
                                         );
-                                      },
-                                    );
+                                        await FirebaseFirestore.instance
+                                            .collection('withdrawRequests')
+                                            .doc()
+                                            .set({
+                                          'userId': FirebaseAuth
+                                              .instance.currentUser!.uid,
+                                          'amount':
+                                              snapshot.data!['walletBalance'],
+                                          'firstname':
+                                              firstnameController.text.trim(),
+                                          'lastname':
+                                              lastnameController.text.trim(),
+                                          'phone': phoneController.text.trim(),
+                                        });
 
-                                    await FirebaseFirestore.instance
-                                        .collection('withdrawRequests')
-                                        .doc()
-                                        .set({
-                                      'userId': FirebaseAuth
-                                          .instance.currentUser!.uid,
-                                      'amount': snapshot.data!['walletBalance'],
-                                      'bankDetails': accountDetailsController
-                                          .text
-                                          .toString()
-                                          .trim(),
-                                    });
+                                        await FirebaseFirestore.instance
+                                            .collection('users')
+                                            .doc(FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                            .update({
+                                          'walletBalance': 0,
+                                        });
+                                        SmartDialog.dismiss();
+                                        Fluttertoast.showToast(
+                                            msg: 'تم سحب الرصيد بنجاح');
+                                        Get.back();
+                                      }
+                                    } else if (isSwitched == false &&
+                                        isSwitched2 == true) {
+                                      if (accountDetailsController.text
+                                              .trim() ==
+                                          '') {
+                                        Fluttertoast.showToast(
+                                            msg: 'الرجاء إدخال جميع الحقول');
+                                      } else {
+                                        SmartDialog.showLoading(
+                                          animationBuilder: (controller, child,
+                                              animationParam) {
+                                            return Loading(
+                                              text: ' ... تحميل ',
+                                            );
+                                          },
+                                        );
 
-                                    await FirebaseFirestore.instance
-                                        .collection('users')
-                                        .doc(FirebaseAuth
-                                            .instance.currentUser!.uid)
-                                        .update({
-                                      'walletBalance': 0,
-                                    });
-                                    SmartDialog.dismiss();
-                                    Fluttertoast.showToast(
-                                        msg: 'تم سحب الرصيد بنجاح');
-                                    Get.back();
+                                        await FirebaseFirestore.instance
+                                            .collection('withdrawRequests')
+                                            .doc()
+                                            .set({
+                                          'userId': FirebaseAuth
+                                              .instance.currentUser!.uid,
+                                          'amount':
+                                              snapshot.data!['walletBalance'],
+                                          'bankDetails':
+                                              accountDetailsController.text
+                                                  .toString()
+                                                  .trim(),
+                                        });
+
+                                        await FirebaseFirestore.instance
+                                            .collection('users')
+                                            .doc(FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                            .update({
+                                          'walletBalance': 0,
+                                        });
+                                        SmartDialog.dismiss();
+                                        Fluttertoast.showToast(
+                                            msg: 'تم سحب الرصيد بنجاح');
+                                        Get.back();
+                                      }
+                                    }
                                   }
                                 }),
                     ),

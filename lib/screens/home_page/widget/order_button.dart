@@ -17,6 +17,7 @@ class OrderButtonHome extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection('MishtariProducts')
             .where('uid', arrayContains: FirebaseAuth.instance.currentUser!.uid)
+            .orderBy('time')
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.data == null) {

@@ -513,7 +513,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                           price: result.toString(),
                           agree1: isSwitched,
                           agree2: isSwitched2,
-                          images: '',
+                          images: [],
                           isAccepted: '',
                           ayam: 'ايام',
                           ayamNumber: ayamNumber!,

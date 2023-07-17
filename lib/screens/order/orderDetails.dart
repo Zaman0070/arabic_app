@@ -312,7 +312,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.network(
-                                    widget.buyerModel.images!,
+                                    widget.buyerModel.images![0],
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -356,15 +356,6 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                             );
                           },
                         );
-
-                        // orderExtendDate(
-                        //   optionItem: optionItemSelectedday1,
-                        //   dropListModel: dropListModeldays1,
-                        //   increaseDateTime: () async {
-
-                        //   },
-                        //   context: context,
-                        // );
                       },
                       child: Container(
                         width: double.infinity,

@@ -37,7 +37,7 @@ class FirebaseServices {
     required String description,
     required String days,
     required String secondPartyMobile,
-    required String images,
+    required List<dynamic> images,
     required bool agree1,
     required bool agree2,
     required String isAccepted,
@@ -87,6 +87,7 @@ class FirebaseServices {
         sellerUid: sellerUid,
         timeExtandRequest: timeExtandRequest,
         timeExtandRequestAccepted: timeExtandRequestAccepted,
+        time: DateTime.now().millisecondsSinceEpoch,
       );
       await mishtriProduct.doc().set(buyerModel.toMap()).then((value) {
         Fluttertoast.showToast(
