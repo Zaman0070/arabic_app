@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -80,7 +81,7 @@ class _LoginPageState extends State<OTP> {
               .doc(user.uid)
               .set(userModel.toMap())
               .then((value) {
-            Get.offAll(() => const BottomNavigationExample());
+            Get.offAll(() =>  BottomNavigationExample());
 
             // ignore: invalid_return_type_for_catch_error
           }).catchError((error) =>
@@ -88,7 +89,7 @@ class _LoginPageState extends State<OTP> {
                   Fluttertoast.showToast(msg: 'Faild to add user : $error'));
           SmartDialog.dismiss();
         } else {
-          Get.offAll(() => const BottomNavigationExample());
+          Get.offAll(() =>  BottomNavigationExample());
           SmartDialog.dismiss();
         }
       } else {
@@ -176,9 +177,7 @@ class _LoginPageState extends State<OTP> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Image.asset(
-                    'assets/Phone.png',
-                  ),
+                  SvgPicture.asset('assets/Phone.svg'),
                   const SizedBox(
                     height: 20,
                   ),

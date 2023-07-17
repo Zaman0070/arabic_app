@@ -301,7 +301,7 @@ class _MyDrawerState extends State<MyDrawer> {
                       ),
                       Image(
                         image: const AssetImage('assets/Users.png'),
-                        height: 22.h,
+                        height: 20.h,
                       ),
                     ],
                   ),
@@ -397,6 +397,33 @@ class _MyDrawerState extends State<MyDrawer> {
                     children: [
                       Text(
                         'عن التطبيق',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15.sp),
+                      ),
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Image(
+                        image: const AssetImage('assets/Info.png'),
+                        height: 22.h,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.to(() => const AboutUs());
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        '',
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,

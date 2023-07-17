@@ -39,7 +39,7 @@ class _OrdersState extends State<Orders> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Get.offAll(() => const BottomNavigationExample());
+        Get.offAll(() =>  BottomNavigationExample());
         return true;
       },
       child: Scaffold(
@@ -76,7 +76,7 @@ class _OrdersState extends State<Orders> {
                     ),
                     ArrowButton(
                       onPressed: () {
-                        Get.offAll(() => const BottomNavigationExample());
+                        Get.offAll(() =>  BottomNavigationExample());
                       },
                     )
                   ],
@@ -129,7 +129,7 @@ class _OrdersState extends State<Orders> {
                               child: OrderBox(
                                 buttonText: buyerData.formfillby == 'seller'
                                     ? 'متابعة الخدمة'
-                                    : 'متابعة الطلب',
+                                    : 'تفاصيل الطلب',
                                 buyerModel: buyerData,
                                 orderNumber: '#${buyerData.orderNumber}',
                                 date: DateFormat('dd/MM/yyyy  hh:mm ')

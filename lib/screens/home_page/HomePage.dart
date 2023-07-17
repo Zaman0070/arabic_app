@@ -163,6 +163,7 @@ class _HomePageState extends State<HomePage> {
                     alignment: Alignment.bottomCenter,
                     children: [
                       Swiper(
+                        autoplay: true,
                         outer: false,
                         indicatorLayout: PageIndicatorLayout.NONE,
                         itemBuilder: (context, index) {

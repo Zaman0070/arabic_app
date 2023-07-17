@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/constants/colors.dart';
+import 'package:waist_app/controller/percentage_controller.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/model/user.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
@@ -30,7 +31,7 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
   var secondphoneController = TextEditingController();
   UserController userController = Get.put(UserController());
 
-  var commodityController = TextEditingController(text: '0');
+  var commodityController = TextEditingController();
 
   var purposeController = TextEditingController();
 
@@ -39,9 +40,10 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
   var timeController = TextEditingController();
   bool isSwitched = false;
   bool isSwitched2 = false;
-  int result = 0;
+  double result = 0;
   UserModel userModel = UserModel();
   List<String> uids = [];
+  PercentageController percentageController = Get.put(PercentageController());
 
   String countryCode = '+966';
   String? ayam;
@@ -250,7 +252,29 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              flex: 1,
+                                flex: 1,
+                                child: SizedBox(
+                                  height: 40.h,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '   ايام',
+                                          style: TextStyle(fontSize: 16.sp),
+                                        ),
+                                        // const Icon(Icons.arrow_drop_down)
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                            Expanded(
+                              flex: 3,
                               child: SelectDropList(
                                 height: 40.h,
                                 containerDecoration: BoxDecoration(
@@ -265,7 +289,7 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                                 dropListModel: dropListModeldays1,
                                 showIcon: false, // Show Icon in DropDown Title
                                 showArrowIcon:
-                                    false, // Show Arrow Icon in DropDown
+                                    true, // Show Arrow Icon in DropDown
                                 showBorder: true,
                                 paddingTop: 0,
                                 paddingBottom: 0,
@@ -312,33 +336,10 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                             //     onOptionSelected: (optionItem) {
                             //       optionItemSelectedday = optionItem;
                             //       ayam = optionItem.title;
-
                             //       setState(() {});
                             //     },
                             //   ),
                             // ),
-                            Expanded(
-                                flex: 3,
-                                child: SizedBox(
-                                  height: 40.h,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'ايام',
-                                          style: TextStyle(fontSize: 16.sp),
-                                        ),
-                                        const Icon(Icons.arrow_drop_down)
-                                      ],
-                                    ),
-                                  ),
-                                )),
                           ],
                         ),
                       ),
@@ -408,7 +409,11 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                           onTap: () {
                             setState(() {
                               isSwitched = !isSwitched;
-                              result = int.parse(commodityController.text) + 20;
+                              result = int.parse(commodityController.text) +
+                                  int.parse(commodityController.text) *
+                                      (percentageController
+                                              .percentage.value.percentage! /
+                                          100);
                             });
                           },
                           child: Container(
@@ -493,7 +498,11 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
 
                             setState(() {
                               isSwitched2 = !isSwitched2;
-                              result = int.parse(commodityController.text) + 20;
+                              result = int.parse(commodityController.text) +
+                                  int.parse(commodityController.text) *
+                                      (percentageController
+                                              .percentage.value.percentage! /
+                                          100);
                             });
                           },
                           child: Container(

@@ -12,6 +12,7 @@ import 'package:waist_app/Services/onsignal.dart';
 import 'package:waist_app/constants/colors.dart';
 import 'package:waist_app/controller/image_controller.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
+import 'package:waist_app/controller/percentage_controller.dart';
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/model/user.dart';
 import 'package:waist_app/screens/buy&mishtari/completePurchaseOrder.dart';
@@ -41,7 +42,7 @@ class _MistariPageState extends State<MistariPage> {
       text: widget.id == '' ? "" : widget.buyerModel!.phoneNumber);
 
   late var commodityController = TextEditingController(
-      text: widget.id == '' ? '0' : widget.buyerModel!.price);
+      text: widget.id == '' ? '' : widget.buyerModel!.price);
 
   var purposeController = TextEditingController();
 
@@ -58,10 +59,10 @@ class _MistariPageState extends State<MistariPage> {
       text: userController.currentUser.value.location ?? '');
   String ayamDate = '';
   String countryCode = '+966';
-
+  PercentageController percentageController = Get.put(PercentageController());
   bool isSwitched = false;
+  double result = 0;
   bool isSwitched2 = false;
-  int result = 0;
   ImagePickerController imagePickerController =
       Get.put(ImagePickerController());
   OneSignals oneSignals = OneSignals();
@@ -114,7 +115,10 @@ class _MistariPageState extends State<MistariPage> {
     OptionItem(id: "16", title: "     55"),
     OptionItem(id: "17", title: "     60"),
   ]);
-  OptionItem optionItemSelected = OptionItem(title: "    المدينة");
+  late OptionItem optionItemSelected = OptionItem(
+      title: userController.currentUser.value.location == ''
+          ? "    المدينة"
+          : userController.currentUser.value.location!);
   late OptionItem optionItemSelectedday =
       OptionItem(title: widget.id == '' ? "ايام" : widget.buyerModel!.ayam!);
   late OptionItem optionItemSelectedday1 =
@@ -226,6 +230,7 @@ class _MistariPageState extends State<MistariPage> {
                                 showIcon: false, // Show Icon in DropDown Title
                                 showArrowIcon:
                                     true, // Show Arrow Icon in DropDown
+
                                 showBorder: true,
                                 paddingTop: 0,
                                 paddingBottom: 0,
@@ -347,7 +352,29 @@ class _MistariPageState extends State<MistariPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              flex: 1,
+                                flex: 1,
+                                child: SizedBox(
+                                  height: 40.h,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '   ايام',
+                                          style: TextStyle(fontSize: 16.sp),
+                                        ),
+                                        // const Icon(Icons.arrow_drop_down)
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                            Expanded(
+                              flex: 3,
                               child: SelectDropList(
                                 height: 40.h,
                                 containerDecoration: BoxDecoration(
@@ -362,7 +389,7 @@ class _MistariPageState extends State<MistariPage> {
                                 dropListModel: dropListModeldays1,
                                 showIcon: false, // Show Icon in DropDown Title
                                 showArrowIcon:
-                                    false, // Show Arrow Icon in DropDown
+                                    true, // Show Arrow Icon in DropDown
                                 showBorder: true,
                                 paddingTop: 0,
                                 paddingBottom: 0,
@@ -382,28 +409,6 @@ class _MistariPageState extends State<MistariPage> {
                                 },
                               ),
                             ),
-                            Expanded(
-                                flex: 3,
-                                child: SizedBox(
-                                  height: 40.h,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'ايام',
-                                          style: TextStyle(fontSize: 16.sp),
-                                        ),
-                                        const Icon(Icons.arrow_drop_down)
-                                      ],
-                                    ),
-                                  ),
-                                )),
                             // Expanded(
                             //   flex: 3,
                             //   child: SelectDropList(
@@ -515,7 +520,11 @@ class _MistariPageState extends State<MistariPage> {
                           onTap: () {
                             setState(() {
                               isSwitched = !isSwitched;
-                              result = int.parse(commodityController.text) + 20;
+                              result = int.parse(commodityController.text) +
+                                  int.parse(commodityController.text) *
+                                      (percentageController
+                                              .percentage.value.percentage! /
+                                          100);
                             });
                           },
                           child: Container(
@@ -599,7 +608,11 @@ class _MistariPageState extends State<MistariPage> {
                             });
                             setState(() {
                               isSwitched2 = !isSwitched2;
-                              result = int.parse(commodityController.text) + 20;
+                              result = int.parse(commodityController.text) +
+                                  int.parse(commodityController.text) *
+                                      (percentageController
+                                              .percentage.value.percentage! /
+                                          100);
                             });
                           },
                           child: Container(
@@ -657,7 +670,7 @@ class _MistariPageState extends State<MistariPage> {
                         text: 'تأكيد الطلب و الدفع',
                         onPressed: () async {
                           var random = Random();
-                          int randomNumber = random.nextInt(100000000);
+                          int randomNumber = random.nextInt(100000);
                           widget.id == ''
                               ? nameController.text.trim() == '' ||
                                       phoneController.text.trim() == '' ||
@@ -774,8 +787,7 @@ class _MistariPageState extends State<MistariPage> {
                               token: userController.currentUser.value.token!,
                               name: nameController.text,
                               phoneNumber: phoneController.text,
-                              location:
-                                  userController.currentUser.value.location,
+                              location: addressController.text.trim(),
                               email: userController.currentUser.value.email,
                               profileImage:
                                   userController.currentUser.value.profileImage,

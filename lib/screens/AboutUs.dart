@@ -43,7 +43,7 @@ class _AboutUsState extends State<AboutUs> {
                       width: 30,
                     ),
                     Text(
-                      'دليل الأستخدام',
+                      'عن التطبيق',
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,

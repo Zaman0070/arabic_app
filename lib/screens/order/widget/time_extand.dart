@@ -148,7 +148,7 @@ class _TimeExtandState extends State<TimeExtand> {
                 'timeExtandRequestAccepted': true
               });
               SmartDialog.dismiss();
-              Get.offAll(() => const BottomNavigationExample());
+              Get.offAll(() =>  BottomNavigationExample());
               await oneSignals.sendNotification(widget.user.token!, '',
                   'يرجى تمديد وقت التسليم', 'assets/logo/jpeg',
                   token: widget.user.token!,

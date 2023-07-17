@@ -17,7 +17,7 @@ class _NewOrderState extends State<NewOrder> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Get.offAll(() => const BottomNavigationExample());
+        Get.offAll(() =>  BottomNavigationExample());
         return true;
       },
       child: Scaffold(
@@ -53,7 +53,7 @@ class _NewOrderState extends State<NewOrder> {
                 ),
                 ArrowButton(
                   onPressed: () {
-                    Get.offAll(() => const BottomNavigationExample());
+                    Get.offAll(() =>  BottomNavigationExample());
                   },
                 )
               ],

@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
         );
       },
       child: FirebaseAuth.instance.currentUser != null
-          ? const BottomNavigationExample()
+          ?  BottomNavigationExample()
           : OnBaording(),
     );
   }

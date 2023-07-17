@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waist_app/Services/firebase_services.dart';
 import 'package:waist_app/Services/onsignal.dart';
+import 'package:waist_app/controller/percentage_controller.dart';
 import 'package:waist_app/controller/user_controller.dart';
 import 'package:waist_app/screens/privacy_policy/privacy_policy.dart';
 import 'package:waist_app/widgets/textFormfield.dart';
@@ -32,9 +33,10 @@ class _ServiceProviderState extends State<ServiceProvider> {
   UserController userController = Get.put(UserController());
 
   List<String> images = [];
-  int result = 0;
+  double result = 0;
   List<String> uids = [];
   OneSignals oneSignals = OneSignals();
+  PercentageController percentageController = Get.put(PercentageController());
 
   String ayamDate = '';
   bool second = false;
@@ -200,8 +202,8 @@ class _ServiceProviderState extends State<ServiceProvider> {
               MytextField(
                 type: TextInputType.number,
                 controller: priceController,
-                text: 'قيمة السلعة',
-                hint: 'قيمة السلعة',
+                text: 'قيمة الخدمة',
+                hint: 'قيمة الخدمة',
               ),
               SizedBox(
                 height: 15.h,
@@ -227,7 +229,28 @@ class _ServiceProviderState extends State<ServiceProvider> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 1,
+                          flex: 1,
+                          child: SizedBox(
+                            height: 40.h,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '   ايام',
+                                    style: TextStyle(fontSize: 16.sp),
+                                  ),
+                                  // const Icon(Icons.arrow_drop_down)
+                                ],
+                              ),
+                            ),
+                          )),
+                      Expanded(
+                        flex: 3,
                         child: SelectDropList(
                           height: 40.h,
                           containerDecoration: BoxDecoration(
@@ -239,7 +262,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                           itemSelected: optionItemSelectedday1,
                           dropListModel: dropListModeldays1,
                           showIcon: false, // Show Icon in DropDown Title
-                          showArrowIcon: false, // Show Arrow Icon in DropDown
+                          showArrowIcon: true, // Show Arrow Icon in DropDown
                           showBorder: true,
                           paddingTop: 0,
                           paddingBottom: 0,
@@ -264,14 +287,17 @@ class _ServiceProviderState extends State<ServiceProvider> {
                       //     height: 40.h,
                       //     containerDecoration: BoxDecoration(
                       //         borderRadius: BorderRadius.circular(10),
-                      //         border: Border.all(color: Colors.transparent),
+                      //         border:
+                      //             Border.all(color: Colors.transparent),
                       //         color: Colors.transparent),
-                      //     containerPadding: const EdgeInsets.only(left: 10),
+                      //     containerPadding:
+                      //         const EdgeInsets.only(left: 10),
                       //     containerMargin: EdgeInsets.zero,
                       //     itemSelected: optionItemSelectedday,
                       //     dropListModel: dropListModeldays,
                       //     showIcon: false, // Show Icon in DropDown Title
-                      //     showArrowIcon: true, // Show Arrow Icon in DropDown
+                      //     showArrowIcon:
+                      //         true, // Show Arrow Icon in DropDown
                       //     showBorder: true,
                       //     paddingTop: 0,
                       //     paddingBottom: 0,
@@ -282,32 +308,10 @@ class _ServiceProviderState extends State<ServiceProvider> {
                       //     onOptionSelected: (optionItem) {
                       //       optionItemSelectedday = optionItem;
                       //       ayam = optionItem.title;
-
                       //       setState(() {});
                       //     },
                       //   ),
                       // ),
-                      Expanded(
-                          flex: 3,
-                          child: SizedBox(
-                            height: 40.h,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'ايام',
-                                    style: TextStyle(fontSize: 16.sp),
-                                  ),
-                                  const Icon(Icons.arrow_drop_down)
-                                ],
-                              ),
-                            ),
-                          )),
                     ],
                   ),
                 ),
@@ -389,7 +393,11 @@ class _ServiceProviderState extends State<ServiceProvider> {
                       });
                       setState(() {
                         isSwitched = !isSwitched;
-                        result = int.parse(priceController.text) + 20;
+                        result = int.parse(priceController.text) +
+                            int.parse(priceController.text) *
+                                (percentageController
+                                        .percentage.value.percentage! /
+                                    100);
                       });
                     },
                     child: Container(

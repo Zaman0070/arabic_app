@@ -130,7 +130,7 @@ class _CompleteOrderState extends State<CompleteOrder> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.userModel.name!,
+                            widget.buyerModel.name!,
                             style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
