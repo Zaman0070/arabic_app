@@ -421,7 +421,7 @@ class _TheSellerState extends State<TheSeller> {
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
-                        // maxLength: 12,
+                        maxLength: 9,
                         keyboardType: TextInputType.phone,
                         controller: secondPartyMobileController,
                         textAlign: TextAlign.right,

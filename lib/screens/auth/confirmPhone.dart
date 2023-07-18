@@ -81,7 +81,7 @@ class _LoginPageState extends State<OTP> {
               .doc(user.uid)
               .set(userModel.toMap())
               .then((value) {
-            Get.offAll(() =>  BottomNavigationExample());
+            Get.offAll(() => const BottomNavigationExample());
 
             // ignore: invalid_return_type_for_catch_error
           }).catchError((error) =>
@@ -89,7 +89,7 @@ class _LoginPageState extends State<OTP> {
                   Fluttertoast.showToast(msg: 'Faild to add user : $error'));
           SmartDialog.dismiss();
         } else {
-          Get.offAll(() =>  BottomNavigationExample());
+          Get.offAll(() => const BottomNavigationExample());
           SmartDialog.dismiss();
         }
       } else {

@@ -250,19 +250,32 @@ class _WalletState extends State<Wallet> {
                                   MytextField(
                                       type: TextInputType.phone,
                                       controller: phoneController,
-                                      text: 'رقم التليفون',
-                                      hint: '+966 XXXXXXXXX'),
+                                      text: 'رقم جوال اس تي سي باي',
+                                      hint: 'XXX XXXXXXXXX '),
                                 ],
                               )
-                            : MytextField(
-                                type: TextInputType.number,
-                                controller: accountDetailsController,
-                                text: isSwitched
-                                    ? 'تفاصيل حساب STC'
-                                    : "تفاصيل حساب Bank",
-                                hint: isSwitched
-                                    ? 'تفاصيل حساب STC'
-                                    : "iban number",
+                            : Column(
+                                children: [
+                                  MytextField(
+                                    type: TextInputType.name,
+                                    controller: accountDetailsController,
+                                    text: 'اسم البنك',
+                                    hint: 'اسم البنك',
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  MytextField(
+                                    type: TextInputType.number,
+                                    controller: accountDetailsController,
+                                    text: isSwitched
+                                        ? 'تفاصيل حساب STC'
+                                        : "تفاصيل حساب البنك",
+                                    hint: isSwitched
+                                        ? 'تفاصيل حساب STC'
+                                        : "iban number",
+                                  ),
+                                ],
                               ),
                     const SizedBox(
                       height: 12,

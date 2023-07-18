@@ -311,7 +311,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
-                        maxLength: 10,
+                        maxLength: 9,
                         keyboardType: TextInputType.phone,
                         controller: secondPartyMobileController,
                         textAlign: TextAlign.right,

@@ -83,12 +83,20 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 180.h,
+                            height: 130.h,
+                          ),
+                          Image.asset(
+                            'assets/nonoti.png',
+                            height: 200.h,
+                          ),
+                          SizedBox(
+                            height: 20.h,
                           ),
                           Text(
-                            'لا يوجد طلبات نشطة',
+                            'لا يوجد اشعارات',
                             style: TextStyle(
                               fontSize: 17.sp,
+                              color: BC.appColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

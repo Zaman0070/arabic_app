@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_file_view/flutter_file_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -417,13 +418,15 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    // Get.to(() => HorizontalListDemo());
+                    FileView(
+                      controller: FileViewController.asset('assets/word.docx'),
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        '',
+                        'سياسة الخصوصية',
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -433,7 +436,7 @@ class _MyDrawerState extends State<MyDrawer> {
                         width: 10.w,
                       ),
                       Image(
-                        image: const AssetImage('assets/Info.png'),
+                        image: const AssetImage('assets/policy.png'),
                         height: 22.h,
                       ),
                     ],

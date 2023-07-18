@@ -350,7 +350,7 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                     Directionality(
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
-                        maxLength: 10,
+                        maxLength: 9,
                         keyboardType: TextInputType.phone,
                         controller: secondphoneController,
                         textAlign: TextAlign.right,
