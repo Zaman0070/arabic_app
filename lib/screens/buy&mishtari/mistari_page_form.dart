@@ -782,6 +782,18 @@ class _MistariPageState extends State<MistariPage> {
                               token: userController.specificUser.value.token!,
                               senderName: controller.currentUser.value.name!,
                               type: 'mishtri');
+                          await FirebaseFirestore.instance
+                              .collection('notification')
+                              .add({
+                            'body':
+                                'مرحبا بك في تطبيق وسيط: يوجد لديك طلب (order detail) يرجى إكمال الطلب',
+                            'senderName': controller.currentUser.value.name!,
+                            'uid': userController.specificUser.value.uid!,
+                            'createdAt': DateTime.now(),
+                            'time': DateTime.now().toString(),
+                            'read':false,
+                            'type': 'mishtri',
+                          });
                           await userController.updateUserInForm(
                             UserModel(
                               token: userController.currentUser.value.token!,

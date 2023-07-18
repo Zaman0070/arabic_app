@@ -30,7 +30,6 @@ void main() async {
       Get.to(() => Orders(
             title: 'طلباتي',
           ));
-    } else if (result.notification.additionalData!['type'] == 'comment') {
     } else if (result.notification.additionalData!['type'] == 'chat') {
       // Get.to(() => ChatConversation(
       //       chatId: result.notification.additionalData!['chatId'],
@@ -40,16 +39,6 @@ void main() async {
       //       token: result.notification.additionalData!['token'],
       //       senderName: result.notification.additionalData!['senderName'],
       //       timeLeft: result.notification.additionalData!['timeLeft'],
-      //     ));
-    } else if (result.notification.additionalData!['type'] == 'admin') {
-      // Get.to(() => CustomSupport(
-      //       name: result.notification.additionalData!['reciverName'],
-      //       chatId: result.notification.additionalData!['chatId'],
-      //       image: result.notification.additionalData!['img'],
-      //       reciverId: result.notification.additionalData!['reciverId'],
-      //       token: result.notification.additionalData!['token'],
-      //       senderName: result.notification.additionalData!['senderName'],
-
       //     ));
     }
   });
@@ -81,7 +70,7 @@ class MyApp extends StatelessWidget {
         );
       },
       child: FirebaseAuth.instance.currentUser != null
-          ?  BottomNavigationExample()
+          ? const BottomNavigationExample()
           : OnBaording(),
     );
   }

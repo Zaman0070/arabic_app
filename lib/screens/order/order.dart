@@ -39,7 +39,7 @@ class _OrdersState extends State<Orders> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Get.offAll(() =>  BottomNavigationExample());
+        Get.offAll(() => BottomNavigationExample());
         return true;
       },
       child: Scaffold(
@@ -76,7 +76,7 @@ class _OrdersState extends State<Orders> {
                     ),
                     ArrowButton(
                       onPressed: () {
-                        Get.offAll(() =>  BottomNavigationExample());
+                        Get.offAll(() => BottomNavigationExample());
                       },
                     )
                   ],
@@ -319,6 +319,46 @@ class _OrdersState extends State<Orders> {
                                                                             .value,
                                                                       ));
                                                                 });
+                                                  await oneSignals
+                                                      .sendNotification(
+                                                          userController
+                                                              .specificUser
+                                                              .value
+                                                              .token!,
+                                                          '',
+                                                          'تم تأكيد الطلب بنجاح',
+                                                          'assets/logo/jpeg',
+                                                          token: userController
+                                                              .specificUser
+                                                              .value
+                                                              .token!,
+                                                          senderName:
+                                                              userController
+                                                                  .currentUser
+                                                                  .value
+                                                                  .name!,
+                                                          type: 'mishtri');
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection(
+                                                          'notification')
+                                                      .add({
+                                                    'body':
+                                                        'تم تأكيد الطلب بنجاح',
+                                                    'senderName': userController
+                                                        .currentUser
+                                                        .value
+                                                        .name!,
+                                                    'uid': userController
+                                                        .specificUser
+                                                        .value
+                                                        .uid!,
+                                                    'createdAt': DateTime.now(),
+                                                    'read': false,
+                                                    'time': DateTime.now()
+                                                        .toString(),
+                                                    'type': 'mishtri',
+                                                  });
                                                 },
                                                 declined: () async {
                                                   await FirebaseFirestore
@@ -351,6 +391,27 @@ class _OrdersState extends State<Orders> {
                                                           .value
                                                           .name!,
                                                       type: 'mishtri');
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection(
+                                                          'notification')
+                                                      .add({
+                                                    'body':
+                                                        'طبيق وسيط: تم رفض طلبك (order detail)  من الطرف الآخر وسيتم إعادة المبلغ بعد خصم العمولة',
+                                                    'senderName': userController
+                                                        .currentUser
+                                                        .value
+                                                        .name!,
+                                                    'uid': userController
+                                                        .specificUser
+                                                        .value
+                                                        .uid!,
+                                                    'createdAt': DateTime.now(),
+                                                    'read': false,
+                                                    'time': DateTime.now()
+                                                        .toString(),
+                                                    'type': 'mishtri',
+                                                  });
                                                 });
                                           }
                                         : buyerData.isAccepted ==
@@ -404,6 +465,46 @@ class _OrdersState extends State<Orders> {
                                                                 .docs[index].id,
                                                             buyerModel:
                                                                 buyerData));
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'notification')
+                                                            .add({
+                                                          'body': 'الدفع نقدا',
+                                                          'senderName':
+                                                              userController
+                                                                  .currentUser
+                                                                  .value
+                                                                  .name!,
+                                                          'uid': userController
+                                                              .specificUser
+                                                              .value
+                                                              .uid!,
+                                                          'createdAt':
+                                                              DateTime.now(),
+                                                          'time': DateTime.now()
+                                                              .toString(),
+                                                          'read': false,
+                                                          'type': 'mishtri',
+                                                        });
+                                                        await oneSignals.sendNotification(
+                                                            userController
+                                                                .specificUser
+                                                                .value
+                                                                .token!,
+                                                            '',
+                                                            'الدفع نقدا',
+                                                            'assets/logo/jpeg',
+                                                            token: userController
+                                                                .specificUser
+                                                                .value
+                                                                .token!,
+                                                            senderName:
+                                                                userController
+                                                                    .currentUser
+                                                                    .value
+                                                                    .name!,
+                                                            type: 'mishtri');
                                                       });
                                                     });
                                                   },
@@ -506,6 +607,14 @@ class _OrdersState extends State<Orders> {
                                                                 'يرجى انتظار البائع لقبول العرض');
                                                       }
                                                     : () {
+                                                        userController
+                                                            .getSpecificUser(
+                                                                buyerData
+                                                                    .uid![0]);
+                                                        print(userController
+                                                            .specificUser
+                                                            .value
+                                                            .phoneNumber);
                                                         Get.to(() => OrdersDetails(
                                                             user: userController
                                                                 .specificUser

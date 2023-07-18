@@ -16,6 +16,7 @@ import 'package:waist_app/screens/new_order/newOrder.dart';
 import 'package:waist_app/screens/notification.dart';
 import 'package:waist_app/widgets/myDrawer.dart';
 import '../../constants/colors.dart';
+import 'package:badges/badges.dart' as badges;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -117,15 +118,52 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                      onPressed: () {
-                        Get.to(() => const NotificationsPage());
-                      },
-                      icon: Icon(
-                        Icons.notifications,
-                        size: 30.h,
-                        color: BC.appColor,
-                      )),
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('notification')
+                          .where('uid',
+                              isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                          .where('read', isEqualTo: false)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.data == null) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return badges.Badge(
+                          badgeStyle:
+                              badges.BadgeStyle(badgeColor: BC.appColor),
+                          badgeContent: Text(
+                            snapshot.data!.docs.length.toString(),
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          child: IconButton(
+                              onPressed: () async {
+                                Get.to(() => const NotificationsPage());
+                                await FirebaseFirestore.instance
+                                    .collection('notification')
+                                    .where('uid',
+                                        isEqualTo: FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                    .where('read', isEqualTo: false)
+                                    .get()
+                                    .then((value) {
+                                  for (var element in value.docs) {
+                                    FirebaseFirestore.instance
+                                        .collection('notification')
+                                        .doc(element.id)
+                                        .update({'read': true});
+                                  }
+                                });
+                              },
+                              icon: Icon(
+                                Icons.notifications,
+                                size: 30.h,
+                                color: BC.appColor,
+                              )),
+                        );
+                      }),
                   Container(
                       width: 50.h,
                       height: 50.h,

@@ -64,8 +64,6 @@ class OrderStep extends StatelessWidget {
                     color: BC.appColor,
                   ),
                   color: buyerModel.isAccepted == 'payforcash' ||
-                          buyerModel.isAccepted == 'sellerAccepted' ||
-                          buyerModel.isAccepted == 'buyerAccepted' ||
                           buyerModel.isAccepted == 'underProcess'
                       ? BC.appColor
                       : Colors.transparent,

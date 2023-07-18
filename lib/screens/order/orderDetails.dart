@@ -428,7 +428,7 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                                     .doc(widget.user.uid)
                                     .update({
                                   'walletBalance': FieldValue.increment(
-                                      int.parse(widget.buyerModel.price!)),
+                                      double.parse(widget.buyerModel.price!)),
                                 });
                                 SmartDialog.dismiss();
                                 Get.to(() => Orders(
@@ -444,6 +444,19 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                                   senderName:
                                       userController.currentUser.value.name!,
                                   type: 'mishtri');
+                              await FirebaseFirestore.instance
+                                  .collection('notification')
+                                  .add({
+                                'body':
+                                    'تطبيق وسيط: تم تأكيد طلبك من الطرف الآخر وبانتظار تأكيد إنهاء المعاملة',
+                                'senderName':
+                                    userController.currentUser.value.name!,
+                                'uid': widget.user.uid!,
+                                'createdAt': DateTime.now(),
+                                'time': DateTime.now().toString(),
+                                'read': false,
+                                'type': 'mishtri',
+                              });
                             },
                             declined: () {
                               Get.back();

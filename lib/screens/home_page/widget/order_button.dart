@@ -229,10 +229,6 @@ class OrderButtonHome extends StatelessWidget {
                                           ? buyerData.isAccepted ==
                                                       'payforcash' ||
                                                   buyerData.isAccepted ==
-                                                      'sellerAccepted' ||
-                                                  buyerData.isAccepted ==
-                                                      'buyerAccepted' ||
-                                                  buyerData.isAccepted ==
                                                       'underProcess'
                                               ? BC.appColor
                                               : Colors.transparent

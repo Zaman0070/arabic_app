@@ -35,7 +35,4 @@ class PercentageController extends GetxController {
       e.toString();
     }
   }
-
-
-
 }

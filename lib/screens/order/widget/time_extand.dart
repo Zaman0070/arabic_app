@@ -148,12 +148,21 @@ class _TimeExtandState extends State<TimeExtand> {
                 'timeExtandRequestAccepted': true
               });
               SmartDialog.dismiss();
-              Get.offAll(() =>  BottomNavigationExample());
+              Get.offAll(() => const BottomNavigationExample());
               await oneSignals.sendNotification(widget.user.token!, '',
                   'يرجى تمديد وقت التسليم', 'assets/logo/jpeg',
                   token: widget.user.token!,
                   senderName: userController.currentUser.value.name!,
                   type: 'mishtri');
+              await FirebaseFirestore.instance.collection('notification').add({
+                'body': 'يرجى تمديد وقت التسليم',
+                'senderName': userController.currentUser.value.name!,
+                'uid': widget.user.uid!,
+                'createdAt': DateTime.now(),
+                'time': DateTime.now().toString(),
+                'read': false,
+                'type': 'mishtri',
+              });
             },
             child: Container(
               width: double.infinity,
