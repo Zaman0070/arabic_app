@@ -42,6 +42,12 @@ class _TheSellerState extends State<TheSeller> {
   ImagePickerController imagePickerController =
       Get.put(ImagePickerController());
   UserController userController = Get.put(UserController());
+  late var nameController =
+      TextEditingController(text: userController.currentUser.value.name ?? '');
+  late var phoneController = TextEditingController(
+      text: userController.currentUser.value.phoneNumber ?? '');
+  late var addressController = TextEditingController(
+      text: userController.currentUser.value.location ?? '');
   late var priceController = TextEditingController(
       text: widget.id == '' ? null : widget.buyerModel!.price);
   late var desController = TextEditingController(
@@ -59,6 +65,32 @@ class _TheSellerState extends State<TheSeller> {
   bool isSwitched2 = false;
   String countryCode = '+966';
   double result = 0;
+  DropListModel dropListModel = DropListModel([
+    OptionItem(id: "1", title: "     الرياض"),
+    OptionItem(id: "2", title: "     جدة"),
+    OptionItem(id: "3", title: "     مكة المدينة"),
+    OptionItem(id: "4", title: "     الدمام"),
+    OptionItem(id: "5", title: "     الهفوف"),
+    OptionItem(id: "5", title: "     الطائف"),
+    OptionItem(id: "5", title: "     بريدة"),
+    OptionItem(id: "5", title: "     الخبر"),
+    OptionItem(id: "5", title: "     تبوك"),
+    OptionItem(id: "5", title: "     أبها"),
+    OptionItem(id: "5", title: "     نجران"),
+    OptionItem(id: "5", title: "     حائل"),
+    OptionItem(id: "5", title: "     الجبيل"),
+    OptionItem(id: "5", title: "     الخرج"),
+    OptionItem(id: "5", title: "     ينبع"),
+    OptionItem(id: "5", title: "     القطيف"),
+    OptionItem(id: "5", title: "     الأحساء"),
+    OptionItem(id: "5", title: "     صبيا"),
+    OptionItem(id: "5", title: "     جيزان"),
+    OptionItem(id: "5", title: "     عرعر"),
+  ]);
+  late OptionItem optionItemSelected = OptionItem(
+      title: userController.currentUser.value.location == ''
+          ? "    المدينة"
+          : userController.currentUser.value.location!);
 
   DropListModel dropListModeldays = DropListModel([
     OptionItem(id: "1", title: "     ايام"),
@@ -94,625 +126,567 @@ class _TheSellerState extends State<TheSeller> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage(
-                'assets/background.png',
-              ),
-            ),
-          ),
-          child: SingleChildScrollView(
-            child: Column(children: [
-              SizedBox(
-                height: 12.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  const Text(
-                    'البائع',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+        child: GetBuilder<UserController>(
+            init: UserController(),
+            builder: (controller) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage(
+                      'assets/background.png',
                     ),
                   ),
-                  ArrowButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                decoration: BoxDecoration(
-                    color: BC.appColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: BC.appColor)),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.id == ''
-                              ? userController.currentUser.value.name!
-                              : widget.buyerModel!.name!,
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          'اسم الطرف الأول ثلاثي',
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: BC.lightGrey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.id == ''
-                              ? '+${userController.currentUser.value.phoneNumber!}'
-                              : '+${widget.buyerModel!.phoneNumber!}',
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'الجوال',
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: BC.lightGrey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.id == ''
-                              ? userController.currentUser.value.location!
-                              : widget.buyerModel!.address!.trim(),
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'المدينة',
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: BC.lightGrey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
                 ),
-              ),
-              SizedBox(
-                height: 30.h,
-              ),
-              UploadButton(
-                image: widget.id == ''
-                    ? imagePickerController.selectedImages.isEmpty
-                        ? Container()
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.file(
-                              File(
-                                  imagePickerController.selectedImages[0].path),
-                              height: 40.h,
-                              width: 40.h,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                    : imagePickerController.selectedImages.isEmpty
-                        ? Container()
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: widget.buyerModel!.images == null
-                                ? Image.file(
-                                    File(imagePickerController
-                                        .selectedImages[0].path),
-                                    height: 40.h,
-                                    width: 40.h,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.network(
-                                    widget.buyerModel!.images![0],
-                                    height: 40.h,
-                                    width: 40.h,
-                                    fit: BoxFit.cover,
-                                  ),
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const SizedBox(
+                          width: 30,
+                        ),
+                        const Text(
+                          'البائع',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
-                press: () {
-                  Get.bottomSheet(
+                        ),
+                        ArrowButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
                     Container(
                       decoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(25),
-                              topRight: Radius.circular(25))),
+                          color: BC.appColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: BC.appColor)),
                       child: Padding(
-                        padding: const EdgeInsets.all(22.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 15),
                         child: Column(
-                          textDirection: TextDirection.rtl,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            InkWell(
-                              onTap: () async {
-                                images = await imagePickerController
-                                    .pickImage(ImageSource.camera)
-                                    .whenComplete(() {
-                                  Get.back();
-                                });
-                              },
-                              child: Text(
-                                'اختر صورة من الكاميرا',
-                                style: TextStyle(fontSize: 16.sp),
-                              ),
-                            ),
-                            Divider(
-                              color: BC.appColor,
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                images = await imagePickerController
-                                    .pickMulti()
-                                    .whenComplete(() {
-                                  Get.back();
-                                });
-                              },
-                              child: Text('اختر صورة من المعرض',
-                                  style: TextStyle(fontSize: 16.sp)),
+                            MytextField(
+                              type: TextInputType.name,
+                              controller: nameController,
+                              text: 'اسم الطرف',
+                              hint: 'اسم الطرف',
                             ),
                             SizedBox(
-                              height: 8.h,
+                              height: 10.h,
+                            ),
+                            MytextField(
+                              type: TextInputType.phone,
+                              controller: phoneController,
+                              text: 'الجوال',
+                              hint: '+966 xx-xxx-xxxx',
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: SelectDropList(
+                                containerDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: BC.grey),
+                                    color: Colors.transparent),
+                                containerPadding:
+                                    const EdgeInsets.only(left: 10),
+                                containerMargin: EdgeInsets.zero,
+                                itemSelected: optionItemSelected,
+                                dropListModel: dropListModel,
+                                showIcon: false, // Show Icon in DropDown Title
+                                showArrowIcon:
+                                    true, // Show Arrow Icon in DropDown
+
+                                showBorder: true,
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                borderColor: BC.grey,
+                                icon: Icon(Icons.person, color: BC.appColor),
+                                onOptionSelected: (optionItem) {
+                                  optionItemSelected = optionItem;
+                                  addressController.text = optionItem.title;
+                                  print(optionItem.title);
+                                  setState(() {});
+                                },
+                              ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              MytextField(
-                type: TextInputType.number,
-                controller: priceController,
-                text: 'قيمة السلعة',
-                hint: 'قيمة السلعة',
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              MytextField(
-                type: TextInputType.name,
-                controller: desController,
-                text: 'وصف السلعة(اختياري)',
-                hint: 'وصف السلعة(اختياري)',
-              ),
-
-              //   TextField(
-              // controller: desController,
-              // textDirection: TextDirection.rtl,
-              //     scrollController: textFieldScrollController,
-              //     keyboardType: TextInputType.multiline,
-              //     minLines: null,
-              //     maxLines: null,
-              //     onChanged: (value) {
-              //       textFieldScrollController.jumpTo(textFieldScrollController.position.maxScrollExtent);
-              //     },
-              //     decoration: InputDecoration(
-              //       border: OutlineInputBorder(
-              //           borderRadius: BorderRadius.circular(10),
-              //           borderSide: const BorderSide(width: 0.1)),
-              //       labelText: 'وصف السلعة(اختياري)',
-              //       hintText: 'وصف السلعة(اختياري)',
-              //       alignLabelWithHint: true,
-              //       hintTextDirection: TextDirection.rtl,
-              //       contentPadding: const EdgeInsets.only(top: 0, right: 15),
-              //     ),
-              //   ),
-              SizedBox(
-                height: 15.h,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    color: BC.appColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: BC.grey)),
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                          flex: 1,
-                          child: SizedBox(
-                            height: 40.h,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '   ايام',
-                                    style: TextStyle(fontSize: 16.sp),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    UploadButton(
+                      image: widget.id == ''
+                          ? imagePickerController.selectedImages.isEmpty
+                              ? Container()
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.file(
+                                    File(imagePickerController
+                                        .selectedImages[0].path),
+                                    height: 40.h,
+                                    width: 40.h,
+                                    fit: BoxFit.cover,
                                   ),
-                                  // const Icon(Icons.arrow_drop_down)
+                                )
+                          : imagePickerController.selectedImages.isEmpty
+                              ? Container()
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: widget.buyerModel!.images == null
+                                      ? Image.file(
+                                          File(imagePickerController
+                                              .selectedImages[0].path),
+                                          height: 40.h,
+                                          width: 40.h,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.network(
+                                          widget.buyerModel!.images![0],
+                                          height: 40.h,
+                                          width: 40.h,
+                                          fit: BoxFit.cover,
+                                        ),
+                                ),
+                      press: () {
+                        Get.bottomSheet(
+                          Container(
+                            decoration: BoxDecoration(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(25),
+                                    topRight: Radius.circular(25))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(22.0),
+                              child: Column(
+                                textDirection: TextDirection.rtl,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  InkWell(
+                                    onTap: () async {
+                                      images = await imagePickerController
+                                          .pickImage(ImageSource.camera)
+                                          .whenComplete(() {
+                                        Get.back();
+                                      });
+                                    },
+                                    child: Text(
+                                      'اختر صورة من الكاميرا',
+                                      style: TextStyle(fontSize: 16.sp),
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: BC.appColor,
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      images = await imagePickerController
+                                          .pickMulti()
+                                          .whenComplete(() {
+                                        Get.back();
+                                      });
+                                    },
+                                    child: Text('اختر صورة من المعرض',
+                                        style: TextStyle(fontSize: 16.sp)),
+                                  ),
+                                  SizedBox(
+                                    height: 8.h,
+                                  ),
                                 ],
                               ),
                             ),
-                          )),
-                      Expanded(
-                        flex: 3,
-                        child: SelectDropList(
-                          height: 40.h,
-                          containerDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.transparent),
-                              color: Colors.transparent),
-                          containerPadding: const EdgeInsets.only(left: 10),
-                          containerMargin: EdgeInsets.zero,
-                          itemSelected: optionItemSelectedday1,
-                          dropListModel: dropListModeldays1,
-                          showIcon: false, // Show Icon in DropDown Title
-                          showArrowIcon: true, // Show Arrow Icon in DropDown
-                          showBorder: true,
-                          paddingTop: 0,
-                          paddingBottom: 0,
-                          paddingLeft: 0,
-                          paddingRight: 0,
-                          borderColor: BC.grey,
-                          icon: Icon(Icons.person, color: BC.appColor),
-                          onOptionSelected: (optionItem) {
-                            optionItemSelectedday1 = optionItem;
-                            ayamNumber = optionItem.title;
-                            daysController.text = optionItem.title;
-                            daysController.text = DateTime.now()
-                                .add(Duration(days: int.parse(optionItem.id!)))
-                                .toString();
-                            setState(() {});
-                          },
-                        ),
-                      ),
-                      // Expanded(
-                      //   flex: 3,
-                      //   child: SelectDropList(
-                      //     height: 40.h,
-                      //     containerDecoration: BoxDecoration(
-                      //         borderRadius: BorderRadius.circular(10),
-                      //         border:
-                      //             Border.all(color: Colors.transparent),
-                      //         color: Colors.transparent),
-                      //     containerPadding:
-                      //         const EdgeInsets.only(left: 10),
-                      //     containerMargin: EdgeInsets.zero,
-                      //     itemSelected: optionItemSelectedday,
-                      //     dropListModel: dropListModeldays,
-                      //     showIcon: false, // Show Icon in DropDown Title
-                      //     showArrowIcon:
-                      //         true, // Show Arrow Icon in DropDown
-                      //     showBorder: true,
-                      //     paddingTop: 0,
-                      //     paddingBottom: 0,
-                      //     paddingLeft: 0,
-                      //     paddingRight: 0,
-                      //     borderColor: BC.grey,
-                      //     icon: Icon(Icons.person, color: BC.appColor),
-                      //     onOptionSelected: (optionItem) {
-                      //       optionItemSelectedday = optionItem;
-                      //       ayam = optionItem.title;
-                      //       setState(() {});
-                      //     },
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: TextFormField(
-                  // maxLength: 12,
-                  keyboardType: TextInputType.phone,
-                  controller: secondPartyMobileController,
-                  textAlign: TextAlign.right,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(width: 0.1)),
-                    labelText: 'رقم هاتف المشتري',
-                    hintText: 'XX-XXX-XXXX',
-                    contentPadding: const EdgeInsets.only(top: 0, right: 15),
-                    suffixIcon: widget.id == ''
-                        ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: BC.appColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 6.6),
-                                child: Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: Text(
-                                    countryCode,
-                                    style: const TextStyle(
-                                      color: Colors.black,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    MytextField(
+                      type: TextInputType.number,
+                      controller: priceController,
+                      text: 'قيمة السلعة',
+                      hint: 'قيمة السلعة',
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    MytextField(
+                      type: TextInputType.name,
+                      controller: desController,
+                      text: 'وصف السلعة(اختياري)',
+                      hint: 'وصف السلعة(اختياري)',
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: BC.appColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: BC.grey)),
+                      child: Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: SizedBox(
+                                  height: 40.h,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '   ايام',
+                                          style: TextStyle(fontSize: 16.sp),
+                                        ),
+                                        // const Icon(Icons.arrow_drop_down)
+                                      ],
                                     ),
                                   ),
-                                ),
+                                )),
+                            Expanded(
+                              flex: 3,
+                              child: SelectDropList(
+                                height: 40.h,
+                                containerDecoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border:
+                                        Border.all(color: Colors.transparent),
+                                    color: Colors.transparent),
+                                containerPadding:
+                                    const EdgeInsets.only(left: 10),
+                                containerMargin: EdgeInsets.zero,
+                                itemSelected: optionItemSelectedday1,
+                                dropListModel: dropListModeldays1,
+                                showIcon: false, // Show Icon in DropDown Title
+                                showArrowIcon:
+                                    true, // Show Arrow Icon in DropDown
+                                showBorder: true,
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                                paddingLeft: 0,
+                                paddingRight: 0,
+                                borderColor: BC.grey,
+                                icon: Icon(Icons.person, color: BC.appColor),
+                                onOptionSelected: (optionItem) {
+                                  optionItemSelectedday1 = optionItem;
+                                  ayamNumber = optionItem.title;
+                                  daysController.text = optionItem.title;
+                                  daysController.text = DateTime.now()
+                                      .add(Duration(
+                                          days: int.parse(optionItem.id!)))
+                                      .toString();
+                                  setState(() {});
+                                },
                               ),
                             ),
-                          )
-                        : null,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 290.w,
-                    child: Text(
-                      'أتعهد بأن تكون السلعة حسب المتفق عليها وفي خلاف ذلك سيتم استرجاع المبلغ للطرف الأول',
-                      textDirection: TextDirection.rtl,
-                      style: TextStyle(fontSize: 12.sp),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 25.w,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      FirebaseFirestore.instance
-                          .collection('users')
-                          .where('phoneNumber',
-                              isEqualTo:
-                                  '${countryCode.replaceAll('+', "")}${secondPartyMobileController.text}')
-                          .get()
-                          .then((value) {
-                        List<String> uid = value.docs.map((e) => e.id).toList();
-                        uids = uid;
-
-                        userController.getSpecificUser(uid[0]);
-                        print(uids[0]);
-                      });
-                      setState(() {
-                        result = int.parse(priceController.text) +
-                            int.parse(priceController.text) *
-                                (percentageController
-                                        .percentage.value.percentage! /
-                                    100);
-                        isSwitched = !isSwitched;
-                      });
-                    },
-                    child: Container(
-                      width: 20.h,
-                      height: 20.h,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: BC.appColor),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Icon(
-                        Icons.check,
-                        color: isSwitched ? BC.appColor : Colors.transparent,
-                        size: 15.h,
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 290.w,
-                    child: Directionality(
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    Directionality(
                       textDirection: TextDirection.rtl,
-                      child: Row(
-                        children: [
-                          Text(
-                            "أوافق على  ",
+                      child: TextFormField(
+                        // maxLength: 12,
+                        keyboardType: TextInputType.phone,
+                        controller: secondPartyMobileController,
+                        textAlign: TextAlign.right,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(width: 0.1)),
+                          labelText: 'رقم هاتف المشتري',
+                          hintText: 'XX-XXX-XXXX',
+                          contentPadding:
+                              const EdgeInsets.only(top: 0, right: 15),
+                          suffixIcon: widget.id == ''
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: BC.appColor.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 6.6),
+                                      child: Directionality(
+                                        textDirection: TextDirection.ltr,
+                                        child: Text(
+                                          countryCode,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : null,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 290.w,
+                          child: Text(
+                            'أتعهد بأن تكون السلعة حسب المتفق عليها وفي خلاف ذلك سيتم استرجاع المبلغ للطرف الأول',
                             textDirection: TextDirection.rtl,
-                            style: TextStyle(fontSize: 11.sp),
+                            style: TextStyle(fontSize: 12.sp),
                           ),
-                          InkWell(
-                            onTap: () {
-                              Get.to(() => const PrivacyPolicy());
-                            },
-                            child: Text(
-                              'شروط و أحكام',
-                              textDirection: TextDirection.rtl,
-                              style: TextStyle(
-                                  fontSize: 11.sp,
-                                  color: BC.appColor,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline),
+                        ),
+                        SizedBox(
+                          width: 25.w,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .where('phoneNumber',
+                                    isEqualTo:
+                                        '${countryCode.replaceAll('+', "")}${secondPartyMobileController.text}')
+                                .get()
+                                .then((value) {
+                              List<String> uid =
+                                  value.docs.map((e) => e.id).toList();
+                              uids = uid;
+
+                              userController.getSpecificUser(uid[0]);
+                              print(uids[0]);
+                            });
+                            setState(() {
+                              result = int.parse(priceController.text) +
+                                  int.parse(priceController.text) *
+                                      (percentageController
+                                              .percentage.value.percentage! /
+                                          100);
+                              isSwitched = !isSwitched;
+                            });
+                          },
+                          child: Container(
+                            width: 20.h,
+                            height: 20.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: BC.appColor),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Icon(
+                              Icons.check,
+                              color:
+                                  isSwitched ? BC.appColor : Colors.transparent,
+                              size: 15.h,
                             ),
                           ),
-                          SizedBox(
-                            width: 3.w,
-                          ),
-                          Text(
-                            'تطبيق وسيط ',
-                            style: TextStyle(fontSize: 11.sp),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(
-                    width: 25.w,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        isSwitched2 = !isSwitched2;
-                      });
-                    },
-                    child: Container(
-                      width: 20.h,
-                      height: 20.h,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: BC.appColor),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Icon(
-                        Icons.check,
-                        color: isSwitched2 ? BC.appColor : Colors.transparent,
-                        size: 15.h,
-                      ),
+                    SizedBox(
+                      height: 8.h,
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              MyButton(
-                name: 'تأكيد الطلب',
-                onPressed: () async {
-                  var random = Random();
-                  int randomNumber = random.nextInt(100000000);
-                  priceController.text.trim() == '' ||
-                          daysController.text.trim() == '' ||
-                          secondPartyMobileController.text.trim() == '' ||
-                          isSwitched == false ||
-                          isSwitched2 == false
-                      ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
-                      : widget.id == ''
-                          ? await FirebaseServices().addMishtriDetails(
-                              timeExtandRequest: '',
-                              timeExtandRequestAccepted: false,
-                              serviceCompleted: false,
-                              orderCompleted: false,
-                              orderNumber: randomNumber,
-                              review: '',
-                              formfillby: 'seller',
-                              formType: 'تفاصيل الطلب للمشتري',
-                              uid: [
-                                userController.currentUser.value.uid!,
-                                userController.specificUser.value.uid!
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 290.w,
+                          child: Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Row(
+                              children: [
+                                Text(
+                                  "أوافق على  ",
+                                  textDirection: TextDirection.rtl,
+                                  style: TextStyle(fontSize: 11.sp),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(() => const PrivacyPolicy());
+                                  },
+                                  child: Text(
+                                    'شروط و أحكام',
+                                    textDirection: TextDirection.rtl,
+                                    style: TextStyle(
+                                        fontSize: 11.sp,
+                                        color: BC.appColor,
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 3.w,
+                                ),
+                                Text(
+                                  'تطبيق وسيط ',
+                                  style: TextStyle(fontSize: 11.sp),
+                                ),
                               ],
-                              name: userController.currentUser.value.name!,
-                              phoneNumber:
-                                  userController.currentUser.value.phoneNumber!,
-                              purpose: '',
-                              days: daysController.text,
-                              secondPartyMobile:
-                                  '${countryCode.replaceAll('+', '')}${secondPartyMobileController.text}',
-                              description: desController.text,
-                              address:
-                                  userController.currentUser.value.location!,
-                              price: result.toString(),
-                              agree1: isSwitched,
-                              agree2: isSwitched2,
-                              images: images,
-                              isAccepted: '',
-                              ayam: 'ايام',
-                              ayamNumber: ayamNumber!,
-                              byerUid: userController.specificUser.value.uid!,
-                              sellerUid: userController.currentUser.value.uid!,
-                            )
-                          : await mishtariController.updateMistryData(
-                              BuyerModel(
-                                review: '',
-                                price: priceController.text.trim(),
-                                days: daysController.text.trim(),
-                                secondPartyMobile:
-                                    widget.buyerModel!.secondPartyMobile,
-                                agree1: isSwitched,
-                                agree2: isSwitched2,
-                                description: desController.text.trim(),
-                                images: widget.buyerModel!.images,
-                                name: widget.buyerModel!.name,
-                                phoneNumber: widget.buyerModel!.phoneNumber,
-                                address: widget.buyerModel!.address,
-                                isAccepted: 'sellerAccepted',
-                                ayam: widget.buyerModel!.ayam,
-                                ayamNumber: widget.buyerModel!.ayamNumber,
-                                uid: widget.buyerModel!.uid,
-                                purpose: widget.buyerModel!.purpose,
-                                orderNumber: widget.buyerModel!.orderNumber,
-                                formType: widget.buyerModel!.formType,
-                                formfillby: widget.buyerModel!.formfillby,
-                                byerUid: widget.buyerModel!.byerUid,
-                                sellerUid: widget.buyerModel!.sellerUid,
-                              ),
-                              widget.id!);
-                  await oneSignals.sendNotification(
-                      userController.specificUser.value.token!,
-                      '${userController.currentUser.value.name!} Send the Request',
-                      'مرحبا بك في تطبيق وسيط: يوجد لديك طلب (order detail) يرجى إكمال الطلب',
-                      'assets/logo/jpeg',
-                      token: userController.specificUser.value.token!,
-                      senderName: userController.currentUser.value.name!,
-                      type: 'mishtri');
-                  // setState(() {
-                  //   isSwitched = !isSwitched;
-                  //   isSwitched2 = !isSwitched2;
-                  // });
-                },
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-            ]),
-          ),
-        ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 25.w,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              isSwitched2 = !isSwitched2;
+                            });
+                          },
+                          child: Container(
+                            width: 20.h,
+                            height: 20.h,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: BC.appColor),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Icon(
+                              Icons.check,
+                              color: isSwitched2
+                                  ? BC.appColor
+                                  : Colors.transparent,
+                              size: 15.h,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    MyButton(
+                      name: 'تأكيد الطلب',
+                      onPressed: () async {
+                        var random = Random();
+                        int randomNumber = random.nextInt(100000000);
+                        priceController.text.trim() == '' ||
+                                nameController.text.trim() == '' ||
+                                phoneController.text.trim() == '' ||
+                                daysController.text.trim() == '' ||
+                                secondPartyMobileController.text.trim() == '' ||
+                                isSwitched == false ||
+                                isSwitched2 == false
+                            ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
+                            : widget.id == ''
+                                ? await FirebaseServices().addMishtriDetails(
+                                    timeExtandRequest: '',
+                                    timeExtandRequestAccepted: false,
+                                    serviceCompleted: false,
+                                    orderCompleted: false,
+                                    orderNumber: randomNumber,
+                                    review: '',
+                                    formfillby: 'seller',
+                                    formType: 'تفاصيل الطلب للمشتري',
+                                    uid: [
+                                      userController.currentUser.value.uid!,
+                                      userController.specificUser.value.uid!
+                                    ],
+                                    name: nameController.text,
+                                    phoneNumber: phoneController.text,
+                                    purpose: '',
+                                    days: daysController.text,
+                                    secondPartyMobile:
+                                        '${countryCode.replaceAll('+', '')}${secondPartyMobileController.text}',
+                                    description: desController.text,
+                                    address: addressController.text,
+                                    price: result.toString(),
+                                    agree1: isSwitched,
+                                    agree2: isSwitched2,
+                                    images: images,
+                                    isAccepted: '',
+                                    ayam: 'ايام',
+                                    ayamNumber: ayamNumber!,
+                                    byerUid:
+                                        userController.specificUser.value.uid!,
+                                    sellerUid:
+                                        userController.currentUser.value.uid!,
+                                  )
+                                : await mishtariController.updateMistryData(
+                                    BuyerModel(
+                                      review: '',
+                                      price: priceController.text.trim(),
+                                      days: daysController.text.trim(),
+                                      secondPartyMobile:
+                                          widget.buyerModel!.secondPartyMobile,
+                                      agree1: isSwitched,
+                                      agree2: isSwitched2,
+                                      description: desController.text.trim(),
+                                      images: widget.buyerModel!.images,
+                                      name: widget.buyerModel!.name,
+                                      phoneNumber:
+                                          widget.buyerModel!.phoneNumber,
+                                      address: widget.buyerModel!.address,
+                                      isAccepted: 'sellerAccepted',
+                                      ayam: widget.buyerModel!.ayam,
+                                      ayamNumber: widget.buyerModel!.ayamNumber,
+                                      uid: widget.buyerModel!.uid,
+                                      purpose: widget.buyerModel!.purpose,
+                                      orderNumber:
+                                          widget.buyerModel!.orderNumber,
+                                      formType: widget.buyerModel!.formType,
+                                      formfillby: widget.buyerModel!.formfillby,
+                                      byerUid: widget.buyerModel!.byerUid,
+                                      sellerUid: widget.buyerModel!.sellerUid,
+                                    ),
+                                    widget.id!);
+                        await oneSignals.sendNotification(
+                            userController.specificUser.value.token!,
+                            '${userController.currentUser.value.name!} Send the Request',
+                            'مرحبا بك في تطبيق وسيط: يوجد لديك طلب (order detail) يرجى إكمال الطلب',
+                            'assets/logo/jpeg',
+                            token: userController.specificUser.value.token!,
+                            senderName: userController.currentUser.value.name!,
+                            type: 'mishtri');
+                        // setState(() {
+                        //   isSwitched = !isSwitched;
+                        //   isSwitched2 = !isSwitched2;
+                        // });
+                      },
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                  ]),
+                ),
+              );
+            }),
       ),
     );
   }

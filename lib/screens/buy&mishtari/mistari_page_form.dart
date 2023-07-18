@@ -92,6 +92,10 @@ class _MistariPageState extends State<MistariPage> {
     OptionItem(id: "5", title: "     جيزان"),
     OptionItem(id: "5", title: "     عرعر"),
   ]);
+    late OptionItem optionItemSelected = OptionItem(
+      title: userController.currentUser.value.location == ''
+          ? "    المدينة"
+          : userController.currentUser.value.location!);
   DropListModel dropListModeldays = DropListModel([
     OptionItem(id: "1", title: "ايام"),
     // OptionItem(id: "2", title: "شهر"),
@@ -115,10 +119,7 @@ class _MistariPageState extends State<MistariPage> {
     OptionItem(id: "16", title: "     55"),
     OptionItem(id: "17", title: "     60"),
   ]);
-  late OptionItem optionItemSelected = OptionItem(
-      title: userController.currentUser.value.location == ''
-          ? "    المدينة"
-          : userController.currentUser.value.location!);
+
   late OptionItem optionItemSelectedday =
       OptionItem(title: widget.id == '' ? "ايام" : widget.buyerModel!.ayam!);
   late OptionItem optionItemSelectedday1 =
