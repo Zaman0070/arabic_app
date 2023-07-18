@@ -1,15 +1,14 @@
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_file_view/flutter_file_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:waist_app/screens/AboutUs.dart';
 import 'package:waist_app/screens/auth/login.dart';
 import 'package:waist_app/screens/calculator.dart';
 import 'package:waist_app/screens/contactUs/contactUs.dart';
+import 'package:waist_app/screens/help.dart';
 import 'package:waist_app/screens/howToUse.dart';
 import 'package:waist_app/screens/chat/messages.dart';
 import 'package:waist_app/screens/new_order/newOrder.dart';
@@ -281,17 +280,18 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () async {
-                    Platform.isIOS
-                        ? await launch(
-                            'https://apps.apple.com/us/app/%D9%85%D8%B4%D8%AA%D8%B1%D9%8A/id1579563179')
-                        : await launch(
-                            'https://play.google.com/store/apps/details?id=com.mishtari.app');
+                    Get.to(() => Help());
+                    // Platform.isIOS
+                    //     ? await launch(
+                    //         'https://apps.apple.com/us/app/%D9%85%D8%B4%D8%AA%D8%B1%D9%8A/id1579563179')
+                    //     : await launch(
+                    //         'https://play.google.com/store/apps/details?id=com.mishtari.app');
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        'أراء العملاء',
+                        'آراء العملاء',
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -319,7 +319,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        'دليل الأستخدام (فيديو)',
+                        ' (فيديو) دليل الاستخدام',
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -418,9 +418,12 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    FileView(
-                      controller: FileViewController.asset('assets/word.docx'),
-                    );
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => SfPdfViewer.asset(
+                                  'assets/a.pdf',
+                                )));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -478,6 +481,7 @@ class _MyDrawerState extends State<MyDrawer> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   void _ButtonPressed(context) {
     showModalBottomSheet(
         context: context,

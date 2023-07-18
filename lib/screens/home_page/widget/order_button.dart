@@ -285,50 +285,58 @@ class OrderButtonHome extends StatelessWidget {
                         SizedBox(
                           height: 10.h,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '#${buyerData.orderNumber!}',
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: BC.appColor,
-                                fontWeight: FontWeight.bold,
+                        buyerData.serviceCompleted == true
+                            ? Container()
+                            : Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '#${buyerData.orderNumber!}',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: BC.appColor,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'رقم الطلب',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: BC.lightGrey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        buyerData.purpose!,
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Text(
+                                        'الغرض',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: BC.lightGrey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ),
-                            Text(
-                              'رقم الطلب',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: BC.lightGrey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              buyerData.purpose!,
-                              style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              'الغرض',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: BC.lightGrey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
                         SizedBox(
                           height: 10.h,
                         ),

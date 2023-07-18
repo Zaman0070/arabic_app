@@ -182,7 +182,7 @@ class ContactUs extends StatelessWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
-                  _ButtonPressed(context);
+                  _ButtonPressed(context, messageControllre);
                 },
                 child: Container(
                   width: double.infinity,
@@ -210,7 +210,7 @@ class ContactUs extends StatelessWidget {
     );
   }
 
-  void _ButtonPressed(context) {
+  void _ButtonPressed(context, controller) {
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -294,118 +294,174 @@ class ContactUs extends StatelessWidget {
                                 BuyerModel buyerData = BuyerModel.fromMap(
                                     snapshot.data!.docs[index].data());
                                 DateTime date = DateTime.parse(buyerData.days!);
-                                return InkWell(
-                                  onTap: () {
-                                    SmartDialog.showLoading(
-                                      animationBuilder:
-                                          (controller, child, animationParam) {
-                                        return Loading(
-                                          text: 'أرسل تقريرك بنجاح إلى المسؤول',
-                                        );
-                                      },
-                                    );
-                                    Future.delayed(const Duration(seconds: 2),
-                                        () {
-                                      FirebaseFirestore.instance
-                                          .collection('Report')
-                                          .doc()
-                                          .set({
-                                        'uid': FirebaseAuth
-                                            .instance.currentUser!.uid,
-                                        'report': 'report',
-                                        'orderNumber': buyerData.orderNumber,
-                                      });
-                                      SmartDialog.dismiss();
-                                      Navigator.pop(context);
-                                    });
-                                  },
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 5),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 15),
-                                      decoration: BoxDecoration(
-                                          color: BC.appColor.withOpacity(0.1),
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          border:
-                                              Border.all(color: BC.appColor)),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                '#${buyerData.orderNumber}',
-                                                style: TextStyle(
-                                                  fontSize: 13,
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 15),
+                                    decoration: BoxDecoration(
+                                        color: BC.appColor.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(color: BC.appColor)),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '#${buyerData.orderNumber}',
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: BC.appColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              'رقم الطلب',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: BC.lightGrey,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              DateFormat('dd/MM/yyyy  hh:mm ')
+                                                  .format(date),
+                                              style: TextStyle(
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            Text(
+                                              'التاريخ و الوقت',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: BC.lightGrey,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              buyerData.purpose!,
+                                              style: TextStyle(
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            Text(
+                                              'الغرض',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: BC.lightGrey,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Container(
+                                              height: 80.h,
+                                              width: 1.sw,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  border: Border.all(
+                                                      color: BC.appColor)),
+                                              child: TextFormField(
+                                                controller: controller,
+                                                maxLines: 4,
+                                                decoration: InputDecoration(
+                                                  hintText: 'اكتب رسالتك هنا',
+                                                  hintStyle: TextStyle(
+                                                    fontSize: 16.sp,
+                                                    color: BC.appColor,
+                                                  ),
+                                                  border: InputBorder.none,
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 10.w,
+                                                          vertical: 10.h),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 20.h,
+                                            ),
+                                            InkWell(
+                                              onTap: () async {
+                                                SmartDialog.showLoading(
+                                                  animationBuilder: (controller,
+                                                      child, animationParam) {
+                                                    return Loading(
+                                                      text:
+                                                          'أرسل تقريرك بنجاح إلى المسؤول',
+                                                    );
+                                                  },
+                                                );
+                                                Future.delayed(
+                                                    const Duration(seconds: 2),
+                                                    () async {
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('Report')
+                                                      .doc()
+                                                      .set({
+                                                    'uid': FirebaseAuth.instance
+                                                        .currentUser!.uid,
+                                                    'report': 'report',
+                                                    'message': controller.text,
+                                                    'orderNumber':
+                                                        buyerData.orderNumber,
+                                                  });
+                                                  SmartDialog.dismiss();
+                                                  Get.back();
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 40.h,
+                                                width: 1.sw,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
                                                   color: BC.appColor,
-                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    'ارسال',
+                                                    style: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                              Text(
-                                                'رقم الطلب',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: BC.lightGrey,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 10.h,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                DateFormat('dd/MM/yyyy  hh:mm ')
-                                                    .format(date),
-                                                style: TextStyle(
-                                                  fontSize: 13.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              Text(
-                                                'التاريخ و الوقت',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: BC.lightGrey,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 10.h,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                buyerData.purpose!,
-                                                style: TextStyle(
-                                                  fontSize: 13.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              Text(
-                                                'الغرض',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: BC.lightGrey,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 );

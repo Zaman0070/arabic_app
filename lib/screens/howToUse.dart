@@ -16,10 +16,10 @@ class _HowToUseState extends State<HowToUse> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.fill,
               image: AssetImage(
@@ -34,11 +34,11 @@ class _HowToUseState extends State<HowToUse> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 30,
                 ),
-                Text(
-                  'دليل الأستخدام',
+                const Text(
+                  'دليل الاستخدام',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

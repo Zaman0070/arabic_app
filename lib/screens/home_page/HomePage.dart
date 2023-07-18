@@ -57,15 +57,13 @@ class _HomePageState extends State<HomePage> {
     'assets/slider/How to use.png',
     'assets/slider/Add.png',
     'assets/slider/Verified.png',
-    // 'assets/slider/Delivery.png',
     'assets/slider/Info.png',
   ];
   List names = [
-    'اراء العملاء',
-    'دليل الأستخدام',
+    'آراء العملاء',
+    'دليل الاستخدام',
     'طلب جديد',
     'الضمانات',
-    // 'وسيط مواقع التسوق',
     'عن التطبيق',
   ];
   int _current = 0;

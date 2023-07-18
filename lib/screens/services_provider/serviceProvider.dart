@@ -26,6 +26,7 @@ class ServiceProvider extends StatefulWidget {
 }
 
 class _ServiceProviderState extends State<ServiceProvider> {
+  var purposeController = TextEditingController();
   var priceController = TextEditingController();
   var desController = TextEditingController();
   var daysController = TextEditingController();
@@ -213,6 +214,15 @@ class _ServiceProviderState extends State<ServiceProvider> {
                     ),
                     SizedBox(
                       height: 30.h,
+                    ),
+                    MytextField(
+                      type: TextInputType.name,
+                      controller: purposeController,
+                      text: 'الغرض من الحوالة',
+                      hint: 'الغرض من الحوالة',
+                    ),
+                    SizedBox(
+                      height: 15.h,
                     ),
                     MytextField(
                       type: TextInputType.number,
@@ -507,7 +517,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                                 ],
                                 name: nameController.text,
                                 phoneNumber: phoneController.text,
-                                purpose: '',
+                                purpose: purposeController.text,
                                 days: daysController.text,
                                 secondPartyMobile:
                                     '${countryCode.replaceAll('+', '')}${secondPartyMobileController.text}',

@@ -42,6 +42,7 @@ class _TheSellerState extends State<TheSeller> {
   ImagePickerController imagePickerController =
       Get.put(ImagePickerController());
   UserController userController = Get.put(UserController());
+  var purposeController = TextEditingController();
   late var nameController =
       TextEditingController(text: userController.currentUser.value.name ?? '');
   late var phoneController = TextEditingController(
@@ -325,6 +326,15 @@ class _TheSellerState extends State<TheSeller> {
                       height: 20,
                     ),
                     MytextField(
+                      type: TextInputType.name,
+                      controller: purposeController,
+                      text: 'الغرض من الحوالة',
+                      hint: 'الغرض من الحوالة',
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    MytextField(
                       type: TextInputType.number,
                       controller: priceController,
                       text: 'قيمة السلعة',
@@ -601,6 +611,7 @@ class _TheSellerState extends State<TheSeller> {
                                 phoneController.text.trim() == '' ||
                                 daysController.text.trim() == '' ||
                                 secondPartyMobileController.text.trim() == '' ||
+                                purposeController.text.trim() == '' ||
                                 isSwitched == false ||
                                 isSwitched2 == false
                             ? Fluttertoast.showToast(msg: 'جميع الحقول مطلوبة')
@@ -620,7 +631,7 @@ class _TheSellerState extends State<TheSeller> {
                                     ],
                                     name: nameController.text,
                                     phoneNumber: phoneController.text,
-                                    purpose: '',
+                                    purpose: purposeController.text,
                                     days: daysController.text,
                                     secondPartyMobile:
                                         '${countryCode.replaceAll('+', '')}${secondPartyMobileController.text}',
