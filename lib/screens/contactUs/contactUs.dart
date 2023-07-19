@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,21 +7,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:waist_app/controller/image_controller.dart';
 
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/contactUs/widget/report_textField.dart';
+import 'package:waist_app/widgets/UploadImageButton.dart';
 
 import '../../constants/colors.dart';
 import '../../widgets/arrowButton.dart';
 import '../../widgets/loading.dart';
 
 // ignore: must_be_immutable
-class ContactUs extends StatelessWidget {
+class ContactUs extends StatefulWidget {
   ContactUs({super.key});
-  var whatsapp = "+966 12 3456789"; // Replace with the desired phone number
+
+  @override
+  State<ContactUs> createState() => _ContactUsState();
+}
+
+class _ContactUsState extends State<ContactUs> {
+  var whatsapp = "+966 12 3456789";
+  // Replace with the desired phone number
   var messageControllre = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,9 +230,12 @@ class ContactUs extends StatelessWidget {
     showModalBottomSheet(
         context: context,
         builder: (context) {
+          ImagePickerController imagePickerController =
+              Get.put(ImagePickerController());
+          List<dynamic> images = [];
           return Container(
             color: const Color(0xff737373),
-            height: 550.h,
+            height: 700.h,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: const BoxDecoration(
@@ -417,7 +432,104 @@ class ContactUs extends StatelessWidget {
                                               ),
                                             ),
                                             SizedBox(
-                                              height: 20.h,
+                                              height: 10.h,
+                                            ),
+                                            UploadButton(
+                                              image: imagePickerController
+                                                      .selectedImages.isEmpty
+                                                  ? Container()
+                                                  : ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      child: Image.file(
+                                                        File(
+                                                            imagePickerController
+                                                                .selectedImages[
+                                                                    0]
+                                                                .path),
+                                                        height: 40.h,
+                                                        width: 40.h,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                              press: () {
+                                                Get.bottomSheet(
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                        color: Theme.of(context)
+                                                            .scaffoldBackgroundColor,
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                    .only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        25),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                        25))),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              22.0),
+                                                      child: Column(
+                                                        textDirection: ui
+                                                            .TextDirection.rtl,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () async {
+                                                              images = await imagePickerController
+                                                                  .pickImage(
+                                                                      ImageSource
+                                                                          .camera)
+                                                                  .whenComplete(
+                                                                      () {
+                                                                print(images);
+                                                                Get.back();
+                                                              });
+                                                            },
+                                                            child: Text(
+                                                              'اختر صورة من الكاميرا',
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      16.sp),
+                                                            ),
+                                                          ),
+                                                          Divider(
+                                                            color: BC.appColor,
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () async {
+                                                              images = await imagePickerController
+                                                                  .pickMulti()
+                                                                  .whenComplete(
+                                                                      () {
+                                                                Get.back();
+                                                              });
+                                                            },
+                                                            child: Text(
+                                                                'اختر صورة من المعرض',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16.sp)),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 8.h,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            SizedBox(
+                                              height: 10.h,
                                             ),
                                             InkWell(
                                               onTap: () async {
@@ -442,9 +554,13 @@ class ContactUs extends StatelessWidget {
                                                         .currentUser!.uid,
                                                     'report': 'report',
                                                     'message': controller.text,
+                                                    'image': images.isEmpty
+                                                        ? ''
+                                                        : images,
                                                     'orderNumber':
                                                         buyerData.orderNumber,
                                                   });
+                                                  setState(() {});
                                                   SmartDialog.dismiss();
                                                   Get.back();
                                                 });
