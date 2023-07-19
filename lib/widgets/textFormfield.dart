@@ -10,15 +10,26 @@ class MytextField extends StatelessWidget {
   bool? enable;
   TextInputType? type;
   TextEditingController? controller;
-  MytextField({this.text, this.controller, this.enable, this.hint, this.type});
+  final String? Function(String?)? validator;
+
+  MytextField(
+      {super.key,
+      this.text,
+      this.controller,
+      this.enable,
+      this.hint,
+      this.type,
+      this.validator});
   @override
   Widget build(BuildContext context) {
     ScrollController textFieldScrollController = ScrollController();
     return Directionality(
       textDirection: TextDirection.rtl,
       child: TextFormField(
+        validator: validator,
         onChanged: (value) {
-          textFieldScrollController.jumpTo(textFieldScrollController.position.maxScrollExtent);
+          textFieldScrollController
+              .jumpTo(textFieldScrollController.position.maxScrollExtent);
         },
         minLines: null,
         maxLines: null,
@@ -34,7 +45,6 @@ class MytextField extends StatelessWidget {
           labelText: text,
           hintText: hint,
           contentPadding: const EdgeInsets.only(top: 0, right: 15),
-
         ),
       ),
     );
