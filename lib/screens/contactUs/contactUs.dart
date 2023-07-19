@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +8,10 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import 'package:waist_app/model/buyer.dart';
 import 'package:waist_app/screens/contactUs/widget/report_textField.dart';
+
 import '../../constants/colors.dart';
 import '../../widgets/arrowButton.dart';
 import '../../widgets/loading.dart';
@@ -382,28 +386,33 @@ class ContactUs extends StatelessWidget {
                                         ),
                                         Column(
                                           children: [
-                                            Container(
-                                              height: 80.h,
-                                              width: 1.sw,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  border: Border.all(
-                                                      color: BC.appColor)),
-                                              child: TextFormField(
-                                                controller: controller,
-                                                maxLines: 4,
-                                                decoration: InputDecoration(
-                                                  hintText: 'اكتب رسالتك هنا',
-                                                  hintStyle: TextStyle(
-                                                    fontSize: 16.sp,
-                                                    color: BC.appColor,
+                                            Directionality(
+                                              textDirection:
+                                                  ui.TextDirection.rtl,
+                                              child: Container(
+                                                height: 80.h,
+                                                width: 1.sw,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    border: Border.all(
+                                                        color: BC.appColor)),
+                                                child: TextFormField(
+                                                  controller: controller,
+                                                  maxLines: 4,
+                                                  decoration: InputDecoration(
+                                                    hintText: 'اكتب رسالتك هنا',
+                                                    hintStyle: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      color: BC.appColor,
+                                                    ),
+                                                    border: InputBorder.none,
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10.w,
+                                                            vertical: 10.h),
                                                   ),
-                                                  border: InputBorder.none,
-                                                  contentPadding:
-                                                      EdgeInsets.symmetric(
-                                                          horizontal: 10.w,
-                                                          vertical: 10.h),
                                                 ),
                                               ),
                                             ),

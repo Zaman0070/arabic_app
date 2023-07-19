@@ -366,7 +366,7 @@ class _MistariPageState extends State<MistariPage> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          '   ايام',
+                                          '   یوم',
                                           style: TextStyle(fontSize: 16.sp),
                                         ),
                                         // const Icon(Icons.arrow_drop_down)

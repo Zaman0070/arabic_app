@@ -265,7 +265,7 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          '   ايام',
+                                          '   یوم',
                                           style: TextStyle(fontSize: 16.sp),
                                         ),
                                         // const Icon(Icons.arrow_drop_down)

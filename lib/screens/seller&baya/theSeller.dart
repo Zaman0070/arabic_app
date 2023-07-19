@@ -377,7 +377,7 @@ class _TheSellerState extends State<TheSeller> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          '   ايام',
+                                          '   یوم',
                                           style: TextStyle(fontSize: 16.sp),
                                         ),
                                         // const Icon(Icons.arrow_drop_down)
