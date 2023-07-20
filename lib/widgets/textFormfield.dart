@@ -11,6 +11,7 @@ class MytextField extends StatelessWidget {
   TextInputType? type;
   TextEditingController? controller;
   final String? Function(String?)? validator;
+  final String? Function(String?)? onChanges;
 
   MytextField(
       {super.key,
@@ -19,7 +20,9 @@ class MytextField extends StatelessWidget {
       this.enable,
       this.hint,
       this.type,
-      this.validator});
+      this.validator,
+      this.onChanges
+      });
   @override
   Widget build(BuildContext context) {
     ScrollController textFieldScrollController = ScrollController();
@@ -27,10 +30,7 @@ class MytextField extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: TextFormField(
         validator: validator,
-        onChanged: (value) {
-          textFieldScrollController
-              .jumpTo(textFieldScrollController.position.maxScrollExtent);
-        },
+        onChanged: onChanges,
         minLines: null,
         maxLines: null,
         scrollController: textFieldScrollController,

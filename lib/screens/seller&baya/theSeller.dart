@@ -375,6 +375,16 @@ class _TheSellerState extends State<TheSeller> {
                         height: 15.h,
                       ),
                       MytextField(
+                         onChanges: (value) {
+                          setState(() {
+                            result = int.parse(priceController.text) +
+                                int.parse(priceController.text) *
+                                    (percentageController
+                                            .percentage.value.percentage! /
+                                        100);
+                          });
+                          return null;
+                        },
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'من فضلك ادخل قيمة السلعة';
@@ -613,11 +623,7 @@ class _TheSellerState extends State<TheSeller> {
                                 print(uids[0]);
                               });
                               setState(() {
-                                result = int.parse(priceController.text) +
-                                    int.parse(priceController.text) *
-                                        (percentageController
-                                                .percentage.value.percentage! /
-                                            100);
+                               
                                 isSwitched = !isSwitched;
                               });
                             },

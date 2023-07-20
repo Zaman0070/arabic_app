@@ -374,6 +374,16 @@ class _MistariPageState extends State<MistariPage> {
                         height: 10.h,
                       ),
                       MytextField(
+                        onChanges: (value) {
+                          setState(() {
+                            result = int.parse(commodityController.text) +
+                                int.parse(commodityController.text) *
+                                    (percentageController
+                                            .percentage.value.percentage! /
+                                        100);
+                          });
+                          return null;
+                        },
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'من فضلك ادخل قيمة السلعة';
@@ -507,7 +517,6 @@ class _MistariPageState extends State<MistariPage> {
                           ),
                         ),
                       ),
-                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -600,11 +609,6 @@ class _MistariPageState extends State<MistariPage> {
                             onTap: () {
                               setState(() {
                                 isSwitched = !isSwitched;
-                                result = int.parse(commodityController.text) +
-                                    int.parse(commodityController.text) *
-                                        (percentageController
-                                                .percentage.value.percentage! /
-                                            100);
                               });
                             },
                             child: Container(

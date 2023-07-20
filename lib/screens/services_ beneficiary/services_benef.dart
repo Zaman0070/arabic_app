@@ -265,6 +265,16 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                         height: 10.h,
                       ),
                       MytextField(
+                         onChanges: (value) {
+                          setState(() {
+                            result = int.parse(commodityController.text) +
+                                int.parse(commodityController.text) *
+                                    (percentageController
+                                            .percentage.value.percentage! /
+                                        100);
+                          });
+                          return null;
+                        },
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'من فضلك ادخل قيمة السلعة';
@@ -487,11 +497,7 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                             onTap: () {
                               setState(() {
                                 isSwitched = !isSwitched;
-                                result = int.parse(commodityController.text) +
-                                    int.parse(commodityController.text) *
-                                        (percentageController
-                                                .percentage.value.percentage! /
-                                            100);
+                              
                               });
                             },
                             child: Container(
@@ -576,11 +582,7 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                               });
                               setState(() {
                                 isSwitched2 = !isSwitched2;
-                                result = int.parse(commodityController.text) +
-                                    int.parse(commodityController.text) *
-                                        (percentageController
-                                                .percentage.value.percentage! /
-                                            100);
+                              
                               });
                             },
                             child: Container(
