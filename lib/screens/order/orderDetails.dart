@@ -335,6 +335,76 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                 ),
               ),
               const Spacer(),
+              if (widget.buyerModel.isAccepted == 'underProcess')
+                widget.buyerModel.sellerUid ==
+                        userController.currentUser.value.uid
+                    ? MyButton(
+                        name: "تم  إتمام  الطلب",
+                        onPressed: () {
+                          setState(() {});
+                          orderConfimation(
+                              context: context,
+                              accpeted: () async {
+                                SmartDialog.showLoading(
+                                  animationBuilder:
+                                      (controller, child, animationParam) {
+                                    return Loading(
+                                      text: 'تم استلام الطلب سيتم تحويل المبلغ',
+                                    );
+                                  },
+                                );
+                                Future.delayed(const Duration(seconds: 2),
+                                    () async {
+                                  await FirebaseFirestore.instance
+                                      .collection('MishtariProducts')
+                                      .doc(widget.id)
+                                      .update({
+                                    'orderCompleted': true,
+                                  });
+                                  await FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(widget.user.uid)
+                                      .update({
+                                    'walletBalance': FieldValue.increment(
+                                        double.parse(widget.buyerModel.price!)),
+                                  });
+                                  SmartDialog.dismiss();
+                                  Get.to(() => Orders(
+                                        title: 'الطلبات النشطة',
+                                      ));
+                                });
+                                await oneSignals.sendNotification(
+                                    widget.user.token!,
+                                    '',
+                                    'تطبيق وسيط: تم تأكيد طلبك من الطرف الآخر وبانتظار تأكيد إنهاء المعاملة',
+                                    'assets/logo/jpeg',
+                                    token: widget.user.token!,
+                                    senderName:
+                                        userController.currentUser.value.name!,
+                                    type: 'mishtri');
+                                await FirebaseFirestore.instance
+                                    .collection('notification')
+                                    .add({
+                                  'body':
+                                      'تطبيق وسيط: تم تأكيد طلبك من الطرف الآخر وبانتظار تأكيد إنهاء المعاملة',
+                                  'senderName':
+                                      userController.currentUser.value.name!,
+                                  'uid': widget.user.uid!,
+                                  'createdAt': DateTime.now(),
+                                  'time': DateTime.now().toString(),
+                                  'read': false,
+                                  'type': 'mishtri',
+                                });
+                              },
+                              declined: () {
+                                Get.back();
+                              });
+                        },
+                      )
+                    : Container(),
+              SizedBox(
+                height: 12.h,
+              ),
               widget.buyerModel.byerUid != userController.currentUser.value.uid
                   ? InkWell(
                       onTap: () {
@@ -376,93 +446,95 @@ class _OrdersDetailsState extends State<OrdersDetails> {
                       ),
                     )
                   : Container(),
-              SizedBox(
-                height: 12.h,
-              ),
-              MyButton(
-                name: widget.uid == userController.currentUser.value.uid
-                    ? "تم  إتمام  الطلب"
-                    : 'تم ارسال الطلب',
-                onPressed: widget.uid != userController.currentUser.value.uid
-                    ? () async {
-                        SmartDialog.showLoading(
-                          animationBuilder:
-                              (controller, child, animationParam) {
-                            return Loading(
-                              text: 'تحت العملية',
-                            );
-                          },
-                        );
-                        await FirebaseFirestore.instance
-                            .collection('MishtariProducts')
-                            .doc(widget.id)
-                            .update({
-                          'isAccepted': 'underProcess',
-                        });
-                        SmartDialog.dismiss();
-                        Get.back();
-                      }
-                    : () {
-                        setState(() {});
-                        orderConfimation(
-                            context: context,
-                            accpeted: () async {
+              widget.buyerModel.byerUid == userController.currentUser.value.uid
+                  ? MyButton(
+                      name: widget.uid == userController.currentUser.value.uid
+                          ? "تم  إتمام  الطلب"
+                          : 'تم ارسال الطلب',
+                      onPressed: widget.uid !=
+                              userController.currentUser.value.uid
+                          ? () async {
                               SmartDialog.showLoading(
                                 animationBuilder:
                                     (controller, child, animationParam) {
                                   return Loading(
-                                    text: 'تم استلام الطلب سيتم تحويل المبلغ',
+                                    text: 'تحت العملية',
                                   );
                                 },
                               );
-                              Future.delayed(const Duration(seconds: 2),
-                                  () async {
-                                await FirebaseFirestore.instance
-                                    .collection('MishtariProducts')
-                                    .doc(widget.id)
-                                    .update({
-                                  'orderCompleted': true,
-                                });
-                                await FirebaseFirestore.instance
-                                    .collection('users')
-                                    .doc(widget.user.uid)
-                                    .update({
-                                  'walletBalance': FieldValue.increment(
-                                      double.parse(widget.buyerModel.price!)),
-                                });
-                                SmartDialog.dismiss();
-                                Get.to(() => Orders(
-                                      title: 'الطلبات النشطة',
-                                    ));
-                              });
-                              await oneSignals.sendNotification(
-                                  widget.user.token!,
-                                  '',
-                                  'تطبيق وسيط: تم تأكيد طلبك من الطرف الآخر وبانتظار تأكيد إنهاء المعاملة',
-                                  'assets/logo/jpeg',
-                                  token: widget.user.token!,
-                                  senderName:
-                                      userController.currentUser.value.name!,
-                                  type: 'mishtri');
                               await FirebaseFirestore.instance
-                                  .collection('notification')
-                                  .add({
-                                'body':
-                                    'تطبيق وسيط: تم تأكيد طلبك من الطرف الآخر وبانتظار تأكيد إنهاء المعاملة',
-                                'senderName':
-                                    userController.currentUser.value.name!,
-                                'uid': widget.user.uid!,
-                                'createdAt': DateTime.now(),
-                                'time': DateTime.now().toString(),
-                                'read': false,
-                                'type': 'mishtri',
+                                  .collection('MishtariProducts')
+                                  .doc(widget.id)
+                                  .update({
+                                'isAccepted': 'underProcess',
                               });
-                            },
-                            declined: () {
+                              SmartDialog.dismiss();
                               Get.back();
-                            });
-                      },
-              ),
+                            }
+                          : () {
+                              setState(() {});
+                              orderConfimation(
+                                  context: context,
+                                  accpeted: () async {
+                                    SmartDialog.showLoading(
+                                      animationBuilder:
+                                          (controller, child, animationParam) {
+                                        return Loading(
+                                          text:
+                                              'تم استلام الطلب سيتم تحويل المبلغ',
+                                        );
+                                      },
+                                    );
+                                    Future.delayed(const Duration(seconds: 2),
+                                        () async {
+                                      await FirebaseFirestore.instance
+                                          .collection('MishtariProducts')
+                                          .doc(widget.id)
+                                          .update({
+                                        'orderCompleted': true,
+                                      });
+                                      await FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(widget.user.uid)
+                                          .update({
+                                        'walletBalance': FieldValue.increment(
+                                            double.parse(
+                                                widget.buyerModel.price!)),
+                                      });
+                                      SmartDialog.dismiss();
+                                      Get.to(() => Orders(
+                                            title: 'الطلبات النشطة',
+                                          ));
+                                    });
+                                    await oneSignals.sendNotification(
+                                        widget.user.token!,
+                                        '',
+                                        'تطبيق وسيط: تم تأكيد طلبك من الطرف الآخر وبانتظار تأكيد إنهاء المعاملة',
+                                        'assets/logo/jpeg',
+                                        token: widget.user.token!,
+                                        senderName: userController
+                                            .currentUser.value.name!,
+                                        type: 'mishtri');
+                                    await FirebaseFirestore.instance
+                                        .collection('notification')
+                                        .add({
+                                      'body':
+                                          'تطبيق وسيط: تم تأكيد طلبك من الطرف الآخر وبانتظار تأكيد إنهاء المعاملة',
+                                      'senderName': userController
+                                          .currentUser.value.name!,
+                                      'uid': widget.user.uid!,
+                                      'createdAt': DateTime.now(),
+                                      'time': DateTime.now().toString(),
+                                      'read': false,
+                                      'type': 'mishtri',
+                                    });
+                                  },
+                                  declined: () {
+                                    Get.back();
+                                  });
+                            },
+                    )
+                  : Container(),
               SizedBox(
                 height: 12.h,
               ),

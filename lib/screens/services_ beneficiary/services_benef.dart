@@ -252,14 +252,14 @@ class _ServicesBeneficaryState extends State<ServicesBeneficary> {
                       MytextField(
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'من فضلك ادخل الغرض من الحوالة';
+                            return 'من فضلك ادخل الغرض من الخدمة';
                           }
                           return null;
                         },
                         type: TextInputType.name,
                         controller: purposeController,
-                        text: 'الغرض من الحوالة',
-                        hint: 'الغرض من الحوالة',
+                        text: 'الغرض من الخدمة',
+                        hint: 'الغرض من الخدمة',
                       ),
                       SizedBox(
                         height: 10.h,
