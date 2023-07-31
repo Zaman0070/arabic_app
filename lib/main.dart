@@ -9,7 +9,6 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:waist_app/screens/onBoarding.dart';
 import 'package:waist_app/screens/bottom_nav/bottomNavi.dart';
 import 'package:waist_app/screens/order/order.dart';
-
 import 'constants/colors.dart';
 
 void main() async {
@@ -18,9 +17,7 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   OneSignal.shared.setAppId('6afde054-dff9-45b9-a470-27d56d798ea2');
-  OneSignal.shared
-      .promptUserForPushNotificationPermission(fallbackToSettings: true)
-      .then((accepted) {
+  OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
     debugPrint('Accepted permission: $accepted');
   });
   OneSignal.shared

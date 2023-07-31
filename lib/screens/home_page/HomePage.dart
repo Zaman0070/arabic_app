@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:get/get.dart';
+import 'package:waist_app/Helper/payment_api.dart';
 import 'package:waist_app/controller/mishtri_controller.dart';
 import 'package:waist_app/screens/AboutUs.dart';
 import 'package:waist_app/screens/Safty.dart';
@@ -361,6 +362,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 20.h,
               ),
+            
               const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

@@ -11,6 +11,7 @@ class Api {
   ) async {
     try {
       const baseUrl = 'https://pay.expresspay.sa';
+      const String paymentEndpoint = '/api/v1/payment/reсurring';
       final Map<String, String> headers = {
         'Content-Type': 'application/json',
       };
@@ -28,7 +29,7 @@ class Api {
       };
 
       final http.Response response = await http.post(
-        Uri.parse('$baseUrl/api/v1/payment/reсurring'),
+        Uri.parse(baseUrl + paymentEndpoint),
         headers: headers,
         body: jsonEncode(requestBody),
       );
@@ -40,8 +41,7 @@ class Api {
         print(responseData);
       } else {
         // Payment request failed
-        print(
-            'Payment request failed with status code: ${response.statusCode}');
+        print('Payment request failed with status code: ${response.body}');
       }
     } catch (e) {
       print('Error occurred: $e');

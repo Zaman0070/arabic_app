@@ -505,9 +505,7 @@ class _ServiceProviderState extends State<ServiceProvider> {
                                 List<String> uid =
                                     value.docs.map((e) => e.id).toList();
                                 uids = uid;
-
                                 userController.getSpecificUser(uid[0]);
-                                print(uids[0]);
                               });
                               setState(() {
                                 isSwitched = !isSwitched;
